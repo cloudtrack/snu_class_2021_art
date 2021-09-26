@@ -1,0 +1,7 @@
+{
+  "name": "snu_class_2021_art",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
