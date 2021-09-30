@@ -1,6 +1,6 @@
 # AWS-based Art Class Application
 
-This is the code repository of [Creative Integrated Design 1](http://dcslab.snu.ac.kr/courses/2021f/project/)
+This is the code repository of Team S for [Creative Integrated Design 1](http://dcslab.snu.ac.kr/courses/2021f/project/). This project aims to implement a cross-platform hybrid application for art class teachers and students based on AWS.
 
 ## How to build and run from source
 
