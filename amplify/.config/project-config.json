@@ -1,0 +1,17 @@
+{
+  "projectName": "snuclass2021art",
+  "version": "3.1",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "ionic",
+    "config": {
+      "SourceDir": "src",
+      "DistributionDir": "build",
+      "BuildCommand": "ionic capacitor build",
+      "StartCommand": "ionic capacitor run android"
+    }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
+}
