@@ -1,0 +1,63 @@
+import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonButton } from "@ionic/react";
+import React, { useState } from "react";
+
+
+const LoginView: React.FC<{ onSubmit: any }> = (props) => {
+
+  const [text, setText] = useState<string>();
+  const [password, setPassword] = useState<string>();
+
+  return (
+    <IonPage>
+      <IonContent>
+        <IonList>
+          <IonImg
+            style={{
+              margin: "20px auto 20px",
+              width: "20%"
+            }}
+            src={"assets/icon/icon.png"}
+          ></IonImg>
+          <IonItem>
+            <IonLabel
+              position="floating"
+            >Email</IonLabel>
+            <IonInput
+              value={text}
+              placeholder="Enter Input"
+              onIonChange={e => setText(
+                e.detail.value!
+              )}
+              clearInput
+            ></IonInput>
+          </IonItem>
+          <IonItem>
+            <IonLabel
+              position="floating"
+            >Password</IonLabel>
+            <IonInput
+              value={password}
+              placeholder="Enter Input"
+              onIonChange={e => setPassword(
+                e.detail.value!
+              )}
+              clearInput
+            ></IonInput>
+          </IonItem>
+          <IonButton
+            style={{
+              margin: "50px 50px 50px 50px"
+            }}
+            type="submit"
+            expand="block"
+            onClick={() => {
+              props.onSubmit(text, password);
+            }}
+          >Log In</IonButton>
+        </IonList>
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export default LoginView;
