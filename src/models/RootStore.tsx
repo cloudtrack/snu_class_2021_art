@@ -1,19 +1,12 @@
-import LoginModel from "./domain/LoginModel";
+import React from "react";
+import UserStore from "./domain/UserStore"
 
 class RootStore {
-    static type = {
-        LOGIN_MODEL: 'loginModel'
-    }
-
-    private loginModel;
-
-    constructor() {
-        this.loginModel = new LoginModel()
-    }
-
-    getStores = () => ({
-        [RootStore.type.LOGIN_MODEL]: this.loginModel
-    })
+  userStore;
+  constructor() {
+    this.userStore = new UserStore(this)
+  }
 }
 
-export default RootStore;
+const StoresContext = React.createContext(new RootStore())
+export const useStores = () => React.useContext(StoresContext);

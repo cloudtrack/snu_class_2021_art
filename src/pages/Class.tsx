@@ -2,7 +2,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/rea
 import ExploreContainer from '../components/ExploreContainer';
 import './Class.css';
 
-const Tab2: React.FC = () => {
+const ClassView: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
@@ -22,4 +22,4 @@ const Tab2: React.FC = () => {
   );
 };
 
-export default Tab2;
+export default ClassView;
