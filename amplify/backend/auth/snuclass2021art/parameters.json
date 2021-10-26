@@ -1,7 +1,7 @@
 {
     "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "snuclac58c15c0",
+    "resourceNameTruncated": "snucla88976f61",
     "userPoolName": "snuclass2021art",
     "autoVerifiedAttributes": [
         "email"
@@ -12,14 +12,13 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Forgot password code: {####}",
-    "emailVerificationMessage": "Forgot password code: {####}",
+    "emailVerificationSubject": "Subject {####}",
+    "emailVerificationMessage": "Body {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [
         "Requires Lowercase",
         "Requires Numbers",
-        "Requires Symbols",
         "Requires Uppercase"
     ],
     "requiredAttributes": [
@@ -30,9 +29,9 @@
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "snuclac58c15c0_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "snucla88976f61_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "c58c15c0",
+    "sharedId": "88976f61",
     "resourceName": "snuclass2021art",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
@@ -58,13 +57,13 @@
     "thirdPartyAuth": false,
     "authProviders": [],
     "hostedUI": true,
-    "hostedUIDomainName": "ylh6g0rbjczs",
+    "hostedUIDomainName": "3gz4lx4uwbff",
     "authProvidersUserPool": [
         "Facebook",
         "Google"
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://localhost:8100/home\"],\"LogoutURLs\":[\"https://localhost:8100/registerhome\"]}",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://localhost:8100\"],\"LogoutURLs\":[\"https://localhost:8100\"]}",
     "usernameCaseSensitive": false,
     "dependsOn": []
 }
