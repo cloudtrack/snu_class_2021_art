@@ -1,5 +1,5 @@
 
-import React, { useContext } from "react";
+import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
@@ -20,26 +20,19 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-import RegisterView from "./pages/RegisterPage/RegisterHomeView";
 import HomeView from "./pages/HomeView";
 import FeedView from "./pages/Feed";
 import ClassView from "./pages/Class";
 import ProfileView from "./pages/Profile";
-import LoginView from "./pages/LoginPage/LoginView";
 
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
-import { observer } from "mobx-react";
 import LoginProvider from "./pages/LoginPage/LoginProvider";
 import RegisterHomeView from "./pages/RegisterPage/RegisterHomeView";
 import RegisterProvider from "./pages/RegisterPage/RegisterProvider";
 Amplify.configure(awsconfig);
 
 class App extends React.Component {
-
-  constructor(props: any) {
-    super(props);
-  }
 
   render() {
     return (
