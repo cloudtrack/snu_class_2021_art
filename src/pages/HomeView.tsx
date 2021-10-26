@@ -1,7 +1,6 @@
 import { Redirect, Route } from 'react-router-dom';
 import React from 'react';
 import {
-    IonApp,
     IonIcon,
     IonLabel,
     IonPage,
