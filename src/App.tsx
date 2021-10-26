@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 
@@ -25,50 +25,52 @@ import FeedView from "./pages/FeedPage/Feed";
 import ClassView from "./pages/ClassPage/Class";
 import ProfileView from "./pages/ProfilePage/Profile";
 
-import Amplify from 'aws-amplify';
-import awsconfig from './aws-exports';
 import LoginProvider from "./pages/LoginPage/LoginProvider";
 import RegisterHomeView from "./pages/RegisterPage/RegisterHomeView";
 import RegisterProvider from "./pages/RegisterPage/RegisterProvider";
-Amplify.configure(awsconfig);
+import { useStores } from "./models/RootStore";
+import { observer } from "mobx-react";
 
-class App extends React.Component {
 
-  render() {
-    return (
-      <IonApp>
-        <IonReactRouter>
-          <IonRouterOutlet>
-            <Route exact path="/login">
-              <LoginProvider />
-            </Route>
-            <Route exact path="/registerhome">
-              <RegisterHomeView />
-            </Route>
-            <Route exact path="/register">
-              <RegisterProvider />
-            </Route>
-            <Route exact path="/home">
-              <HomeView />
-            </Route>
-            <Route exact path="/feed">
-              <FeedView />
-            </Route>
-            <Route exact path="/class">
-              <ClassView />
-            </Route>
-            <Route exact path="/profile">
-              <ProfileView />
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/registerhome" />
-            </Route>
-          </IonRouterOutlet>
-        </IonReactRouter>
-      </IonApp>
-    );
-  }
-}
+
+const App: React.FC = observer(() => {
+  const { userStore } = useStores()
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route exact path="/login">
+            <LoginProvider />
+          </Route>
+          <Route exact path="/registerhome">
+            <RegisterHomeView />
+          </Route>
+          <Route exact path="/register">
+            <RegisterProvider />
+          </Route>
+          <Route exact path="/home">
+            <HomeView />
+          </Route>
+          <Route exact path="/feed">
+            <FeedView />
+          </Route>
+          <Route exact path="/class">
+            <ClassView />
+          </Route>
+          <Route exact path="/profile">
+            <ProfileView />
+          </Route>
+          <Route exact path="/" render={(props) => {
+            return userStore.isLoggedIn ? <HomeView /> : <RegisterHomeView />
+          }}>
+          </Route>
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  );
+})
+
 
 
 export default App;
