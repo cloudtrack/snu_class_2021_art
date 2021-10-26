@@ -2,9 +2,13 @@ import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonB
 import React, { useState } from "react";
 
 
-const RegisterView: React.FC<{ onSubmit: any }> = (props) => {
+const RegisterView: React.FC<{
+  isUsernameValid: any,
+  isPasswordValid: any,
+  onSubmit: any
+}> = (props) => {
 
-  const [text, setText] = useState<string>();
+  const [username, setUsername] = useState<string>();
   const [password, setPassword] = useState<string>();
 
   return (
@@ -23,9 +27,9 @@ const RegisterView: React.FC<{ onSubmit: any }> = (props) => {
               position="floating"
             >Email</IonLabel>
             <IonInput
-              value={text}
+              value={username}
               placeholder="Enter Input"
-              onIonChange={e => setText(
+              onIonChange={e => setUsername(
                 e.detail.value!
               )}
               clearInput
@@ -49,9 +53,12 @@ const RegisterView: React.FC<{ onSubmit: any }> = (props) => {
               margin: "50px 50px 50px 50px"
             }}
             expand="block"
-            onClick={
-              props.onSubmit(text, password)
-            }
+            type="submit"
+            onClick={() => {
+              if (props.isUsernameValid(username) && props.isPasswordValid(password)) {
+                props.onSubmit(username, password)
+              }
+            }}
           >Sign Up</IonButton>
         </IonList>
       </IonContent>
