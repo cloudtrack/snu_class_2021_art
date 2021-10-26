@@ -21,9 +21,9 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 import HomeView from "./pages/HomeView";
-import FeedView from "./pages/Feed";
-import ClassView from "./pages/Class";
-import ProfileView from "./pages/Profile";
+import FeedView from "./pages/FeedPage/Feed";
+import ClassView from "./pages/ClassPage/Class";
+import ProfileView from "./pages/ProfilePage/Profile";
 
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';

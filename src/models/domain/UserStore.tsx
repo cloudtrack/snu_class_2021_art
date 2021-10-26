@@ -19,17 +19,17 @@ class UserStore {
   async signUp(username: string, password:string) {
     console.log("yooooo signing up userstore")
       await Auth.signUp(username, password)
-          .then((user) => this.user = user)
-          .catch((error) => console.log('error signing up:', error));
+          .then((user) => {
+            this.user = user
+            console.log(user)
+          })
+          .catch((error) => {
+            console.log('error signing up:', error)
+          });
   }
 
   async signIn(username: string, password: string) {
-    // try {
-    //   this.rootStore.userStore.user = await Auth.signIn(username, password)
-    // } catch (error) {
-    //   console.log('error signing in: ', error)
-    // }
-    Auth.signIn(username, password).then(
+    await Auth.signIn(username, password).then(
       user => {
         if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
           Auth.completeNewPassword(
@@ -37,6 +37,7 @@ class UserStore {
             password,       // the new password
           ).then(user => {
             // at this time the user is logged in if no MFA required
+            this.user = user
             console.log(user);
           }).catch(e => {
             console.log(e);

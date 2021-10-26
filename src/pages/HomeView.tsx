@@ -11,9 +11,9 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { calendar, images, person } from 'ionicons/icons';
-import ClassView from './Class';
-import FeedView from './Feed';
-import ProfileView from './Profile';
+import ClassView from './ClassPage/Class';
+import FeedView from './FeedPage/Feed';
+import ProfileView from './ProfilePage/Profile';
 
 
 const HomeView: React.FC = () => (
@@ -35,15 +35,15 @@ const HomeView: React.FC = () => (
                     </Route>
                 </IonRouterOutlet>
                 <IonTabBar slot="bottom">
-                    <IonTabButton tab="tab1" href="/tab1">
+                    <IonTabButton tab="tab1" href="/feed">
                         <IonIcon icon={images} />
                         <IonLabel>Feed</IonLabel>
                     </IonTabButton>
-                    <IonTabButton tab="tab2" href="/tab2">
+                    <IonTabButton tab="tab2" href="/class">
                         <IonIcon icon={calendar} />
                         <IonLabel>Class</IonLabel>
                     </IonTabButton>
-                    <IonTabButton tab="tab3" href="/tab3">
+                    <IonTabButton tab="tab3" href="/profile">
                         <IonIcon icon={person} />
                         <IonLabel>Profile</IonLabel>
                     </IonTabButton>
