@@ -5,22 +5,22 @@ import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
 
 class UserStore {
-  private rootStore
+  rootStore
   user: any | null = null
   isConfirmed: boolean = false
   isLoggedIn: boolean = false
 
   constructor(rootStore : any) {
     this.rootStore = rootStore
-    makeAutoObservable(this)
+    makeAutoObservable(this, {rootStore : false})
   }
 
   async signUp(username: string, password: string) {
     console.log("yooooo signing up userstore")
     await Auth.signUp(username, password)
       .then((user) => {
-        this.rootStore.userStore.user = user
-        this.rootStore.userStore.isConfirmed = user.userConfirmed
+        this.user = user
+        this.isConfirmed = user.userConfirmed
         console.log(user)
       })
       .catch((e) => {
@@ -31,8 +31,8 @@ class UserStore {
   async signIn(username: string, password: string) {
     await Auth.signIn(username, password)
       .then(user => {
-        this.rootStore.userStore.user = user
-        this.rootStore.userStore.isLoggedIn = true
+        this.user = user
+        this.isLoggedIn = true
         console.log(user)
       })
       .catch(e => {
@@ -43,13 +43,19 @@ class UserStore {
   async confirmAuthentication(username: string, password: string, code: string) {
     try {
       await Auth.confirmSignUp(username, code)
-      this.rootStore.userStore.isConfirmed = true
-      await Auth.signIn(username, password).then()
-      this.rootStore.userStore.isLoggedIn = true
+      this.isConfirmed = true
+      await Auth.signIn(username, password).then(
+        (user) => {
+          this.user = user
+          this.isLoggedIn = true
+        }
+      )
     } catch (e) {
       console.log(e)
     }
   }
+
+
 }
 
 export default UserStore;
