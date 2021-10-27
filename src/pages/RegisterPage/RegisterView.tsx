@@ -3,15 +3,17 @@ import React, { useState } from "react";
 import { observer } from 'mobx-react'
 
 
-const RegisterView: React.FC<{
+interface registerProps {
   user: any | null,
-  isUsernameValid: any,
-  isPasswordValid: any,
-  signUp: any,
-  confirmSignUp: any
-}> = observer((props) => {
+  shouldConfirm: boolean,
+  shouldLogIn: boolean,
+  isUsernameValid: (username: string) => boolean,
+  isPasswordValid: (password: string) => boolean,
+  signUp: (username: string, password: string) => {},
+  confirmSignUp: (username: string, password: string, code: string) => {}
+}
 
-  // const user = props.user
+const RegisterView: React.FC<registerProps> = observer((props) => {
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -87,7 +89,7 @@ const RegisterView: React.FC<{
 
   return (
     <IonPage>
-      {props.user === null ? renderSignUp(props) : renderConfirm(props)}
+      {props.shouldConfirm ? renderConfirm(props) : renderSignUp(props)}
     </IonPage>
   )
 })

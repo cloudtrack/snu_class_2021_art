@@ -1,9 +1,14 @@
+import Amplify, { Auth } from "aws-amplify";
+import awsconfig from "../../aws-exports";
 import React from "react";
 import { useHistory } from "react-router";
 import UserStore from "../../models/domain/UserStore";
 import RegisterView from "./RegisterView";
+import { observer } from "mobx-react";
 
-const RegisterController: React.FC<{ userStore: UserStore }> = (props) => {
+Amplify.configure(awsconfig);
+
+const RegisterController: React.FC<{ userStore: UserStore }> = observer((props) => {
   const userStore = props.userStore;
   const passwordRegex: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
@@ -21,13 +26,39 @@ const RegisterController: React.FC<{ userStore: UserStore }> = (props) => {
       password.match(passwordRegex) !== null;
   }
 
-  const onSignUp = (username: string, password: string): void => {
-    userStore.signUp(username, password)
+  const signUp = async (username: string, password: string) => {
+    await Auth.signUp(username, password)
+      .then((user) => {
+        userStore.setUser(user.userSub)
+        userStore.setShouldConfirm(!user.userConfirmed)
+      })
+      .catch((e) => {
+        const code = e.code;
+        switch (code) {
+          case "UserExistsException":
+            userStore.setShouldLogIn(true)
+            return
+        }
+      })
     history.push("/register")
   }
 
-  const onConfirm = (username: string, password: string, code : string ) => {
-    userStore.confirmAuthentication(username, password, code)
+  const confirm = async (username: string, password: string, code: string) => {
+    await Auth.confirmSignUp(username, code)
+      .then(() => { userStore.setShouldConfirm(false) })
+      .catch((e) => {
+        userStore.setShouldConfirm(false)
+        console.log(e)
+      })
+    await Auth.signIn(username, password).then(
+      (user) => {
+        userStore.setUser(user.userSub)
+        userStore.setShouldLogIn(false)
+        userStore.setLoggedIn(true)
+      }
+    ).catch((e) => {
+      userStore.setShouldConfirm(false)
+      console.log(e)})
     if (userStore.isLoggedIn) {
       history.push("/")
     }
@@ -35,12 +66,14 @@ const RegisterController: React.FC<{ userStore: UserStore }> = (props) => {
 
   return (
     <RegisterView
-      user = {userStore.user}
+      user={userStore.user}
+      shouldConfirm={userStore.shouldConfirm}
+      shouldLogIn={userStore.shouldLogIn}
       isUsernameValid={isUsernameValid}
       isPasswordValid={isPasswordValid}
-      signUp={onSignUp}
-      confirmSignUp={onConfirm} />
+      signUp={signUp}
+      confirmSignUp={confirm} />
   )
-}
+})
 
 export default RegisterController;
