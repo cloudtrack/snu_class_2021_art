@@ -26,12 +26,10 @@ import ClassView from "./pages/ClassPage/Class";
 import ProfileView from "./pages/ProfilePage/Profile";
 
 import LoginProvider from "./pages/LoginPage/LoginProvider";
-import RegisterHomeView from "./pages/RegisterPage/RegisterHomeView";
+import RegisterHomeView from "./pages/RegisterHomeView";
 import RegisterProvider from "./pages/RegisterPage/RegisterProvider";
 import { useStores } from "./models/RootStore";
 import { observer } from "mobx-react";
-
-
 
 const App: React.FC = observer(() => {
   const { userStore } = useStores()
@@ -61,7 +59,7 @@ const App: React.FC = observer(() => {
           <Route exact path="/profile">
             <ProfileView />
           </Route>
-          <Route exact path="/" render={(props) => {
+          <Route exact path="/" render={() => {
             return userStore.isLoggedIn ? <HomeView /> : <RegisterHomeView />
           }}>
           </Route>
