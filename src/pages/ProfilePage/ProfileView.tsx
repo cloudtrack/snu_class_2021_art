@@ -1,8 +1,12 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../../components/ExploreContainer';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './Profile.css';
 
-const ProfileView: React.FC = () => {
+interface profileProps {
+  signOut: () => void
+}
+
+
+const ProfileView: React.FC<profileProps> = (props) => {
   return (
     <IonPage>
       <IonHeader>
@@ -16,7 +20,11 @@ const ProfileView: React.FC = () => {
             <IonTitle size="large">Tab 3</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 3 page" />
+        {/* <ExploreContainer name="Tab 3 page" /> */}
+        <IonButton
+        onClick={() => {
+          props.signOut()
+        }}>LOG OUT</IonButton>
       </IonContent>
     </IonPage>
   );
