@@ -5,7 +5,7 @@ import RegisterView from "./RegisterView";
 
 const RegisterController: React.FC<{ userStore: UserStore }> = (props) => {
   const userStore = props.userStore;
-  const passwordRegex: RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+  const passwordRegex: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
   const history = useHistory()
   const isUsernameValid = (username: string): boolean => {
@@ -38,8 +38,8 @@ const RegisterController: React.FC<{ userStore: UserStore }> = (props) => {
       user = {userStore.user}
       isUsernameValid={isUsernameValid}
       isPasswordValid={isPasswordValid}
-      onSignUp={onSignUp}
-      onConfirm={onConfirm} />
+      signUp={onSignUp}
+      confirmSignUp={onConfirm} />
   )
 }
 

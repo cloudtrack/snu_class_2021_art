@@ -1,14 +1,14 @@
 import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonButton } from "@ionic/react";
 import React, { useState } from "react";
-import {observer} from 'mobx-react'
+import { observer } from 'mobx-react'
 
 
 const RegisterView: React.FC<{
   user: any | null,
   isUsernameValid: any,
   isPasswordValid: any,
-  onSignUp: any,
-  onConfirm: any
+  signUp: any,
+  confirmSignUp: any
 }> = observer((props) => {
 
   // const user = props.user
@@ -17,7 +17,7 @@ const RegisterView: React.FC<{
   const [password, setPassword] = useState<string>("");
   const [code, setCode] = useState<string>("");
 
-  const renderSignUp = (props : any) => {
+  const renderSignUp = (props: any) => {
     return (
       <IonContent>
         <IonList>
@@ -40,7 +40,7 @@ const RegisterView: React.FC<{
           <IonItem>
             <IonLabel position="floating">Password</IonLabel>
             <IonInput
-            type="password"
+              type="password"
               value={password}
               placeholder="Enter Password"
               onIonChange={e => setPassword(e.detail.value!)}
@@ -51,17 +51,16 @@ const RegisterView: React.FC<{
             style={{ margin: "50px 50px 50px 50px" }}
             expand="block"
             type="submit"
-            onClick={() => {
-              if (props.isUsernameValid(username) && props.isPasswordValid(password)) {
-                props.onSignUp(username, password)
-              }
-            }}
+            onClick={() => { props.signUp(username, password) }}
+            disabled={
+              !(props.isUsernameValid(username) && props.isPasswordValid(password))
+            }
           >Sign Up</IonButton>
         </IonList>
       </IonContent>
     )
   }
-  const renderConfirm = (props : any) => {
+  const renderConfirm = (props: any) => {
     return (
       <IonContent>
         <IonList>
@@ -78,13 +77,14 @@ const RegisterView: React.FC<{
             expand="block"
             type="submit"
             onClick={(e) => {
-              props.onConfirm(username, password, code)
+              props.confirmSignUp(username, password, code)
             }}
           >Confirm Code</IonButton>
         </IonList>
       </IonContent>
     )
   }
+
   return (
     <IonPage>
       {props.user === null ? renderSignUp(props) : renderConfirm(props)}
