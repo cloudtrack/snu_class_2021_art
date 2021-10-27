@@ -13,7 +13,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import { calendar, images, person } from 'ionicons/icons';
 import ClassView from './ClassPage/Class';
 import FeedView from './FeedPage/Feed';
-import ProfileView from './ProfilePage/Profile';
+import ProfileProvider from './ProfilePage/ProfileProvider';
 
 
 const HomeView: React.FC = () => (
@@ -28,7 +28,7 @@ const HomeView: React.FC = () => (
                         <ClassView />
                     </Route>
                     <Route path="/profile">
-                        <ProfileView />
+                        <ProfileProvider />
                     </Route>
                     <Route exact path="/home">
                         <Redirect to="/feed" />
