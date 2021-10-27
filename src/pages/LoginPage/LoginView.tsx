@@ -1,11 +1,17 @@
 import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonButton } from "@ionic/react";
+import { observer } from "mobx-react";
 import React, { useState } from "react";
 
+interface loginProps {
+  isUsernameValid: any,
+  isPasswordValid: any,
+  onSubmit: any
+}
 
-const LoginView: React.FC<{ onSubmit: any }> = (props) => {
+const LoginView: React.FC<loginProps> = observer((props) => {
 
-  const [text, setText] = useState<string>();
-  const [password, setPassword] = useState<string>();
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   return (
     <IonPage>
@@ -23,11 +29,9 @@ const LoginView: React.FC<{ onSubmit: any }> = (props) => {
               position="floating"
             >Email</IonLabel>
             <IonInput
-              value={text}
+              value={username}
               placeholder="Enter Input"
-              onIonChange={e => setText(
-                e.detail.value!
-              )}
+              onIonChange={e => setUsername(e.detail.value!)}
               clearInput
             ></IonInput>
           </IonItem>
@@ -36,11 +40,10 @@ const LoginView: React.FC<{ onSubmit: any }> = (props) => {
               position="floating"
             >Password</IonLabel>
             <IonInput
+              type="password"
               value={password}
-              placeholder="Enter Input"
-              onIonChange={e => setPassword(
-                e.detail.value!
-              )}
+              placeholder="Enter Password"
+              onIonChange={e => setPassword(e.detail.value!)}
               clearInput
             ></IonInput>
           </IonItem>
@@ -50,14 +53,13 @@ const LoginView: React.FC<{ onSubmit: any }> = (props) => {
             }}
             type="submit"
             expand="block"
-            onClick={() => {
-              props.onSubmit(text, password);
-            }}
+            onClick={() => { props.onSubmit(username, password); }}
+            disabled={!(props.isUsernameValid(username) && props.isPasswordValid(password))}
           >Log In</IonButton>
         </IonList>
       </IonContent>
     </IonPage>
   );
-};
+})
 
 export default LoginView;

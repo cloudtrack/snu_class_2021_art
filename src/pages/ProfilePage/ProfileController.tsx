@@ -27,7 +27,7 @@ const ProfileController: React.FC<profileViewModelProps> = observer((props) => {
           props.userStore.setLoggedIn(false)
         }
       )
-      .catch(e => console.log)
+      .catch(e => console.log(e))
     history.push("/")
   }
 

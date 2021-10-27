@@ -7,7 +7,7 @@ import { autoSave } from "../RootStore";
 
 class UserStore {
   rootStore
-  user: string | null = null
+  user: any | null = null
   shouldConfirm: boolean = false
   shouldLogIn: boolean = false
   isLoggedIn: boolean = false
