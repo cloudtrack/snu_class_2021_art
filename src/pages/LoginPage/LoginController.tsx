@@ -35,9 +35,9 @@ const LoginController: React.FC<{ userStore: UserStore }> = (props) => {
 
   return (
     <LoginView
-    isUsernameValid={isUsernameValid}
-    isPasswordValid={isPasswordValid}
-    onSubmit={onSubmit} />
+      isUsernameValid={isUsernameValid}
+      isPasswordValid={isPasswordValid}
+      onSubmit={onSubmit} />
   )
 }
 

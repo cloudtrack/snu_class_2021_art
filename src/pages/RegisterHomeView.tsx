@@ -1,7 +1,7 @@
 import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonRouterLink, IonText, IonTitle, IonToolbar } from "@ionic/react"
 import { logoFacebook, logoGoogle, logoIonic } from "ionicons/icons";
 import "./RegisterPage/RegisterController"
-import "./Register.css"
+import "./RegisterHome.css"
 
 const RegisterHomeView: React.FC = (props) => {
   return (

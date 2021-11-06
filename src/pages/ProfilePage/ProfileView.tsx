@@ -21,9 +21,9 @@ const ProfileView: React.FC<profileProps> = (props) => {
           </IonToolbar>
         </IonHeader>
         <IonButton
-        onClick={() => {
-          props.signOut()
-        }}>LOG OUT</IonButton>
+          onClick={() => {
+            props.signOut()
+          }}>LOG OUT</IonButton>
       </IonContent>
     </IonPage>
   );

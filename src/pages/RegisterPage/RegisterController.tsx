@@ -33,8 +33,6 @@ const RegisterController: React.FC<{ userStore: UserStore }> = observer((props) 
     await userStore.signIn(username, password);
   }
 
-  console.log(userStore)
-
   return (
     <RegisterView
       userStore={userStore}

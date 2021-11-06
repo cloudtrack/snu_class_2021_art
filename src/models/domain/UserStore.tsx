@@ -47,6 +47,7 @@ class UserStore {
         const code = e.code;
         switch (code) {
           case "UserExistsException":
+            console.log("User already exists.");
             // this.setShouldLogIn(true)
             return
         }
@@ -83,7 +84,6 @@ class UserStore {
   }
 
   async getLoginStatus(): Promise<boolean> {
-    console.log("get login status")
     const attributes = await Auth.currentAuthenticatedUser()
       .catch((e) => {
         console.log(e)
@@ -100,7 +100,6 @@ class UserStore {
     console.log("get confirm status")
     const attributes: CognitoUser = await Auth.currentAuthenticatedUser()
       .catch((e) => {
-        console.log("error happened")
         console.log(e)
       })
     if (attributes !== undefined) {
