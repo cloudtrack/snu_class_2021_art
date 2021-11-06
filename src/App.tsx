@@ -24,17 +24,15 @@ import HomeView from "./pages/HomeView";
 import FeedView from "./pages/FeedPage/Feed";
 import ClassView from "./pages/ClassPage/Class";
 
-import LoginProvider from "./pages/LoginPage/LoginProvider";
 import RegisterHomeView from "./pages/RegisterHomeView";
+import LoginProvider from "./pages/LoginPage/LoginProvider";
 import RegisterProvider from "./pages/RegisterPage/RegisterProvider";
+import ProfileProvider from "./pages/ProfilePage/ProfileProvider";
 import { useStores } from "./models/RootStore";
 import { observer } from "mobx-react";
-import ProfileProvider from "./pages/ProfilePage/ProfileProvider";
 
 const App: React.FC = observer(() => {
   const { userStore } = useStores()
-
-  console.log(userStore)
 
   return (
     <IonApp>
@@ -43,14 +41,11 @@ const App: React.FC = observer(() => {
           <Route exact path="/login">
             <LoginProvider />
           </Route>
-          <Route exact path="/registerhome">
-            <RegisterHomeView />
-          </Route>
           <Route exact path="/register">
             <RegisterProvider />
           </Route>
-          <Route exact path="/home">
-            <HomeView />
+          <Route exact path="/registerhome">
+            <RegisterHomeView />
           </Route>
           <Route exact path="/feed">
             <FeedView />
@@ -61,8 +56,13 @@ const App: React.FC = observer(() => {
           <Route exact path="/profile">
             <ProfileProvider />
           </Route>
+          <Route exact path="/home">
+            <HomeView />
+          </Route>
           <Route exact path="/" render={() => {
-            return userStore.isLoggedIn ? <Redirect exact to="/home" /> : <Redirect exact to="/registerhome" />
+            return userStore.isLoggedIn ?
+            <Redirect exact to="/home" /> :
+            <Redirect exact to="/registerhome" />
           }}>
           </Route>
         </IonRouterOutlet>
