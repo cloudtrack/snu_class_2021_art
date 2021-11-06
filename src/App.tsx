@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 
@@ -62,7 +62,7 @@ const App: React.FC = observer(() => {
             <ProfileProvider />
           </Route>
           <Route exact path="/" render={() => {
-            return userStore.isLoggedIn ? <HomeView /> : <RegisterHomeView />
+            return userStore.isLoggedIn ? <Redirect exact to="/home" /> : <Redirect exact to="/registerhome" />
           }}>
           </Route>
         </IonRouterOutlet>

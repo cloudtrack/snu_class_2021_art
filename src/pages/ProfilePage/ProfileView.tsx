@@ -11,7 +11,7 @@ const ProfileView: React.FC<profileProps> = (props) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 3</IonTitle>
+          <IonTitle>Profile</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -20,7 +20,6 @@ const ProfileView: React.FC<profileProps> = (props) => {
             <IonTitle size="large">Tab 3</IonTitle>
           </IonToolbar>
         </IonHeader>
-        {/* <ExploreContainer name="Tab 3 page" /> */}
         <IonButton
         onClick={() => {
           props.signOut()

@@ -1,12 +1,11 @@
-import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonButton } from "@ionic/react";
+import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonButton, IonHeader, IonBackButton, IonButtons, IonToolbar } from "@ionic/react";
 import React, { useState } from "react";
 import { observer } from 'mobx-react'
+import UserStore from "../../models/domain/UserStore";
 
 
 interface registerProps {
-  user: any | null,
-  shouldConfirm: boolean,
-  shouldLogIn: boolean,
+  userStore: UserStore,
   isUsernameValid: (username: string) => boolean,
   isPasswordValid: (password: string) => boolean,
   signUp: (username: string, password: string) => {},
@@ -19,15 +18,19 @@ const RegisterView: React.FC<registerProps> = observer((props) => {
   const [password, setPassword] = useState<string>("");
   const [code, setCode] = useState<string>("");
 
-  const renderSignUp = (props: any) => {
+  const renderSignUp = (props: registerProps) => {
     return (
       <IonContent>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/" />
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
         <IonList>
           <IonImg
-            style={{
-              margin: "20px auto 20px",
-              width: "20%"
-            }}
+            style={{ margin: "20px auto 20px", width: "20%" }}
             src={"assets/icon/icon.png"}
           ></IonImg>
           <IonItem>
@@ -62,7 +65,7 @@ const RegisterView: React.FC<registerProps> = observer((props) => {
       </IonContent>
     )
   }
-  const renderConfirm = (props: any) => {
+  const renderConfirm = (props: registerProps) => {
     return (
       <IonContent>
         <IonList>
@@ -81,6 +84,7 @@ const RegisterView: React.FC<registerProps> = observer((props) => {
             onClick={(e) => {
               props.confirmSignUp(username, password, code)
             }}
+            disabled={code.length !== 6}
           >Confirm Code</IonButton>
         </IonList>
       </IonContent>
@@ -89,7 +93,7 @@ const RegisterView: React.FC<registerProps> = observer((props) => {
 
   return (
     <IonPage>
-      {props.shouldConfirm ? renderConfirm(props) : renderSignUp(props)}
+      {!props.userStore.isConfirmed && props.userStore.user !== null ? renderConfirm(props) : renderSignUp(props)}
     </IonPage>
   )
 })

@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonButton } from "@ionic/react";
+import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonButton, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton } from "@ionic/react";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
 
@@ -15,6 +15,14 @@ const LoginView: React.FC<loginProps> = observer((props) => {
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
+          <IonTitle>Log In</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent>
         <IonList>
           <IonImg

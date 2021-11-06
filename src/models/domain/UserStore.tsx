@@ -1,74 +1,128 @@
 
-
-import { action, extendObservable, makeObservable, observable } from "mobx";
-import { Storage } from "@capacitor/storage"
-import { autoSave } from "../RootStore";
+import { action, makeObservable, observable } from "mobx";
+import Auth from "@aws-amplify/auth";
+import { CognitoUser } from "@aws-amplify/auth";
 
 
 class UserStore {
   rootStore
-  user: any | null = null
-  shouldConfirm: boolean = false
-  shouldLogIn: boolean = false
+  user: CognitoUser | null = null
+  isConfirmed: boolean = false
   isLoggedIn: boolean = false
 
   constructor(rootStore: any) {
     this.rootStore = rootStore
     makeObservable(this, {
       user: observable,
-      shouldConfirm: observable,
-      shouldLogIn: observable,
+      isConfirmed: observable,
       isLoggedIn: observable,
       setUser: action,
-      setLoggedIn: action,
+      setLoginStatus: action,
+      setConfirmStatus: action,
       rootStore: false
     })
-    this.load()
-    autoSave("userStore", this.save.bind(this))
+    this.initialize()
+    console.log(this)
   }
 
-  async load() {
-    const { value } = await Storage.get({ key: "userStore" })
-    if (value !== null) {
-      const data = JSON.parse(value)
-      extendObservable(this, data)
+  // initialize the store
+  async initialize() {
+    this.setUser(await this.getUser())
+    if (await this.getLoginStatus()) {
+      this.setLoginStatus(true)
+    }
+    if (await this.getConfirmStatus()) {
+      this.setConfirmStatus(true)
     }
   }
 
-  async save(json: string) {
-    await Storage.set({
-      key: "userStore",
-      value: json
-    })
+  async signUp(username: string, password: string) {
+    await Auth.signUp(username, password)
+      .then((user) => {
+        console.log(user)
+        this.setUser(user.user)
+        this.setConfirmStatus(user.userConfirmed)
+      })
+      .catch((e) => {
+        const code = e.code;
+        switch (code) {
+          case "UserExistsException":
+            // this.setShouldLogIn(true)
+            return
+        }
+      })
   }
 
-  setUser(user: string | null) {
+  async confirm(username: string, code: string) {
+    await Auth.confirmSignUp(username, code)
+      .then(() => {
+        this.setConfirmStatus(true)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+
+  async signIn(username: string, password: string) {
+    await Auth.signIn(username, password)
+      .then((user) => {
+        this.setUser(user)
+        this.setLoginStatus(true)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+
+  async getUser(): Promise<CognitoUser | null> {
+    return await Auth.currentAuthenticatedUser()
+      .catch((e) => {
+        console.log(e)
+        return null
+      })
+  }
+
+  async getLoginStatus(): Promise<boolean> {
+    console.log("get login status")
+    const attributes = await Auth.currentAuthenticatedUser()
+      .catch((e) => {
+        console.log(e)
+      })
+    if (attributes !== undefined) {
+      console.log(attributes)
+      return true
+    } else {
+      return false
+    }
+  }
+
+  async getConfirmStatus(): Promise<boolean> {
+    console.log("get confirm status")
+    const attributes: CognitoUser = await Auth.currentAuthenticatedUser()
+      .catch((e) => {
+        console.log("error happened")
+        console.log(e)
+      })
+    if (attributes !== undefined) {
+      console.log(attributes)
+      return true
+    } else {
+      return false
+    }
+  }
+
+  setUser(user: CognitoUser | null) {
     this.user = user
   }
 
-  setShouldConfirm(shouldConfirm: boolean) {
-    this.shouldConfirm = shouldConfirm
+  setConfirmStatus(isConfirmed: boolean) {
+    console.log("should confirm: : " + isConfirmed)
+    this.isConfirmed = isConfirmed
   }
 
-  setShouldLogIn(shouldLogIn: boolean) {
-    this.shouldLogIn = shouldLogIn
-  }
-
-  setLoggedIn(isLoggedIn: boolean) {
+  setLoginStatus(isLoggedIn: boolean) {
     this.isLoggedIn = isLoggedIn
   }
-
-  // async signIn(username: string, password: string) {
-  //   await Auth.signIn(username, password)
-  //     .then(user => {
-  //       this.user = user
-  //       this.isLoggedIn = true
-  //       console.log(user)
-  //     })
-  //     .catch(e => {
-  //       console.log(e);
-  //     })
-  // }
 
 }
 
