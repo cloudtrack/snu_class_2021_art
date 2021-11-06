@@ -26,9 +26,7 @@ const LoginController: React.FC<{ userStore: UserStore }> = (props) => {
     await Auth.signIn(username, password)
       .then((user) => {
         props.userStore.setUser(user)
-        props.userStore.setShouldConfirm(false)
-        props.userStore.setShouldLogIn(false)
-        props.userStore.setLoggedIn(true)
+        props.userStore.setLoginStatus(true)
         console.log(user)
       })
       .catch(e => { console.log(e) })

@@ -1,5 +1,5 @@
 import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonRouterLink, IonText, IonTitle, IonToolbar } from "@ionic/react"
-import { logoFacebook, logoIonic } from "ionicons/icons";
+import { logoFacebook, logoGoogle, logoIonic } from "ionicons/icons";
 import "./RegisterPage/RegisterController"
 import "./Register.css"
 
@@ -21,6 +21,10 @@ const RegisterHomeView: React.FC = (props) => {
           </IonText>
         </div>
         <div className="footer">
+          <IonButton color="danger" expand="block">
+            <IonIcon slot="start" icon={logoGoogle} />
+            Continue with Google
+          </IonButton>
           <IonButton expand="block">
             <IonIcon slot="start" icon={logoFacebook} />
             Continue with Facebook

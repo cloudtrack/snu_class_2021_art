@@ -1,9 +1,8 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import React from 'react';
 import {
   IonIcon,
   IonLabel,
-  IonPage,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
@@ -29,7 +28,7 @@ const HomeView: React.FC = () => (
             <ProfileProvider />
           </Route>
           <Route exact path="/home">
-            <Redirect to="/feed" />
+            <FeedView />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
@@ -48,7 +47,6 @@ const HomeView: React.FC = () => (
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
-
 );
 
 export default HomeView;

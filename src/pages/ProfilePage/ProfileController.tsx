@@ -22,13 +22,13 @@ const ProfileController: React.FC<profileViewModelProps> = observer((props) => {
       .then(
         () => {
           props.userStore.setUser(null)
-          props.userStore.setShouldConfirm(false)
-          props.userStore.setShouldLogIn(false)
-          props.userStore.setLoggedIn(false)
+          props.userStore.setConfirmStatus(false)
+          props.userStore.setLoginStatus(false)
+          history.push("/")
         }
       )
       .catch(e => console.log(e))
-    history.push("/")
+
   }
 
   return (
