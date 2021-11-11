@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonButton, IonHeader, IonBackButton, IonButtons, IonToolbar } from "@ionic/react";
+import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonButton, IonHeader, IonBackButton, IonButtons, IonToolbar, IonSelect, IonSelectOption, IonTitle } from "@ionic/react";
 import React, { useState } from "react";
 import { observer } from 'mobx-react'
 import UserStore from "../../models/domain/UserStore";
@@ -8,8 +8,8 @@ interface registerProps {
   userStore: UserStore,
   isUsernameValid: (username: string) => boolean,
   isPasswordValid: (password: string) => boolean,
-  signUp: (username: string, password: string) => {},
-  confirmSignUp: (username: string, password: string, code: string) => {}
+  signUp: (username: string, password: string, role: string) => void,
+  confirmSignUp: (username: string, password: string, code: string) => void
 }
 
 const RegisterView: React.FC<registerProps> = observer((props) => {
@@ -18,6 +18,7 @@ const RegisterView: React.FC<registerProps> = observer((props) => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [code, setCode] = useState<string>("");
+  const [role, setRole] = useState<string>("");
 
   const renderSignUp = (props: registerProps) => {
     return (
@@ -27,6 +28,7 @@ const RegisterView: React.FC<registerProps> = observer((props) => {
             <IonButtons slot="start">
               <IonBackButton defaultHref="/" />
             </IonButtons>
+            <IonTitle>Sign Up</IonTitle>
           </IonToolbar>
         </IonHeader>
         <form className="ion-padding">
@@ -63,13 +65,22 @@ const RegisterView: React.FC<registerProps> = observer((props) => {
               clearInput
             ></IonInput>
           </IonItem>
+          <IonItem>
+            <IonLabel>Role</IonLabel>
+            <IonSelect interface="popover" value={role} placeholder="Select Your Role" onIonChange={e => setRole(e.detail.value)}>
+              <IonSelectOption value="student">Student</IonSelectOption>
+              <IonSelectOption value="teacher">Teacher</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+
           <IonButton
             style={{ margin: "50px 50px 50px 50px" }}
             expand="block"
-            type="submit"
-            onClick={() => { props.signUp(username, password) }}
+            onClick={() => { props.signUp(username, password, role) }}
             disabled={
-              !(props.isUsernameValid(username) && props.isPasswordValid(password) && password === confirmPassword)
+              !(props.isUsernameValid(username) &&
+                props.isPasswordValid(password) &&
+                password === confirmPassword && role !== "")
             }
           >Sign Up</IonButton>
         </form>
@@ -91,7 +102,6 @@ const RegisterView: React.FC<registerProps> = observer((props) => {
           <IonButton
             style={{ margin: "50px 50px 50px 50px" }}
             expand="block"
-            type="submit"
             onClick={(e) => {
               props.confirmSignUp(username, password, code)
             }}
@@ -101,10 +111,13 @@ const RegisterView: React.FC<registerProps> = observer((props) => {
       </IonContent>
     )
   }
-
   return (
     <IonPage>
-      {!props.userStore.isConfirmed && props.userStore.user !== null ? renderConfirm(props) : renderSignUp(props)}
+      {(() => {
+        if (!props.userStore.isConfirmed && props.userStore.user !== null)
+          return renderConfirm(props)
+        else return renderSignUp(props)
+      })()}
     </IonPage>
   )
 })
