@@ -34,10 +34,17 @@ class UserStore {
     if (await this.getConfirmStatus()) {
       this.setConfirmStatus(true)
     }
+    console.log(this)
   }
 
-  async signUp(username: string, password: string) {
-    await Auth.signUp(username, password)
+  async signUp(username: string, password: string, role: string) {
+    console.log("sign up")
+    await Auth.signUp({
+      username,
+      password,
+      attributes: {
+      'custom:role': role
+    }})
       .then((user) => {
         console.log(user)
         this.setUser(user.user)
@@ -49,7 +56,9 @@ class UserStore {
           case "UserExistsException":
             console.log("User already exists.");
             // this.setShouldLogIn(true)
-            return
+            return;
+          default:
+            console.log(e);
         }
       })
   }
@@ -67,6 +76,7 @@ class UserStore {
   async signIn(username: string, password: string) {
     await Auth.signIn(username, password)
       .then((user) => {
+        console.log(user)
         this.setUser(user)
         this.setLoginStatus(true)
       })
@@ -76,6 +86,7 @@ class UserStore {
   }
 
   async getUser(): Promise<CognitoUser | null> {
+    console.log("get user")
     return await Auth.currentAuthenticatedUser()
       .catch((e) => {
         console.log(e)
@@ -84,6 +95,7 @@ class UserStore {
   }
 
   async getLoginStatus(): Promise<boolean> {
+    console.log("get login status")
     const attributes = await Auth.currentAuthenticatedUser()
       .catch((e) => {
         console.log(e)
