@@ -1,0 +1,25 @@
+type Comment @model @auth(rules: [{allow: private}]) @key(name: "byAssignment", fields: ["assignmentID"]) {
+  id: ID!
+  assignmentID: ID
+  message: String
+  userID: ID
+}
+
+type Class @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  name: String!
+  professor: String!
+  description: String!
+  Assignments: [Assignment] @connection(keyName: "byClass", fields: ["id"])
+  classmates: [String]
+}
+
+type Assignment @model @auth(rules: [{allow: public}]) @key(name: "byClass", fields: ["classID"]) {
+  id: ID!
+  author: AWSDateTime!
+  deadline: AWSDate
+  classID: ID
+  submissionStatus: [AWSJSON]
+  Comments: [Comment] @connection(keyName: "byAssignment", fields: ["id"])
+  gradeStatus: [AWSJSON]
+}

@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "snuclass2021art",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authsnuclass2021art",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
