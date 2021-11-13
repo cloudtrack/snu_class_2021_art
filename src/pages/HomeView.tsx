@@ -8,7 +8,6 @@ import {
   IonTabButton,
   IonTabs,
 } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
 import { calendar, images, person } from 'ionicons/icons';
 import ClassView from './ClassPage/Class';
 import FeedView from './FeedPage/Feed';
