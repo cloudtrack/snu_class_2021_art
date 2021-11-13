@@ -9,6 +9,8 @@ class UserStore {
   user: CognitoUser | null = null
   isConfirmed: boolean = false
   isLoggedIn: boolean = false
+  loading : boolean = false
+  authCheckComplete : boolean = false
 
   constructor(rootStore: any) {
     this.rootStore = rootStore
@@ -22,6 +24,7 @@ class UserStore {
       rootStore: false
     })
     this.initialize()
+    this.authCheckComplete = true
     console.log(this)
   }
 
