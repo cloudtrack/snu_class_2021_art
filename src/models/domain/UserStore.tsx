@@ -15,9 +15,14 @@ class UserStore {
   constructor(rootStore: any) {
     this.rootStore = rootStore
     makeObservable(this, {
+      // Observable properties
       user: observable,
       isConfirmed: observable,
       isLoggedIn: observable,
+      loading: observable,
+      authCheckComplete: observable,
+
+      // Actions
       setUser: action,
       setLoginStatus: action,
       setConfirmStatus: action,
@@ -82,6 +87,17 @@ class UserStore {
         console.log(user)
         this.setUser(user)
         this.setLoginStatus(true)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+
+  async signOut() {
+    await Auth.signOut()
+      .then(() => {
+        this.setUser(null)
+        this.setLoginStatus(false)
       })
       .catch((e) => {
         console.log(e)

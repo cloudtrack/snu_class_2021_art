@@ -5,7 +5,6 @@ interface profileProps {
   signOut: () => void
 }
 
-
 const ProfileView: React.FC<profileProps> = (props) => {
   return (
     <IonPage>

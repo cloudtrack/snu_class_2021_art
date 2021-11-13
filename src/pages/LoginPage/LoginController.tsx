@@ -6,6 +6,9 @@ import UserStore from "../../models/domain/UserStore";
 import LoginView from "./LoginView";
 
 const LoginController: React.FC<{ userStore: UserStore }> = (props) => {
+
+  const { userStore } = props;
+
   const history = useHistory()
   const passwordRegex: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
@@ -23,13 +26,7 @@ const LoginController: React.FC<{ userStore: UserStore }> = (props) => {
   }
 
   const onSubmit = async (username: string, password: string) => {
-    await Auth.signIn(username, password)
-      .then((user) => {
-        props.userStore.setUser(user)
-        props.userStore.setLoginStatus(true)
-        console.log(user)
-      })
-      .catch(e => { console.log(e) })
+    await userStore.signIn(username, password);
     history.push("/")
   }
 

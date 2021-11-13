@@ -15,25 +15,16 @@ interface profileViewModelProps {
 }
 
 const ProfileController: React.FC<profileViewModelProps> = observer((props) => {
-  const history = useHistory()
+  const { userStore } = props;
+  const history = useHistory();
 
   const signOut = async () => {
-    await Auth.signOut()
-      .then(
-        () => {
-          props.userStore.setUser(null)
-          props.userStore.setConfirmStatus(false)
-          props.userStore.setLoginStatus(false)
-          history.push("/")
-        }
-      )
-      .catch(e => console.log(e))
-
+    await userStore.signOut();
+    history.replace("/");
   }
 
   return (
-    <ProfileView
-      signOut={signOut} />
+    <ProfileView signOut={signOut} />
   )
 })
 
