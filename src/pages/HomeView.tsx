@@ -1,4 +1,4 @@
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import React from 'react';
 import {
   IonIcon,
@@ -15,38 +15,35 @@ import FeedView from './FeedPage/Feed';
 import ProfileProvider from './ProfilePage/ProfileProvider';
 
 const HomeView: React.FC = () => (
-  <IonReactRouter>
     <IonTabs>
       <IonRouterOutlet>
-        <Route exact path="/feed">
+        <Route exact path="/tabs/feed">
           <FeedView />
         </Route>
-        <Route exact path="/class">
+        <Route exact path="/tabs/class">
           <ClassView />
         </Route>
-        <Route path="/profile">
+        <Route exact path="/tabs/profile">
           <ProfileProvider />
         </Route>
-        <Route exact path="/home">
-          <FeedView />
-        </Route>
+        <Route exact path="/tabs" render={() => <Redirect to="/tabs/feed" />}/>
       </IonRouterOutlet>
+
       <IonTabBar slot="bottom">
-        <IonTabButton tab="tab1" href="/feed">
+        <IonTabButton tab="tab1" href="/tabs/feed">
           <IonIcon icon={images} />
           <IonLabel>Feed</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="tab2" href="/class">
+        <IonTabButton tab="tab2" href="/tabs/class">
           <IonIcon icon={calendar} />
           <IonLabel>Class</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="tab3" href="/profile">
+        <IonTabButton tab="tab3" href="/tabs/profile">
           <IonIcon icon={person} />
           <IonLabel>Profile</IonLabel>
         </IonTabButton>
       </IonTabBar>
     </IonTabs>
-  </IonReactRouter>
 );
 
 export default HomeView;

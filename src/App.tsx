@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import { IonApp, IonRouterOutlet } from "@ionic/react";
+import { IonApp, IonLoading, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 
 /* Core CSS required for Ionic components to work properly */
@@ -21,56 +21,47 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 import HomeView from "./pages/HomeView";
-import FeedView from "./pages/FeedPage/Feed";
-import ClassView from "./pages/ClassPage/Class";
-
 import RegisterHomeView from "./pages/RegisterHomeView";
 import LoginProvider from "./pages/LoginPage/LoginProvider";
 import RegisterProvider from "./pages/RegisterPage/RegisterProvider";
-import ProfileProvider from "./pages/ProfilePage/ProfileProvider";
 import { useStores } from "./models/RootStore";
 import { observer } from "mobx-react";
 
-const App: React.FC = observer(() => {
+
+const PrivateRoutes = () => {
+  return (
+    <IonReactRouter>
+      <IonRouterOutlet>
+        <Route exact path="/login" component={LoginProvider} />
+        <Route exact path="/register" component={RegisterProvider} />
+        <Route exact path="/registerhome" component={RegisterHomeView} />
+        <Route exact path="/" render={() => <Redirect to="/registerhome" />} />
+      </IonRouterOutlet>
+    </IonReactRouter>
+  );
+}
+
+const PublicRoutes = () => {
+  return (
+    <IonReactRouter>
+      <Route path="/tabs" component={HomeView} />
+      <Route path="/" render={() => <Redirect to="/tabs/feed" />} />
+    </IonReactRouter>
+  );
+}
+
+const App: React.FC = () => {
   const { userStore } = useStores()
 
-  return (
+  return !userStore.authCheckComplete ? (
     <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route exact path="/login">
-            <LoginProvider />
-          </Route>
-          <Route exact path="/register">
-            <RegisterProvider />
-          </Route>
-          <Route exact path="/registerhome">
-            <RegisterHomeView />
-          </Route>
-          <Route exact path="/feed">
-            <FeedView />
-          </Route>
-          <Route exact path="/class">
-            <ClassView />
-          </Route>
-          <Route exact path="/profile">
-            <ProfileProvider />
-          </Route>
-          <Route exact path="/home">
-            <HomeView />
-          </Route>
-          <Route exact path="/" render={() => {
-            return userStore.isLoggedIn ?
-            <Redirect exact to="/home" /> :
-            <Redirect exact to="/registerhome" />
-          }}>
-          </Route>
-        </IonRouterOutlet>
-      </IonReactRouter>
+      <IonLoading message={'Loading...'} isOpen />
+    </IonApp>
+  ) : (
+    <IonApp>
+      {!userStore.isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}
     </IonApp>
   );
-})
+}
 
-
-
-export default App;
+export default observer(App);

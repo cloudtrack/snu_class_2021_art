@@ -2,8 +2,9 @@ import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonRouterLink, IonT
 import { logoFacebook, logoGoogle, logoIonic } from "ionicons/icons";
 import "./RegisterPage/RegisterController"
 import "./RegisterHome.css"
+import { observer } from "mobx-react";
 
-const RegisterHomeView: React.FC = (props) => {
+const RegisterHomeView: React.FC = () => {
   return (
     <IonPage>
       <IonHeader >
@@ -46,4 +47,4 @@ const RegisterHomeView: React.FC = (props) => {
   )
 }
 
-export default RegisterHomeView;
+export default observer(RegisterHomeView);
