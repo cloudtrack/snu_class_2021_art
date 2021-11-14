@@ -1,5 +1,4 @@
 
-import Auth from "@aws-amplify/auth";
 import React from "react";
 import { useHistory } from "react-router";
 import UserStore from "../../models/domain/UserStore";
