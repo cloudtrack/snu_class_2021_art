@@ -23,11 +23,15 @@ class UserStore {
       isLoggedIn: observable,
       loading: observable,
       authCheckComplete: observable,
+      role: observable,
 
       // Actions
       setUser: action,
       setUserData: action,
       setLoginStatus: action,
+      setRole: action,
+
+      // Not Observable
       rootStore: false
     })
     this.initialize()
@@ -38,14 +42,13 @@ class UserStore {
   // initialize the store
   async initialize() {
     this.setUser(await this.getUser())
-    if (await this.getLoginStatus()) {
+    if (this.user !== null) {
       this.setLoginStatus(true)
       const attributes = await Auth.userAttributes(this.user);
-      if (attributes !== undefined) {
+      if ( attributes !== undefined) {
         this.updateUserInfo()
       }
     }
-    console.log(this)
   }
 
   async signUp(username: string, password: string, role: string) {
@@ -62,15 +65,8 @@ class UserStore {
         this.setUser(user.user)
       })
       .catch((e) => {
-        const code = e.code;
-        switch (code) {
-          case "UserExistsException":
-            console.log("User already exists.");
-            // this.setShouldLogIn(true)
-            return;
-          default:
-            console.log(e);
-        }
+        console.log(e)
+        throw e
       })
   }
 
@@ -81,6 +77,7 @@ class UserStore {
       })
       .catch((e) => {
         console.log(e)
+        throw e
       })
   }
 
@@ -90,9 +87,11 @@ class UserStore {
         console.log(user)
         this.setUser(user)
         this.setLoginStatus(true)
+        this.updateUserInfo()
       })
       .catch((e) => {
         console.log(e)
+        throw e
       })
   }
 
@@ -162,7 +161,6 @@ class UserStore {
       this.setUserData((await DataStore.query(Teacher)).find((teacher: Teacher) => teacher.email === email) ?? null);
     }
   }
-
 }
 
 export default UserStore;

@@ -23,7 +23,9 @@ const ProfileController: React.FC<profileViewModelProps> = observer((props) => {
   }
 
   return (
-    <ProfileView signOut={signOut} />
+    <ProfileView
+    role={userStore.role}
+    signOut={signOut} />
   )
 })
 
