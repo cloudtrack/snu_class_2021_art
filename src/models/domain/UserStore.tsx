@@ -6,26 +6,28 @@ import { CognitoUser } from "@aws-amplify/auth";
 
 class UserStore {
   rootStore
-  user: CognitoUser | null = null
-  isConfirmed: boolean = false
+  user: any | null = null
   isLoggedIn: boolean = false
   loading : boolean = false
   authCheckComplete : boolean = false
+  role: string = ""
 
   constructor(rootStore: any) {
     this.rootStore = rootStore
     makeObservable(this, {
       // Observable properties
       user: observable,
-      isConfirmed: observable,
       isLoggedIn: observable,
       loading: observable,
       authCheckComplete: observable,
+      role: observable,
 
       // Actions
       setUser: action,
       setLoginStatus: action,
-      setConfirmStatus: action,
+      setRole: action,
+
+      // Not Observable
       rootStore: false
     })
     this.initialize()
@@ -36,13 +38,13 @@ class UserStore {
   // initialize the store
   async initialize() {
     this.setUser(await this.getUser())
-    if (await this.getLoginStatus()) {
+    if (this.user !== null) {
       this.setLoginStatus(true)
+      const attributes = await Auth.userAttributes(this.user);
+      if ( attributes !== undefined) {
+        this.updateUserInfo()
+      }
     }
-    if (await this.getConfirmStatus()) {
-      this.setConfirmStatus(true)
-    }
-    console.log(this)
   }
 
   async signUp(username: string, password: string, role: string) {
@@ -56,28 +58,18 @@ class UserStore {
       .then((user) => {
         console.log(user)
         this.setUser(user.user)
-        this.setConfirmStatus(user.userConfirmed)
       })
       .catch((e) => {
-        const code = e.code;
-        switch (code) {
-          case "UserExistsException":
-            console.log("User already exists.");
-            // this.setShouldLogIn(true)
-            return;
-          default:
-            console.log(e);
-        }
+        console.log(e)
+        throw e
       })
   }
 
   async confirm(username: string, code: string) {
     await Auth.confirmSignUp(username, code)
-      .then(() => {
-        this.setConfirmStatus(true)
-      })
       .catch((e) => {
         console.log(e)
+        throw e
       })
   }
 
@@ -87,9 +79,11 @@ class UserStore {
         console.log(user)
         this.setUser(user)
         this.setLoginStatus(true)
+        this.updateUserInfo()
       })
       .catch((e) => {
         console.log(e)
+        throw e
       })
   }
 
@@ -113,45 +107,21 @@ class UserStore {
       })
   }
 
-  async getLoginStatus(): Promise<boolean> {
-    console.log("get login status")
-    const attributes = await Auth.currentAuthenticatedUser()
-      .catch((e) => {
-        console.log(e)
-      })
-    if (attributes !== undefined) {
-      console.log(attributes)
-      return true
-    } else {
-      return false
-    }
-  }
-
-  async getConfirmStatus(): Promise<boolean> {
-    console.log("get confirm status")
-    const attributes: CognitoUser = await Auth.currentAuthenticatedUser()
-      .catch((e) => {
-        console.log(e)
-      })
-    if (attributes !== undefined) {
-      console.log(attributes)
-      return true
-    } else {
-      return false
-    }
-  }
-
   setUser(user: CognitoUser | null) {
     this.user = user
   }
 
-  setConfirmStatus(isConfirmed: boolean) {
-    console.log("should confirm: : " + isConfirmed)
-    this.isConfirmed = isConfirmed
-  }
-
   setLoginStatus(isLoggedIn: boolean) {
     this.isLoggedIn = isLoggedIn
+  }
+
+  setRole(role: string) {
+    this.role = role
+  }
+
+  async updateUserInfo() {
+    const attributes = await Auth.userAttributes(this.user)
+    this.setRole(attributes.find((attribute : any) => attribute.getName() === 'custom:role')?.getValue() ?? '')
   }
 
 }
