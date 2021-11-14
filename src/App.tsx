@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { IonApp, IonLoading, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 
@@ -31,12 +31,12 @@ import { observer } from "mobx-react";
 const PrivateRoutes = () => {
   return (
     <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/login" component={LoginProvider} />
-        <Route exact path="/register" component={RegisterProvider} />
-        <Route exact path="/registerhome" component={RegisterHomeView} />
-        <Route exact path="/" render={() => <Redirect to="/registerhome" />} />
-      </IonRouterOutlet>
+        <Switch>
+          <Route exact path="/login" component={LoginProvider} />
+          <Route exact path="/register" component={RegisterProvider} />
+          <Route exact path="/pub" component={RegisterHomeView} />
+          <Route path="/" render={() => <Redirect to="/pub" />} />
+        </Switch>
     </IonReactRouter>
   );
 }

@@ -1,9 +1,8 @@
 
 
-import Auth from "@aws-amplify/auth"
 import Amplify from "@aws-amplify/core"
 import { observer } from "mobx-react"
-import { useHistory } from "react-router"
+import { useHistory } from "react-router-dom"
 import awsconfig from "../../aws-exports.js"
 import UserStore from "../../models/domain/UserStore"
 import ProfileView from "./ProfileView"
@@ -20,7 +19,7 @@ const ProfileController: React.FC<profileViewModelProps> = observer((props) => {
 
   const signOut = async () => {
     await userStore.signOut();
-    history.replace("/");
+    history.replace("/pub")
   }
 
   return (
