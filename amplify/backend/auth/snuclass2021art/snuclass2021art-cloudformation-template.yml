@@ -1,4 +1,5 @@
 
+ 
 AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
@@ -138,7 +139,6 @@ Parameters:
   adminQueries:
     Type: String
             
-            
   
   thirdPartyAuth:
     Type: String
@@ -163,10 +163,6 @@ Parameters:
     Type: String
   
             
-  hostedUIProviderCreds:
-    Type: String
-  
-            
   oAuthMetadata:
     Type: String
   
@@ -179,6 +175,11 @@ Parameters:
   dependsOn:
     Type: CommaDelimitedList
       
+  hostedUIProviderCreds:
+    Type: String
+  
+            
+            
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
   
@@ -186,6 +187,7 @@ Conditions:
   
 
 Resources:
+  
   
   
   # BEGIN SNS ROLE RESOURCE
@@ -217,6 +219,7 @@ Resources:
                 Action:
                   - "sns:Publish"
                 Resource: "*"
+   
   # BEGIN USER POOL RESOURCES
   UserPool:
   # Created upon user selection
@@ -261,11 +264,14 @@ Resources:
       
       
       MfaConfiguration: !Ref mfaConfiguration
+        
+       
       SmsVerificationMessage: !Ref smsVerificationMessage
       SmsAuthenticationMessage: !Ref smsAuthenticationMessage
       SmsConfiguration:
         SnsCallerArn: !GetAtt SNSRole.Arn
         ExternalId: snucla88976f61_role_external_id
+      
     
   
   UserPoolClientWeb:
@@ -549,17 +555,13 @@ Resources:
             - '    AttributeMapping: providerMeta.AttributeMapping,'
             - '   };'
             - '   if (providerMeta.ProviderName === ''SignInWithApple'') {'
-            - '     if (providerCreds.client_id && providerCreds.team_id && providerCreds.key_id && providerCreds.private_key) {'
-            - '      requestParams.ProviderDetails = {'
-            - '       ''client_id'': providerCreds.client_id,'
-            - '       ''team_id'': providerCreds.team_id,'
-            - '       ''key_id'': providerCreds.key_id,'
-            - '       ''private_key'': providerCreds.private_key,'
-            - '       ''authorize_scopes'': providerMeta.authorize_scopes,'
-            - '      };'
-            - '     } else {'
-            - '       requestParams = null;'
-            - '     }'
+            - '    requestParams.ProviderDetails = {'
+            - '     ''client_id'': providerCreds.client_id,'
+            - '     ''team_id'': providerCreds.team_id,'
+            - '     ''key_id'': providerCreds.key_id,'
+            - '     ''private_key'': providerCreds.private_key ? providerCreds.private_key : null,'
+            - '     ''authorize_scopes'': providerMeta.authorize_scopes,'
+            - '    };'
             - '   } else {'
             - '    requestParams.ProviderDetails = {'
             - '     ''client_id'': providerCreds.client_id,'
@@ -571,17 +573,11 @@ Resources:
             - '  };'
             - '  let createIdentityProvider = (providerName) => {'
             - '   let requestParams = getRequestParams(providerName);'
-            - '   if (!requestParams) {'
-            - '     return Promise.resolve();'
-            - '   }'
             - '   requestParams.ProviderType = requestParams.ProviderName;'
             - '   return identity.createIdentityProvider(requestParams).promise();'
             - '  };'
             - '  let updateIdentityProvider = (providerName) => {'
             - '   let requestParams = getRequestParams(providerName);'
-            - '   if (!requestParams) {'
-            - '     return Promise.resolve();'
-            - '   }'
             - '   return identity.updateIdentityProvider(requestParams).promise();'
             - '  };'
             - '  let deleteIdentityProvider = (providerName) => {'
@@ -839,6 +835,10 @@ Outputs :
   AppClientSecret:
     Value: !GetAtt UserPoolClientInputs.appSecret
     Condition: ShouldOutputAppClientSecrets
+  
+  CreatedSNSRole:
+    Value: !GetAtt SNSRole.Arn
+    Description: role arn
   
   
   

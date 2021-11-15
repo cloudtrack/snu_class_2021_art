@@ -12,8 +12,8 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Subject {####}",
-    "emailVerificationMessage": "Body {####}",
+    "emailVerificationSubject": "[ArtApp] Request to confirm your email address",
+    "emailVerificationMessage": "Confirm your email address\nYour confirmation code is below -- enter it in your app and we'll help you get signed in.\n\n{####}\n\nIf you didn't request the mail, there's nothing to worry about -- you can safely ignore it.",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [

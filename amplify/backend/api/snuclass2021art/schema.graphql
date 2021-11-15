@@ -1,25 +1,72 @@
-type Comment @model @auth(rules: [{allow: private}]) @key(name: "byAssignment", fields: ["assignmentID"]) {
+type Student @model @auth(rules: [{allow: private}]) {
   id: ID!
-  assignmentID: ID
-  message: String
-  userID: ID
+  email: AWSEmail
+  email_verified: Boolean
+  name: String
+  profile: ID
+  role: String
+  ClassJoined: [StudentClass] @connection(keyName: "byStudent", fields: ["id"])
+  ArtWorks: [ArtWork] @connection(keyName: "byStudent", fields: ["id"])
+  Comments: [Comment] @connection(keyName: "byStudent", fields: ["id"])
 }
 
-type Class @model @auth(rules: [{allow: private}]) {
+type Teacher @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  email: AWSEmail
+  email_verified: Boolean
+  name: String
+  profile: ID
+  role: String
+  ClassesOpened: [Class] @connection(keyName: "byTeacher", fields: ["id"])
+  Comments: [Comment] @connection(keyName: "byTeacher", fields: ["id"])
+}
+
+type ArtWork @model @auth(rules: [{allow: private}]) @key(name: "byClass", fields: ["classID"]) @key(name: "byAssignment", fields: ["assignmentID"]) @key(name: "byStudent", fields: ["studentID"]) {
+  id: ID!
+  classID: ID
+  Comments: [Comment] @connection(keyName: "byArtWork", fields: ["id"])
+  assignmentID: ID
+  title: String
+  image: ID
+  description: String
+  grade: Int
+  studentID: ID
+}
+
+type Comment @model @auth(rules: [{allow: private}]) @key(name: "byArtWork", fields: ["artworkID"]) @key(name: "byStudent", fields: ["studentID"]) @key(name: "byTeacher", fields: ["teacherID"]) {
+  id: ID!
+  message: String!
+  artworkID: ID
+  submitTime: AWSDateTime
+  studentID: ID
+  teacherID: ID
+}
+
+type Class @model @auth(rules: [{allow: private}]) @key(name: "byTeacher", fields: ["teacherID"]) {
   id: ID!
   name: String!
-  professor: String!
   description: String!
   Assignments: [Assignment] @connection(keyName: "byClass", fields: ["id"])
-  classmates: [String]
+  ArtWorks: [ArtWork] @connection(keyName: "byClass", fields: ["id"])
+  startDate: AWSDateTime
+  students: [StudentClass] @connection(keyName: "byClass", fields: ["id"])
+  teacherID: ID
 }
 
 type Assignment @model @auth(rules: [{allow: public}]) @key(name: "byClass", fields: ["classID"]) {
   id: ID!
-  author: AWSDateTime!
-  deadline: AWSDate
+  description: String
+  openTime: AWSDateTime
+  ArtWorks: [ArtWork] @connection(keyName: "byAssignment", fields: ["id"])
+  deadline: AWSDateTime
   classID: ID
-  submissionStatus: [AWSJSON]
-  Comments: [Comment] @connection(keyName: "byAssignment", fields: ["id"])
-  gradeStatus: [AWSJSON]
 }
+
+type StudentClass @model(queries: null) @key(name: "byStudent", fields: ["studentID", "classID"]) @key(name: "byClass", fields: ["classID", "studentID"]) @auth(rules: [{allow: private}, {allow: private}]) {
+  id: ID!
+  studentID: ID!
+  classID: ID!
+  student: Student! @connection(fields: ["studentID"])
+  class: Class! @connection(fields: ["classID"])
+}
+  
