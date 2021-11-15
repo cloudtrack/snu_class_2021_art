@@ -12,5 +12,23 @@
       "AmplifyAppId": "d1e84vh5xbcfwc",
       "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-snuclass2021art-dev-215818-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-snuclass2021art-dev-215818-authRole",
+      "UnauthRoleArn": "arn:aws:iam::758166496253:role/amplify-snuclass2021art-dev-215818-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::758166496253:role/amplify-snuclass2021art-dev-215818-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-snuclass2021art-dev-215818-deployment",
+      "UnauthRoleName": "amplify-snuclass2021art-dev-215818-unauthRole",
+      "StackName": "amplify-snuclass2021art-dev-215818",
+      "StackId": "arn:aws:cloudformation:us-west-1:758166496253:stack/amplify-snuclass2021art-dev-215818/b9dc2ca0-4613-11ec-ae51-06c7ef261cc5",
+      "AmplifyAppId": "d1e84vh5xbcfwc"
+    },
+    "categories": {
+      "auth": {
+        "snuclass2021art": {}
+      }
+    }
   }
 }
