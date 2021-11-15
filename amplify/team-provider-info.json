@@ -41,7 +41,7 @@
       "function": {
         "snuclass2021artPostConfirmation": {
           "deploymentBucketName": "amplify-snuclass2021art-dev-215818-deployment",
-          "s3Key": "amplify-builds/snuclass2021artPostConfirmation-6a4c355276645134735a-build.zip"
+          "s3Key": "amplify-builds/snuclass2021artPostConfirmation-2b642f63784a324c6964-build.zip"
         }
       }
     }
