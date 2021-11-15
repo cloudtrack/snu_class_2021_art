@@ -1,6 +1,6 @@
 projects:
   snuclass2021art:
-    schemaPath: src/graphql/schema.json
+    schemaPath: amplify/backend/api/snuclass2021art/build/schema.graphql
     includes:
       - src/graphql/**/*.js
     excludes:
