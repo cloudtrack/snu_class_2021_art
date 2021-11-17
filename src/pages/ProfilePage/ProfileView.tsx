@@ -1,58 +1,22 @@
-import { IonAlert, IonAvatar, IonButton, IonButtons, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import { logOutOutline, pencilOutline } from 'ionicons/icons';
-import { useState } from 'react';
-import { Student, Teacher } from '../../models';
-import EditProfileModal from './EditProfileModal';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { observer } from 'mobx-react';
 import { NavList } from '../../components/NavList';
 import { UserProfile } from '../../components/UserProfile';
 import { UserDataType } from '../../models/domain/UserStore';
-import { useStores } from '../../models/RootStore';
 import './Profile.css';
 
-interface profileProps {
+interface IProfileProps {
   userData: UserDataType,
   signOut: () => void
 
 }
 
-const ProfileView: React.FC<profileProps> = ({userData, signOut}) => {
-    const [showProfileEditModal, setShowProfileEditModal] = useState(false);
-    const [showLogoutAlert, setShowLogoutAlert] = useState(false);
+const ProfileView: React.FC<IProfileProps> = ({userData, signOut}) => {
   return (
     <IonPage>
-      <IonAlert
-          isOpen={showLogoutAlert}
-          onDidDismiss={() => setShowLogoutAlert(false)}
-          // cssClass='my-custom-class'
-          header={'Log out'}
-          message={'Are you sure you want to log out?'}
-          buttons={[
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: () => {
-                console.log('Confirm Cancel');
-              }
-            },
-            {
-              text: 'Ok',
-              handler: () => {
-                console.log('Confirm Ok');
-                signOut();
-              }
-            }
-          ]}
-        />
       <IonHeader>
         <IonToolbar >
           <IonTitle>Profile</IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={() => setShowLogoutAlert(true)}>
-              <IonIcon slot="icon-only" icon={logOutOutline} />
-            </IonButton>
-          </IonButtons>
         </IonToolbar>
       </IonHeader>
 

@@ -13,19 +13,3 @@
   height: 7rem;
   border: 5px solid rgba(218, 223, 208, 0.4);
 }
-
-.avatarUpload {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-
-  background-color: rgb(255, 255, 255);
-  border: 3px solid rgba(218, 223, 208, 0.4);
-  color:  rgb(80, 80, 80);
-  position: absolute;
-  padding: 0.3rem;
-  font-size: 1.1rem;
-  border-radius: 0.5rem;
-  margin-top: -1.5rem;
-  margin-left: 5rem;
-}
