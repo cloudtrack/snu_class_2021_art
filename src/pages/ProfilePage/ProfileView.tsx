@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Student, Teacher } from '../../models';
 import EditProfileModal from './EditProfileModal';
 import { observer } from 'mobx-react';
+import { NavList } from '../../components/NavList';
 import { UserProfile } from '../../components/UserProfile';
 import { UserDataType } from '../../models/domain/UserStore';
 import { useStores } from '../../models/RootStore';
@@ -56,16 +57,11 @@ const ProfileView: React.FC<profileProps> = ({userData, signOut}) => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Tab 3</IonTitle>
-          </IonToolbar>
-        </IonHeader>
         <UserProfile userData={userData}></UserProfile>
-        <IonButton
-          onClick={() => {
+        <NavList
+          logout={() => {
             signOut()
-          }}>LOG OUT</IonButton>
+          }}></NavList>
       </IonContent>
     </IonPage>
   );
