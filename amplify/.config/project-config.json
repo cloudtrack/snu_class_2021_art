@@ -9,7 +9,7 @@
     "framework": "ionic",
     "config": {
       "SourceDir": "src",
-      "DistributionDir": "www",
+      "DistributionDir": "build",
       "BuildCommand": "npm run-script build",
       "StartCommand": "ionic serve"
     }
