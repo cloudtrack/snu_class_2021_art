@@ -1,17 +1,15 @@
 import {
   IonAvatar,
-  IonButton,
-  IonContent,
   IonGrid,
-  IonHeader,
-  IonPage,
+  IonIcon,
   IonRow,
-  IonSkeletonText,
-  IonTitle,
-  IonToolbar
+  IonSkeletonText
 } from '@ionic/react';
 import CryptoJS from 'crypto-js';
+import { pencilOutline } from 'ionicons/icons';
+import { useState } from 'react';
 import { UserDataType } from '../../models/domain/UserStore';
+import EditProfileModal from './EditProfileModal';
 import './index.css';
 
 interface IUserProfileProps {
@@ -19,6 +17,8 @@ interface IUserProfileProps {
 }
 
 export const UserProfile: React.FC<IUserProfileProps> = ({ userData }) => {
+  const [showProfileEditModal, setShowProfileEditModal] = useState(false);
+
   if (!userData) {
     return (
       <>
@@ -43,9 +43,20 @@ export const UserProfile: React.FC<IUserProfileProps> = ({ userData }) => {
   return (
     <>
       <IonGrid>
+        <EditProfileModal
+          showModal={showProfileEditModal}
+          onDidDismiss={() => {
+            setShowProfileEditModal(false);
+          }}
+        />
         <IonRow class="ion-justify-content-center">
-          <IonAvatar className="user-profile-avatar">
+          <IonAvatar
+          className="user-profile-avatar"
+          onClick={() => setShowProfileEditModal(true)}>
             <img src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
+            <div className="avatarUpload" onClick={() => setShowProfileEditModal(true)}>
+              <IonIcon icon={pencilOutline} />
+            </div>
           </IonAvatar>
         </IonRow>
         <IonRow class="ion-justify-content-center">
