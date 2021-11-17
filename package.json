@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@aws-amplify/ui-react": "^1.2.21",
+    "@aws-amplify/ui-react": "^1.2.25",
     "@capacitor/android": "3.2.3",
     "@capacitor/app": "1.0.3",
     "@capacitor/camera": "^1.2.0",
