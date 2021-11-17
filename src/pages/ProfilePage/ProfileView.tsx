@@ -3,19 +3,21 @@ import { logOutOutline, pencilOutline } from 'ionicons/icons';
 import { useState } from 'react';
 import { Student, Teacher } from '../../models';
 import EditProfileModal from './EditProfileModal';
+import { observer } from 'mobx-react';
+import { UserProfile } from '../../components/UserProfile';
+import { UserDataType } from '../../models/domain/UserStore';
+import { useStores } from '../../models/RootStore';
 import './Profile.css';
 
 interface profileProps {
-  userData: Student | Teacher | null,
+  userData: UserDataType,
   signOut: () => void
 
 }
 
-const ProfileView: React.FC<profileProps> = (props) => {
-
-  const [showProfileEditModal, setShowProfileEditModal] = useState(false);
-  const [showLogoutAlert, setShowLogoutAlert] = useState(false);
-
+const ProfileView: React.FC<profileProps> = ({userData, signOut}) => {
+    const [showProfileEditModal, setShowProfileEditModal] = useState(false);
+    const [showLogoutAlert, setShowLogoutAlert] = useState(false);
   return (
     <IonPage>
       <IonAlert
@@ -37,7 +39,7 @@ const ProfileView: React.FC<profileProps> = (props) => {
               text: 'Ok',
               handler: () => {
                 console.log('Confirm Ok');
-                props.signOut();
+                signOut();
               }
             }
           ]}
@@ -54,35 +56,19 @@ const ProfileView: React.FC<profileProps> = (props) => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <EditProfileModal
-          showModal={showProfileEditModal}
-          onDidDismiss={() => {
-            setShowProfileEditModal(false);
-          }}
-        />
-        <IonGrid className="top">
-          <IonRow className="ion-text-center ion-justify-content-center">
-            <IonCol size="12" className="animate__animated animate__fadeInTopLeft animate__faster">
-              <IonAvatar className="avatar">
-                {/* Just a placeholder avatar */}
-                <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" />
-              </IonAvatar>
-              <div className="avatarUpload" onClick={ () => setShowProfileEditModal(true)}>
-                <IonIcon icon={pencilOutline} />
-              </div>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size="12" className="ion-text-center">
-              <IonCardTitle>{props.userData?.name}</IonCardTitle>
-              <IonCardSubtitle>{props.userData?.email}</IonCardSubtitle>
-              <IonCardSubtitle>{props.userData?.role}</IonCardSubtitle>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonTitle size="large">Tab 3</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <UserProfile userData={userData}></UserProfile>
+        <IonButton
+          onClick={() => {
+            signOut()
+          }}>LOG OUT</IonButton>
       </IonContent>
     </IonPage>
   );
 };
 
-export default ProfileView;
+export default observer(ProfileView);

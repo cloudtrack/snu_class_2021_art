@@ -15,6 +15,7 @@ interface profileViewModelProps {
 
 const ProfileController: React.FC<profileViewModelProps> = observer((props) => {
   const { userStore } = props;
+  const { userData } = userStore;
   const history = useHistory();
 
   const signOut = async () => {
@@ -23,9 +24,7 @@ const ProfileController: React.FC<profileViewModelProps> = observer((props) => {
   }
 
   return (
-    <ProfileView
-    userData={userStore.userData}
-    signOut={signOut} />
+    <ProfileView userData={userData} signOut={signOut} />
   )
 })
 
