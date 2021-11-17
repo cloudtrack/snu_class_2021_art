@@ -1,9 +1,31 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import {
+  IonContent,
+  IonFab,
+  IonFabButton,
+  IonFabList,
+  IonHeader,
+  IonIcon,
+  IonPage,
+  IonTitle,
+  IonToolbar
+} from '@ionic/react';
 import ExploreContainer from '../../components/ExploreContainer';
 import { FeedItem } from '../../components/FeedItem';
 import { ICommentItemProps } from '../../components/FeedItem/commentItem';
 import Faker from 'faker';
 import './Feed.css';
+import {
+  share,
+  logoVimeo,
+  logoFacebook,
+  logoInstagram,
+  logoTwitter,
+  add,
+  camera,
+  search,
+  cloudCircle,
+  cloudUpload
+} from 'ionicons/icons';
 
 const FeedView: React.FC = () => {
   const fakeCommentList: ICommentItemProps[] = [];
@@ -25,6 +47,22 @@ const FeedView: React.FC = () => {
           <FeedItem commentList={fakeCommentList} />
         ))}
       </IonContent>
+      <IonFab vertical="bottom" horizontal="end" slot="fixed">
+        <IonFabButton color="danger">
+          <IonIcon icon={add} />
+        </IonFabButton>
+        <IonFabList side="top">
+          <IonFabButton>
+            <IonIcon icon={cloudUpload} />
+          </IonFabButton>
+          <IonFabButton>
+            <IonIcon icon={camera} />
+          </IonFabButton>
+          <IonFabButton>
+            <IonIcon icon={search} />
+          </IonFabButton>
+        </IonFabList>
+      </IonFab>
     </IonPage>
   );
 };
