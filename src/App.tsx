@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { IonApp, IonLoading, IonRouterOutlet } from "@ionic/react";
+import { IonApp, IonLoading } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 
 /* Core CSS required for Ionic components to work properly */
@@ -27,6 +27,9 @@ import RegisterProvider from "./pages/RegisterPage/RegisterProvider";
 import { useStores } from "./models/RootStore";
 import { observer } from "mobx-react";
 
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
 
 const PrivateRoutes = () => {
   return (
