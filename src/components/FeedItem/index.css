@@ -1,0 +1,30 @@
+.feed-user-avatar {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+.feed-header {
+  padding: 0;
+}
+
+.feed-username {
+  margin-left: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.feed-image {
+  padding: 0;
+  background-color: #ddd;
+  height: 43vw;
+}
+
+.feed-control {
+  padding: 8px;
+}
+
+.feed-comment {
+  margin: 0;
+  width: 100%;
+}

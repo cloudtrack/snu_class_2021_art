@@ -28,6 +28,7 @@
     "aws-amplify": "^4.3.3",
     "aws-sdk": "^2.1028.0",
     "crypto-js": "^4.1.1",
+    "faker": "^5.5.3",
     "ionicons": "^5.4.0",
     "mobx": "^6.3.5",
     "mobx-react": "^7.2.1",
@@ -78,7 +79,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "3.2.3",
-    "@types/crypto-js": "^4.0.2"
+    "@types/crypto-js": "^4.0.2",
+    "@types/faker": "^5.5.9"
   },
   "description": "An Ionic project"
 }

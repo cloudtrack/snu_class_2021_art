@@ -5,30 +5,27 @@ import { UserProfile } from '../../components/UserProfile';
 import { UserDataType } from '../../models/domain/UserStore';
 import './Profile.css';
 
-interface IProfileProps {
-  userData: UserDataType,
-  signOut: () => void
-
+interface profileProps {
+  signOut: () => void;
+  userData: UserDataType;
 }
 
-const ProfileView: React.FC<IProfileProps> = ({userData, signOut}) => {
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar >
-          <IonTitle>Profile</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent fullscreen>
-        <UserProfile userData={userData}></UserProfile>
-        <NavList
-          logout={() => {
-            signOut()
-          }}></NavList>
-      </IonContent>
-    </IonPage>
-  );
-};
+const ProfileView: React.FC<profileProps> = ({ userData, signOut }) => (
+  <IonPage>
+    <IonHeader collapse="condense">
+      <IonToolbar>
+        <IonTitle size="large">Profile</IonTitle>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent fullscreen>
+      <UserProfile userData={userData} />
+      <NavList
+        logout={() => {
+            signOut();
+          }}
+      />
+    </IonContent>
+  </IonPage>
+);
 
 export default observer(ProfileView);
