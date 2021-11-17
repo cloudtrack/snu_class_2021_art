@@ -6,10 +6,12 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Student } from '../index'
 import { Teacher } from "..";
 
+export type UserDataType = Student | Teacher | null;
+
 class UserStore {
   rootStore
   user: any | null = null
-  userData: Student | Teacher | null = null
+  userData: UserDataType = null
   isLoggedIn: boolean = false
   loading: boolean = false
   authCheckComplete: boolean = false
@@ -24,6 +26,7 @@ class UserStore {
       loading: observable,
       authCheckComplete: observable,
       role: observable,
+      userData: observable,
 
       // Actions
       setUser: action,
