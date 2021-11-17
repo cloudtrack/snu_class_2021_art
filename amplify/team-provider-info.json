@@ -1,27 +1,4 @@
 {
-  "staging": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-snuclass2021art-staging-113851-authRole",
-      "UnauthRoleArn": "arn:aws:iam::758166496253:role/amplify-snuclass2021art-staging-113851-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::758166496253:role/amplify-snuclass2021art-staging-113851-authRole",
-      "Region": "us-west-1",
-      "DeploymentBucketName": "amplify-snuclass2021art-staging-113851-deployment",
-      "UnauthRoleName": "amplify-snuclass2021art-staging-113851-unauthRole",
-      "StackName": "amplify-snuclass2021art-staging-113851",
-      "StackId": "arn:aws:cloudformation:us-west-1:758166496253:stack/amplify-snuclass2021art-staging-113851/4af45460-3651-11ec-9299-027429ac00a9",
-      "AmplifyAppId": "d1e84vh5xbcfwc"
-    },
-    "categories": {
-      "auth": {
-        "snuclass2021art": {
-          "userPoolId": "us-west-1_WPbGQ0Ygy",
-          "userPoolName": "awsartclass-user",
-          "webClientId": "3mtri3mlkjf4a16p6d30s3dub2",
-          "nativeClientId": "3mtri3mlkjf4a16p6d30s3dub2"
-        }
-      }
-    }
-  },
   "dev": {
     "awscloudformation": {
       "AuthRoleName": "amplify-snuclass2021art-dev-215818-authRole",
@@ -32,18 +9,8 @@
       "UnauthRoleName": "amplify-snuclass2021art-dev-215818-unauthRole",
       "StackName": "amplify-snuclass2021art-dev-215818",
       "StackId": "arn:aws:cloudformation:us-west-1:758166496253:stack/amplify-snuclass2021art-dev-215818/b9dc2ca0-4613-11ec-ae51-06c7ef261cc5",
-      "AmplifyAppId": "d1e84vh5xbcfwc"
-    },
-    "categories": {
-      "auth": {
-        "snuclass2021art": {}
-      },
-      "function": {
-        "snuclass2021artPostConfirmation": {
-          "deploymentBucketName": "amplify-snuclass2021art-dev-215818-deployment",
-          "s3Key": "amplify-builds/snuclass2021artPostConfirmation-2b642f63784a324c6964-build.zip"
-        }
-      }
+      "AmplifyAppId": "d1e84vh5xbcfwc",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-snuclass2021art-dev-215818-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     }
   }
 }

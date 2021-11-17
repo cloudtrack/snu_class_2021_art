@@ -2,30 +2,32 @@
 import { action, makeObservable, observable } from "mobx";
 import Auth from "@aws-amplify/auth";
 import { CognitoUser } from "@aws-amplify/auth";
-
+import { DataStore } from '@aws-amplify/datastore';
+import { Student } from '../index'
+import { Teacher } from "..";
 
 class UserStore {
   rootStore
-  user: CognitoUser | null = null
-  isConfirmed: boolean = false
+  user: any | null = null
+  userData: Student | Teacher | null = null
   isLoggedIn: boolean = false
-  loading : boolean = false
-  authCheckComplete : boolean = false
+  loading: boolean = false
+  authCheckComplete: boolean = false
+  role: string = ""
 
   constructor(rootStore: any) {
     this.rootStore = rootStore
     makeObservable(this, {
       // Observable properties
       user: observable,
-      isConfirmed: observable,
       isLoggedIn: observable,
       loading: observable,
       authCheckComplete: observable,
 
       // Actions
       setUser: action,
+      setUserData: action,
       setLoginStatus: action,
-      setConfirmStatus: action,
       rootStore: false
     })
     this.initialize()
@@ -38,9 +40,10 @@ class UserStore {
     this.setUser(await this.getUser())
     if (await this.getLoginStatus()) {
       this.setLoginStatus(true)
-    }
-    if (await this.getConfirmStatus()) {
-      this.setConfirmStatus(true)
+      const attributes = await Auth.userAttributes(this.user);
+      if (attributes !== undefined) {
+        this.updateUserInfo()
+      }
     }
     console.log(this)
   }
@@ -51,12 +54,12 @@ class UserStore {
       username,
       password,
       attributes: {
-      'custom:role': role
-    }})
+        'custom:role': role
+      }
+    })
       .then((user) => {
         console.log(user)
         this.setUser(user.user)
-        this.setConfirmStatus(user.userConfirmed)
       })
       .catch((e) => {
         const code = e.code;
@@ -73,8 +76,8 @@ class UserStore {
 
   async confirm(username: string, code: string) {
     await Auth.confirmSignUp(username, code)
-      .then(() => {
-        this.setConfirmStatus(true)
+      .then((response) => {
+        console.log(response)
       })
       .catch((e) => {
         console.log(e)
@@ -127,31 +130,37 @@ class UserStore {
     }
   }
 
-  async getConfirmStatus(): Promise<boolean> {
-    console.log("get confirm status")
-    const attributes: CognitoUser = await Auth.currentAuthenticatedUser()
-      .catch((e) => {
-        console.log(e)
-      })
-    if (attributes !== undefined) {
-      console.log(attributes)
-      return true
-    } else {
-      return false
-    }
+  setUserData(userData: Student | null) {
+    this.userData = userData
+  }
+
+  setLoginStatus(isLoggedIn: boolean) {
+    this.isLoggedIn = isLoggedIn
   }
 
   setUser(user: CognitoUser | null) {
     this.user = user
   }
 
-  setConfirmStatus(isConfirmed: boolean) {
-    console.log("should confirm: : " + isConfirmed)
-    this.isConfirmed = isConfirmed
+  setRole(role: string) {
+    this.role = role
   }
 
-  setLoginStatus(isLoggedIn: boolean) {
-    this.isLoggedIn = isLoggedIn
+  async updateUserInfo() {
+    const attributes = await Auth.userAttributes(this.user)
+
+    let role = attributes.find((attribute: any) => attribute.getName() === 'custom:role')?.getValue() ?? "";
+
+    this.setRole(role);
+
+    let email = attributes.find((attribute: any) => attribute.getName() === 'email')?.getValue() ?? "";
+
+    // find Student according to email
+    if (email !== "" && role === 'student') {
+      this.setUserData((await DataStore.query(Student)).find((student: Student) => student.email === email) ?? null);
+    } else if (email !== "" && role === 'teacher') {
+      this.setUserData((await DataStore.query(Teacher)).find((teacher: Teacher) => teacher.email === email) ?? null);
+    }
   }
 
 }
