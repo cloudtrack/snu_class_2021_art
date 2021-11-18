@@ -24,7 +24,7 @@ import HomeView from "./pages/HomeView";
 import RegisterHomeView from "./pages/RegisterHomeView";
 import LoginProvider from "./pages/LoginPage/LoginProvider";
 import RegisterProvider from "./pages/RegisterPage/RegisterProvider";
-import { useStores } from "./models/RootStore";
+import { useStores } from "./stores/RootStore";
 import { observer } from "mobx-react";
 
 import Amplify from 'aws-amplify';

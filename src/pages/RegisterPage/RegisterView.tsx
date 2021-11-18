@@ -17,7 +17,7 @@ import {
 } from '@ionic/react';
 import { observer } from 'mobx-react';
 import React, { useState } from 'react';
-import UserStore from '../../models/domain/UserStore';
+import UserStore from '../../stores/UserStore';
 
 interface registerProps {
   userStore: UserStore;

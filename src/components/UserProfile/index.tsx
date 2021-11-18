@@ -8,7 +8,7 @@ import {
 import CryptoJS from 'crypto-js';
 import { pencilOutline } from 'ionicons/icons';
 import { useState } from 'react';
-import { UserDataType } from '../../models/domain/UserStore';
+import { UserDataType } from '../../stores/UserStore';
 import EditProfileModal from './EditProfileModal';
 import './index.css';
 

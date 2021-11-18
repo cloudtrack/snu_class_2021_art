@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import React from 'react';
 import { useHistory } from 'react-router';
 import awsconfig from '../../aws-exports';
-import UserStore from '../../models/domain/UserStore';
+import UserStore from '../../stores/UserStore';
 import RegisterView from './RegisterView';
 
 Amplify.configure(awsconfig);

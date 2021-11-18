@@ -1,18 +1,17 @@
 import Auth, { CognitoUser } from '@aws-amplify/auth';
 import { DataStore } from '@aws-amplify/datastore';
 import { action, makeObservable, observable } from 'mobx';
-import { Teacher, Student } from '..';
+import { Teacher, Student } from '../models';
 
 export type UserDataType = Student | Teacher | null;
 
 class UserStore {
-  rootStore;
-  user: any | null = null;
-  userData: UserDataType = null;
-  isLoggedIn = false;
-  loading = false;
-  authCheckComplete = false;
-  role = '';
+  rootStore
+  user: any | null = null
+  userData: UserDataType = null
+  isLoggedIn: boolean = false
+  loading: boolean = false
+  authCheckComplete: boolean = false
 
   constructor(rootStore: any) {
     this.rootStore = rootStore;
@@ -22,14 +21,12 @@ class UserStore {
       isLoggedIn: observable,
       loading: observable,
       authCheckComplete: observable,
-      role: observable,
       userData: observable,
 
       // Actions
       setUser: action,
       setUserData: action,
       setLoginStatus: action,
-      setRole: action,
 
       // Not Observable
       rootStore: false,
@@ -139,18 +136,11 @@ class UserStore {
     this.user = user;
   }
 
-  setRole(role: string) {
-    this.role = role;
-  }
-
   async updateUserInfo() {
     const attributes = await Auth.userAttributes(this.user);
 
-    const role = attributes.find((attribute: any) => attribute.getName() === 'custom:role')?.getValue() ?? '';
-
-    this.setRole(role);
-
-    const email = attributes.find((attribute: any) => attribute.getName() === 'email')?.getValue() ?? '';
+    let role = attributes.find((attribute: any) => attribute.getName() === 'custom:role')?.getValue() ?? "";
+    let email = attributes.find((attribute: any) => attribute.getName() === 'email')?.getValue() ?? "";
 
     // find Student according to email
     if (email !== '' && role === 'student') {

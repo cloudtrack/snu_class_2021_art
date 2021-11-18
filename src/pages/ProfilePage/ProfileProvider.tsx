@@ -1,5 +1,5 @@
 import React from "react"
-import { useStores } from "../../models/RootStore"
+import { useStores } from "../../stores/RootStore"
 import ProfileController from "./ProfileController"
 
 const ProfileProvider: React.FC = () => {

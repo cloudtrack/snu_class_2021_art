@@ -1,5 +1,5 @@
 import React from "react"
-import { useStores } from "../../models/RootStore"
+import { useStores } from "../../stores/RootStore"
 import LoginController from "./LoginController"
 
 const LoginProvider: React.FC = () => {

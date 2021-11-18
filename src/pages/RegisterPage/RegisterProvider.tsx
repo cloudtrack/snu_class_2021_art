@@ -1,5 +1,5 @@
 import React from "react"
-import { useStores } from "../../models/RootStore"
+import { useStores } from "../../stores/RootStore"
 import RegisterController from "./RegisterController"
 
 const RegisterProvider: React.FC = () => {

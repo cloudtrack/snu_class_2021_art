@@ -2,7 +2,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/rea
 import { observer } from 'mobx-react';
 import { NavList } from '../../components/NavList';
 import { UserProfile } from '../../components/UserProfile';
-import { UserDataType } from '../../models/domain/UserStore';
+import { UserDataType } from '../../stores/UserStore';
 import './Profile.css';
 
 interface profileProps {

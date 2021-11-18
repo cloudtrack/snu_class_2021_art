@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useHistory } from "react-router";
-import UserStore from "../../models/domain/UserStore";
+import UserStore from "../../stores/UserStore";
 import LoginView from "./LoginView";
 
 const LoginController: React.FC<{ userStore: UserStore }> = (props) => {
