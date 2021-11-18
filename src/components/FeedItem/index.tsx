@@ -1,39 +1,15 @@
 import {
-  IonAvatar,
-  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCol,
-  IonContent,
   IonGrid,
-  IonHeader,
   IonIcon,
   IonImg,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPage,
   IonRow,
-  IonSkeletonText,
   IonText,
-  IonTitle,
-  IonToolbar,
   useIonAlert
 } from '@ionic/react';
-import {
-  chatboxEllipses,
-  chatbubbleEllipses,
-  chevronForward,
-  handRight,
-  help,
-  informationCircleOutline,
-  logOut,
-  personCircle,
-  thumbsUp
-} from 'ionicons/icons';
+import { chatbubbleEllipses, personCircle, thumbsUp } from 'ionicons/icons';
 import { CommentItem, ICommentItemProps } from './commentItem';
 import './index.css';
 

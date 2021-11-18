@@ -9,23 +9,11 @@ import {
   IonTitle,
   IonToolbar
 } from '@ionic/react';
-import ExploreContainer from '../../components/ExploreContainer';
+import Faker from 'faker';
+import { add, camera, cloudUpload, search } from 'ionicons/icons';
 import { FeedItem } from '../../components/FeedItem';
 import { ICommentItemProps } from '../../components/FeedItem/commentItem';
-import Faker from 'faker';
 import './Feed.css';
-import {
-  share,
-  logoVimeo,
-  logoFacebook,
-  logoInstagram,
-  logoTwitter,
-  add,
-  camera,
-  search,
-  cloudCircle,
-  cloudUpload
-} from 'ionicons/icons';
 
 const FeedView: React.FC = () => {
   const fakeCommentList: ICommentItemProps[] = [];

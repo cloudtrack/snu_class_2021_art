@@ -1,125 +1,149 @@
-import { IonContent, IonPage, IonLabel, IonInput, IonItem, IonList, IonImg, IonButton, IonHeader, IonBackButton, IonButtons, IonToolbar, IonSelect, IonSelectOption, IonTitle } from "@ionic/react";
-import React, { useState } from "react";
-import { observer } from 'mobx-react'
-import UserStore from "../../models/domain/UserStore";
-
+import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonImg,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonPage,
+  IonSelect,
+  IonSelectOption,
+  IonTitle,
+  IonToolbar
+} from '@ionic/react';
+import { observer } from 'mobx-react';
+import React, { useState } from 'react';
+import UserStore from '../../models/domain/UserStore';
 
 interface registerProps {
-  userStore: UserStore,
-  isUsernameValid: (username: string) => boolean,
-  isPasswordValid: (password: string) => boolean,
-  signUp: (username: string, password: string, role: string) => void,
-  confirmSignUp: (username: string, password: string, code: string) => void
+  userStore: UserStore;
+  isUsernameValid: (username: string) => boolean;
+  isPasswordValid: (password: string) => boolean;
+  signUp: (username: string, password: string, role: string) => void;
+  confirmSignUp: (username: string, password: string, code: string) => void;
 }
 
-const RegisterView: React.FC<registerProps> = observer((props) => {
+const RegisterView: React.FC<registerProps> = observer(props => {
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [code, setCode] = useState<string>('');
+  const [role, setRole] = useState<string>('');
 
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [code, setCode] = useState<string>("");
-  const [role, setRole] = useState<string>("");
+  const renderSignUp = (props: registerProps) => (
+    <IonContent>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
+          <IonTitle>Sign Up</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <form className="ion-padding">
+        <IonImg style={{ margin: '20px auto 20px', width: '20%' }} src={'assets/icon/icon.png'} />
+        <IonItem>
+          <IonLabel position="floating">Email</IonLabel>
+          <IonInput
+            value={username}
+            placeholder="Enter Input"
+            onIonChange={e => setUsername(e.detail.value!)}
+            clearInput
+          />
+        </IonItem>
+        <IonItem>
+          <IonLabel position="floating">Password</IonLabel>
+          <IonInput
+            type="password"
+            value={password}
+            placeholder="Enter Password"
+            onIonChange={e => setPassword(e.detail.value!)}
+            clearInput
+          />
+        </IonItem>
+        <IonItem>
+          <IonLabel position="floating">Confirm Password</IonLabel>
+          <IonInput
+            type="password"
+            value={confirmPassword}
+            placeholder="Enter Password again to confirm"
+            onIonChange={e => setConfirmPassword(e.detail.value!)}
+            clearInput
+          />
+        </IonItem>
+        <IonItem>
+          <IonLabel>Role</IonLabel>
+          <IonSelect
+            interface="popover"
+            value={role}
+            placeholder="Select Your Role"
+            onIonChange={e => setRole(e.detail.value)}
+            >
+            <IonSelectOption value="student">Student</IonSelectOption>
+            <IonSelectOption value="teacher">Teacher</IonSelectOption>
+          </IonSelect>
+        </IonItem>
 
-  const renderSignUp = (props: registerProps) => {
-    return (
-      <IonContent>
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton defaultHref="/" />
-            </IonButtons>
-            <IonTitle>Sign Up</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <form className="ion-padding">
-          <IonImg
-            style={{ margin: "20px auto 20px", width: "20%" }}
-            src={"assets/icon/icon.png"}
-          ></IonImg>
-          <IonItem>
-            <IonLabel position="floating">Email</IonLabel>
-            <IonInput
-              value={username}
-              placeholder="Enter Input"
-              onIonChange={e => setUsername(e.detail.value!)}
-              clearInput
-            ></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonLabel position="floating">Password</IonLabel>
-            <IonInput
-              type="password"
-              value={password}
-              placeholder="Enter Password"
-              onIonChange={e => setPassword(e.detail.value!)}
-              clearInput
-            ></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonLabel position="floating">Confirm Password</IonLabel>
-            <IonInput
-              type="password"
-              value={confirmPassword}
-              placeholder="Enter Password again to confirm"
-              onIonChange={e => setConfirmPassword(e.detail.value!)}
-              clearInput
-            ></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Role</IonLabel>
-            <IonSelect interface="popover" value={role} placeholder="Select Your Role" onIonChange={e => setRole(e.detail.value)}>
-              <IonSelectOption value="student">Student</IonSelectOption>
-              <IonSelectOption value="teacher">Teacher</IonSelectOption>
-            </IonSelect>
-          </IonItem>
-
-          <IonButton
-            style={{ margin: "50px 50px 50px 50px" }}
-            expand="block"
-            onClick={() => { props.signUp(username, password, role) }}
-            disabled={
-              !(props.isUsernameValid(username) &&
-                props.isPasswordValid(password) &&
-                password === confirmPassword && role !== "")
-            }
-          >Sign Up</IonButton>
-        </form>
-      </IonContent>
-    )
-  }
-  const renderConfirm = (props: registerProps) => {
-    return (
-      <IonContent>
-        <IonList>
-          <IonItem>
-            <IonLabel position="floating">Confirmation Code</IonLabel>
-            <IonInput value={code}
-              placeholder="Enter Input"
-              onIonChange={e => setCode(e.detail.value!)}
-              clearInput
-            ></IonInput>
-          </IonItem>
-          <IonButton
-            style={{ margin: "50px 50px 50px 50px" }}
-            expand="block"
-            onClick={(e) => {
-              props.confirmSignUp(username, password, code)
+        <IonButton
+          style={{ margin: '50px 50px 50px 50px' }}
+          expand="block"
+          onClick={() => {
+              props.signUp(username, password, role);
             }}
-            disabled={code.length !== 6}
-          >Confirm Code</IonButton>
-        </IonList>
-      </IonContent>
-    )
-  }
+          disabled={
+              !(
+                props.isUsernameValid(username) &&
+                props.isPasswordValid(password) &&
+                password === confirmPassword &&
+                role !== ''
+              )
+            }
+          >
+          Sign Up
+        </IonButton>
+      </form>
+    </IonContent>
+  );
+  const renderConfirm = (props: registerProps) => (
+    <IonContent>
+      <IonList>
+        <IonItem>
+          <IonLabel position="floating">Confirmation Code</IonLabel>
+          <IonInput
+            value={code}
+            placeholder="Enter Input"
+            onIonChange={e => setCode(e.detail.value!)}
+            clearInput
+          />
+        </IonItem>
+        <IonButton
+          style={{ margin: '50px 50px 50px 50px' }}
+          expand="block"
+          onClick={e => {
+              props.confirmSignUp(username, password, code);
+            }}
+          disabled={code.length !== 6}
+          >
+          Confirm Code
+        </IonButton>
+      </IonList>
+    </IonContent>
+  );
   return (
     <IonPage>
       {(() => {
-        if (!props.userStore.isLoggedIn && props.userStore.user !== null)
-          return renderConfirm(props)
-        else return renderSignUp(props)
+        if (!props.userStore.isLoggedIn && props.userStore.user !== null) {
+return renderConfirm(props);
+} else {
+return renderSignUp(props);
+}
       })()}
     </IonPage>
-  )
-})
+  );
+});
 
 export default RegisterView;
