@@ -1,14 +1,22 @@
-import { IonModal, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, createAnimation, IonText } from "@ionic/react";
-import { arrowBack } from "ionicons/icons";
+import {
+  createAnimation,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonModal,
+  IonText,
+  IonToolbar
+} from '@ionic/react';
+import { arrowBack } from 'ionicons/icons';
 
 interface EditProfileModalProps {
-  showModal: boolean,
-  onDidDismiss: () => void
+  showModal: boolean;
+  onDidDismiss: () => void;
 }
 
-
-const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
-
+const EditProfileModal: React.FC<EditProfileModalProps> = props => {
   const { showModal, onDidDismiss } = props;
 
   const enterAnimation = (baseEl: any) => {
@@ -20,7 +28,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
       .addElement(baseEl.querySelector('.modal-wrapper')!)
       .keyframes([
         { offset: 0, opacity: '0.99', transform: 'translateX(+100%)' },
-        { offset: 1, opacity: '0.99', transform: 'translateX(0)' }
+        { offset: 1, opacity: '0.99', transform: 'translateX(0)' },
       ]);
 
     return createAnimation()
@@ -28,18 +36,17 @@ const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
       .easing('ease-out')
       .duration(200)
       .addAnimation([backdropAnimation, wrapperAnimation]);
-  }
+  };
 
-  const leaveAnimation = (baseEl: any) => {
-    return enterAnimation(baseEl).direction('reverse');
-  }
+  const leaveAnimation = (baseEl: any) => enterAnimation(baseEl).direction('reverse');
 
   return (
     <IonModal
       isOpen={showModal}
       enterAnimation={enterAnimation}
       leaveAnimation={leaveAnimation}
-      onDidDismiss={() => onDidDismiss()}>
+      onDidDismiss={() => onDidDismiss()}
+    >
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
@@ -54,13 +61,10 @@ const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
           <h1>Show a profile picture here</h1>
         </IonText>
         {/* <AmplifyS3Image imgKey="profilepic/.png" /> */}
-        <IonButton onClick={() => onDidDismiss()}>
-          Edit Profile
-        </IonButton>
+        <IonButton onClick={() => onDidDismiss()}>Edit Profile</IonButton>
       </IonContent>
     </IonModal>
   );
 };
-
 
 export default EditProfileModal;

@@ -1,14 +1,6 @@
-import {
-  IonAlert,
-  IonCard,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  useIonAlert
-} from '@ionic/react';
-import { useState } from 'react';
+import { IonAlert, IonCard, IonIcon, IonItem, IonLabel, IonList, useIonAlert } from '@ionic/react';
 import { informationCircleOutline, logOut } from 'ionicons/icons';
+import { useState } from 'react';
 import './index.css';
 
 interface INavListProps {
@@ -52,15 +44,15 @@ export const NavList: React.FC<INavListProps> = ({ logout }) => {
             cssClass: 'secondary',
             handler: () => {
               console.log('Confirm Cancel');
-            }
+            },
           },
           {
             text: 'Ok',
             handler: () => {
               console.log('Confirm Ok');
               logout();
-            }
-          }
+            },
+          },
         ]}
       />
       <IonList>
