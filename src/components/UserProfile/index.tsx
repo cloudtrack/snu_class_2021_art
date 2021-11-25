@@ -6,12 +6,12 @@ import {
   IonSkeletonText,
   IonText
 } from '@ionic/react';
-import CryptoJS from 'crypto-js';
 import { pencil } from 'ionicons/icons';
 import { observer } from 'mobx-react';
 import { useState } from 'react';
 import { useStores } from '../../stores/RootStore';
 import { UserDataType } from '../../stores/UserStore';
+import { avatarImageFromEmail } from '../../utils';
 import EditProfileModal from './EditProfileModal';
 import './index.css';
 
@@ -46,7 +46,6 @@ export const UserProfile: React.FC<IUserProfileProps> = observer(({ userData }) 
     );
   }
   const { email, name, role } = userData;
-  const emailMD5Hash = CryptoJS.MD5(email!);
   return (
     <>
       <IonGrid>
@@ -63,8 +62,9 @@ export const UserProfile: React.FC<IUserProfileProps> = observer(({ userData }) 
             onClick={() => setShowProfileEditModal(true)}>
             {userData.profile ?
               <img alt="profilepic" src={`${pictureStore.profilethumbnailurl}`} /> :
-              <img src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />}
-            <div className="avatar-upload" onClick={() => setShowProfileEditModal(true)}>
+              <img src={avatarImageFromEmail(email!)} />
+            }
+            <div className="avatarUpload" onClick={() => setShowProfileEditModal(true)}>
               <IonIcon icon={pencil} />
             </div>
           </IonAvatar>
