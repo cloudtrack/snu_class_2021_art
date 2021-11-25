@@ -1,9 +1,11 @@
+import { AmplifyS3Image } from '@aws-amplify/ui-react';
 import {
   IonAvatar,
   IonGrid,
   IonIcon,
   IonRow,
-  IonSkeletonText
+  IonSkeletonText,
+  IonText
 } from '@ionic/react';
 import CryptoJS from 'crypto-js';
 import { pencilOutline } from 'ionicons/icons';
@@ -55,7 +57,10 @@ export const UserProfile: React.FC<IUserProfileProps> = ({ userData }) => {
             className="user-profile-avatar"
             onClick={() => setShowProfileEditModal(true)}>
             {userData.profile ?
-              <img /> : // show thumbnails
+              <AmplifyS3Image
+              imgKey={`profilepic/thumbnails/thumbnail-${userData.profile}`}
+              /> : // show thumbnails
+              // <IonText>{userData.profile}</IonText> :
               <img src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />}
             <div className="avatar-upload" onClick={() => setShowProfileEditModal(true)}>
               <IonIcon icon={pencilOutline} />

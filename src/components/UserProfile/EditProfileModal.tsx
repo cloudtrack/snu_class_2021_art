@@ -14,8 +14,8 @@ import CryptoJS from 'crypto-js';
 import { arrowBack } from 'ionicons/icons';
 import { UserDataType } from '../../stores/UserStore';
 import PhotoGalleryPopover from './PhotoGalleryPopover';
-import {AmplifyS3Image} from '@aws-amplify/ui-react';
-
+import { AmplifyS3Image } from '@aws-amplify/ui-react';
+import './EditProfileModal.css'
 
 interface EditProfileModalProps {
   userData: UserDataType;
@@ -58,7 +58,6 @@ const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
       leaveAnimation={leaveAnimation}
       onDidDismiss={() => onDidDismiss()}
     >
-
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
@@ -68,19 +67,23 @@ const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-justify-content-center">
-        {
-          userData?.profile ?
-            <AmplifyS3Image imgKey={ `profilepic/originals/${userData?.profile}` }/> :
-            <IonImg src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
-        }
-        <IonButton
-          fill="outline"
-          onClick={() => present()}
-        >
-          Edit Profile
-        </IonButton>
-      </IonContent>
+      <div className="container">
+      {
+        userData?.profile ?
+          <AmplifyS3Image imgKey={`profilepic/originals/${userData?.profile}`} /> :
+          <IonImg src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
+      }
+      </div>
+      <div className="footer">
+      <IonButton
+        className="ion-padding"
+        expand="block"
+        fill="outline"
+        onClick={() => present()}
+      >
+        Edit Profile
+      </IonButton>
+      </div>
     </IonModal>
   );
 };
