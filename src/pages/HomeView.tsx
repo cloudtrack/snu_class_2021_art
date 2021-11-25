@@ -9,7 +9,7 @@ import {
   IonTabs,
 } from '@ionic/react';
 import { calendar, images, person } from 'ionicons/icons';
-import ClassView from './ClassPage/Class';
+import ClassProvider from './ClassPage/ClassProvider';
 import FeedView from './FeedPage/Feed';
 import ProfileProvider from './ProfilePage/ProfileProvider';
 
@@ -20,7 +20,7 @@ const HomeView: React.FC = () => (
           <FeedView />
         </Route>
         <Route exact path="/tabs/class">
-          <ClassView />
+          <ClassProvider />
         </Route>
         <Route exact path="/tabs/profile">
           <ProfileProvider />
