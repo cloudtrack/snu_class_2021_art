@@ -7,7 +7,7 @@ import RootStore from './RootStore';
 export type UserDataType = Student | Teacher | null;
 
 class UserStore {
-  rootStore : RootStore;
+  rootStore: RootStore;
   user: CognitoUser | null = null;
   userData: UserDataType = null;
   isLoggedIn: boolean = false;
@@ -136,7 +136,25 @@ class UserStore {
     this.user = user;
   }
 
-  async updateUserInfo() {
+  setProfilePic = async (profile: string) => {
+    /* Models in DataStore are immutable. To update a record you must use the copyOf function
+ to apply updates to the item’s fields rather than mutating the instance directly */
+    const userData = this.userData;
+    if (userData?.role === 'student') {
+      await DataStore.save(Student.copyOf(this.userData as Student, item => {
+        // Update the values on {item} variable to update DataStore entry
+        item.profile = profile;
+      }));
+    } else {
+      await DataStore.save(Teacher.copyOf(this.userData as Teacher, item => {
+        // Update the values on {item} variable to update DataStore entry
+        item.profile = profile;
+      }));
+    }
+    this.updateUserInfo();
+  }
+
+  updateUserInfo = async () => {
     const attributes = await Auth.userAttributes(this.user);
 
     let role = attributes.find((attribute: any) => attribute.getName() === 'custom:role')?.getValue() ?? "";

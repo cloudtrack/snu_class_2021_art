@@ -18,12 +18,14 @@ class PictureStore {
     let contentType = "image/" + postfix === "jpeg" ? "jpg" : postfix;
     let username = this.rootStore?.userStore?.user?.getUsername()!;
 
+    let profilepic = username + "." + postfix;
+
     await Filesystem.readFile({
       path: file,
     })
       .then(async (base64) => {
         await Storage.put(
-          username + "." + postfix, // user(unique id) + file extension
+          profilepic, // user(unique id) + file extension
           base64.data, // should not be file, base64string?
           {
             level: "public",
@@ -35,6 +37,10 @@ class PictureStore {
             },
           }
         )
+          .then((result) => {
+            console.log(result);
+            this.rootStore.userStore.setProfilePic(profilepic);
+          })
           .catch(err => console.log(err)); // let's hope that this works!
       }).catch(err => console.log(err));
   };
