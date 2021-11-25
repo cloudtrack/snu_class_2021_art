@@ -5,21 +5,24 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
+  IonImg,
   IonModal,
-  IonText,
   IonToolbar,
-  useIonAlert
+  useIonPopover
 } from '@ionic/react';
+import CryptoJS from 'crypto-js';
 import { arrowBack } from 'ionicons/icons';
-import { usePhotoGallery } from '../../hooks/userPhotoGallery';
+import { UserDataType } from '../../stores/UserStore';
+import PhotoGalleryPopover from './PhotoGalleryPopover';
 
 interface EditProfileModalProps {
+  userData: UserDataType;
   showModal: boolean;
   onDidDismiss: () => void;
 }
 
-const EditProfileModal: React.FC<EditProfileModalProps> = props => {
-  const { showModal, onDidDismiss } = props;
+const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
+  const { userData, showModal, onDidDismiss } = props;
 
   const enterAnimation = (baseEl: any) => {
     const backdropAnimation = createAnimation()
@@ -42,8 +45,9 @@ const EditProfileModal: React.FC<EditProfileModalProps> = props => {
 
   const leaveAnimation = (baseEl: any) => enterAnimation(baseEl).direction('reverse');
 
-  const { takePhoto } = usePhotoGallery();
-  const [present] = useIonAlert();
+  const [present, dismiss] = useIonPopover(PhotoGalleryPopover, { onHide: () => dismiss() });
+
+  const emailMD5Hash = CryptoJS.MD5(userData!.email!);
 
   return (
     <IonModal
@@ -62,28 +66,22 @@ const EditProfileModal: React.FC<EditProfileModalProps> = props => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <IonText>
+      <IonContent className="ion-justify-content-center">
+        {/* <IonText>
           <h1>Show a profile picture here</h1>
-        </IonText>
+        </IonText> */}
+        {
+          userData?.profile ?
+            <></> : // <AmplifyS3Image imgKey= `profilepic/${userData?.profile}.png` />
+            <IonImg src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
+        }
         {/* show s3 image */}
-        {/* <AmplifyS3Image imgKey="profilepic/.png" /> */}
-        <IonButton onClick={() => present({
-          buttons: [
-            {
-              text: 'Take photo', handler: () => {
-                console.log('Take photo');
-                takePhoto();
-              }
-            },
-            {
-              text: 'Choose exisiting photo', handler: () => {
-                console.log('Save clicked');
-                takePhoto();
-              }
-            }
-          ]
-        })}>Edit Profile</IonButton>
+        <IonButton
+          fill="outline"
+          onClick={() => present()}
+        >
+          Edit Profile
+        </IonButton>
       </IonContent>
     </IonModal>
   );

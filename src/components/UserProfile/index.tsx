@@ -44,6 +44,7 @@ export const UserProfile: React.FC<IUserProfileProps> = ({ userData }) => {
     <>
       <IonGrid>
         <EditProfileModal
+          userData={userData}
           showModal={showProfileEditModal}
           onDidDismiss={() => {
             setShowProfileEditModal(false);
