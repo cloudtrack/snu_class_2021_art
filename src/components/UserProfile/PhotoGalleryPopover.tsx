@@ -2,7 +2,7 @@ import { IonItem, IonList } from "@ionic/react"
 import { usePhotoGallery } from "../../hooks/userPhotoGallery";
 
 const PhotoGalleryPopover: React.FC = () => {
-  const { takePhoto } = usePhotoGallery();
+  const { takePhoto, pickPhoto } = usePhotoGallery();
   return (
     <IonList>
       <IonItem button
@@ -14,7 +14,7 @@ const PhotoGalleryPopover: React.FC = () => {
       <IonItem button
         onClick={() => {
           console.log("choose from gallery clicked");
-          takePhoto();
+          pickPhoto();
         }}
       >Choose from gallery</IonItem>
     </IonList>
