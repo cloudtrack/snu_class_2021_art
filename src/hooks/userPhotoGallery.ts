@@ -17,12 +17,20 @@ export function usePhotoGallery() {
 
 
 
-  const takePhoto = async () => {
+  const getPhoto = async (sourceStr: string) => {
     return new Promise<string>(async (resolve, reject) => {
+      let source;
+      if (sourceStr === "camera") {
+        source = CameraSource.Camera;
+      } else if (sourceStr === "gallery") {
+        source = CameraSource.Photos;
+      } else {
+        reject("Invalid source");
+      }
       const options: ImageOptions = {
         quality: 100,
         resultType: CameraResultType.Uri,
-        source: CameraSource.Camera,
+        source: source,
       };
 
       await Camera.getPhoto(options)
@@ -38,7 +46,7 @@ export function usePhotoGallery() {
             .then(newImagePath => {
               console.log(newImagePath);
               console.log("cropped");
-              resolve(newImagePath);
+              resolve(newImagePath.split("?")[0]);
             })
             .catch(error => {
               reject(error);
@@ -50,40 +58,8 @@ export function usePhotoGallery() {
     });
   }
 
-  const pickPhoto = async () => {
-    return new Promise<string>(async (resolve, reject) => {
-      await Camera.pickImages({
-        quality: 100,
-        presentationStyle: "popover",
-      })
-        .then(photo => {
-          console.log("gallery to crop");
-          console.log(photo);
-          Crop.crop(
-            photo.photos[0].path!,
-            {
-              quality: 100
-            }
-          )
-            .then(newImagePath => {
-              console.log(newImagePath);
-              console.log("cropped");
-              resolve(newImagePath); // cropped image path
-            })
-            .catch(error => {
-              console.log(error);
-              reject(error);
-            });
-        })
-        .catch(err => {
-          console.log(err);
-          reject(err);
-        });
-    });
-  }
 
   return {
-    takePhoto,
-    pickPhoto,
+    getPhoto,
   };
 }

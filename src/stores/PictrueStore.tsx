@@ -1,6 +1,6 @@
 import Storage from "@aws-amplify/storage";
+import { Filesystem } from "@capacitor/filesystem";
 import RootStore from "./RootStore";
-
 
 // wrap up crud to aws s3 buckets
 class PictureStore {
@@ -17,15 +17,26 @@ class PictureStore {
     let postfix = file.split(".").pop();
     let contentType = "image/" + postfix === "jpeg" ? "jpg" : postfix;
     let username = this.rootStore?.userStore?.user?.getUsername()!;
-    await Storage.put(
-      username + "." + postfix, // user(unique id) + file extension
-      file, // path to file
-      {
-        contentType: contentType,
-        customPrefix: { public: "profilepic/" }
-      }
-    )
-      .catch(err => console.log(err)); // let's hope that this works!
-  }
+
+    await Filesystem.readFile({
+      path: file,
+    })
+      .then(async (base64) => {
+        await Storage.put(
+          username + "." + postfix, // user(unique id) + file extension
+          base64.data, // should not be file, base64string?
+          {
+            level: "public",
+            contentType: contentType,
+            contentEncoding: "base64",
+            customPrefix: { public: "profilepic/originals/" },
+            progressCallback(progress) {
+              console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+            },
+          }
+        )
+          .catch(err => console.log(err)); // let's hope that this works!
+      }).catch(err => console.log(err));
+  };
 }
 export default PictureStore;

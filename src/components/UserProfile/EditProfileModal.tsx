@@ -14,6 +14,8 @@ import CryptoJS from 'crypto-js';
 import { arrowBack } from 'ionicons/icons';
 import { UserDataType } from '../../stores/UserStore';
 import PhotoGalleryPopover from './PhotoGalleryPopover';
+import {AmplifyS3Image} from '@aws-amplify/ui-react';
+
 
 interface EditProfileModalProps {
   userData: UserDataType;
@@ -69,7 +71,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
       <IonContent className="ion-justify-content-center">
         {
           userData?.profile ?
-            <></> : // <AmplifyS3Image imgKey= `profilepic/${userData?.profile}.png` />
+            <AmplifyS3Image imgKey={ `profilepic/originals/${userData?.profile}` }/> :
             <IonImg src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
         }
         <IonButton

@@ -4,13 +4,13 @@ import { useStores } from "../../stores/RootStore";
 
 const PhotoGalleryPopover: React.FC = () => {
   const { pictureStore } = useStores();
-  const { takePhoto, pickPhoto } = usePhotoGallery();
+  const { getPhoto } = usePhotoGallery();
   return (
     <IonList>
       <IonItem button
         onClick={() => {
           console.log("take photo clicked");
-          takePhoto()
+          getPhoto("camera")
             .then((photo) => {
               pictureStore.uploadPicture(photo);
             })
@@ -22,7 +22,7 @@ const PhotoGalleryPopover: React.FC = () => {
       <IonItem button
         onClick={() => {
           console.log("choose from gallery clicked");
-          pickPhoto()
+          getPhoto("gallery")
             .then((photo) => {
               pictureStore.uploadPicture(photo);
             })
