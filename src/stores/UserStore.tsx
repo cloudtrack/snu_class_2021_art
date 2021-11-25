@@ -2,24 +2,23 @@ import Auth, { CognitoUser } from '@aws-amplify/auth';
 import { DataStore } from '@aws-amplify/datastore';
 import { action, makeObservable, observable } from 'mobx';
 import { Teacher, Student } from '../models';
+import RootStore from './RootStore';
 
 export type UserDataType = Student | Teacher | null;
 
 class UserStore {
-  rootStore
-  user: any | null = null
-  userData: UserDataType = null
-  isLoggedIn: boolean = false
-  loading: boolean = false
-  authCheckComplete: boolean = false
+  rootStore : RootStore;
+  user: CognitoUser | null = null;
+  userData: UserDataType = null;
+  isLoggedIn: boolean = false;
+  authCheckComplete: boolean = false;
 
-  constructor(rootStore: any) {
+  constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
       // Observable properties
       user: observable,
       isLoggedIn: observable,
-      loading: observable,
       authCheckComplete: observable,
       userData: observable,
 
@@ -39,6 +38,7 @@ class UserStore {
   // initialize the store
   async initialize() {
     this.setUser(await this.getUser());
+    console.log(this.user);
     if (this.user !== null) {
       this.setLoginStatus(true);
       const attributes = await Auth.userAttributes(this.user);
@@ -124,7 +124,7 @@ class UserStore {
     }
   }
 
-  setUserData(userData: Student | null) {
+  setUserData(userData: UserDataType) {
     this.userData = userData;
   }
 

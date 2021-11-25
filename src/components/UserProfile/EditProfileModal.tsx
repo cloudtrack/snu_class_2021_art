@@ -45,7 +45,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
 
   const leaveAnimation = (baseEl: any) => enterAnimation(baseEl).direction('reverse');
 
-  const [present, dismiss] = useIonPopover(PhotoGalleryPopover, { onHide: () => dismiss() });
+  const [present, dismiss] = useIonPopover(PhotoGalleryPopover, { onDidDismiss, onHide: () => dismiss() });
 
   const emailMD5Hash = CryptoJS.MD5(userData!.email!);
 
@@ -67,15 +67,11 @@ const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-justify-content-center">
-        {/* <IonText>
-          <h1>Show a profile picture here</h1>
-        </IonText> */}
         {
           userData?.profile ?
             <></> : // <AmplifyS3Image imgKey= `profilepic/${userData?.profile}.png` />
             <IonImg src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
         }
-        {/* show s3 image */}
         <IonButton
           fill="outline"
           onClick={() => present()}
