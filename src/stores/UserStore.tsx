@@ -80,11 +80,11 @@ class UserStore {
 
   async signIn(username: string, password: string) {
     await Auth.signIn(username, password)
-      .then(user => {
+      .then(async (user) => {
         console.log(user);
         this.setUser(user);
         this.setLoginStatus(true);
-        this.updateUserInfo();
+        await this.updateUserInfo();
       })
       .catch(e => {
         console.log(e);

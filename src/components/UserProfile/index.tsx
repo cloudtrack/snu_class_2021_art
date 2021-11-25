@@ -51,10 +51,12 @@ export const UserProfile: React.FC<IUserProfileProps> = ({ userData }) => {
         />
         <IonRow class="ion-justify-content-center">
           <IonAvatar
-          className="user-profile-avatar"
-          onClick={() => setShowProfileEditModal(true)}>
-            <img src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
-            <div className="avatarUpload" onClick={() => setShowProfileEditModal(true)}>
+            className="user-profile-avatar"
+            onClick={() => setShowProfileEditModal(true)}>
+            {userData.profile ?
+              <img /> : // show thumbnails
+              <img src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />}
+            <div className="avatar-upload" onClick={() => setShowProfileEditModal(true)}>
               <IonIcon icon={pencilOutline} />
             </div>
           </IonAvatar>

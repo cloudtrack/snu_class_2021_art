@@ -7,9 +7,11 @@ import {
   IonIcon,
   IonModal,
   IonText,
-  IonToolbar
+  IonToolbar,
+  useIonAlert
 } from '@ionic/react';
 import { arrowBack } from 'ionicons/icons';
+import { usePhotoGallery } from '../../hooks/userPhotoGallery';
 
 interface EditProfileModalProps {
   showModal: boolean;
@@ -27,8 +29,8 @@ const EditProfileModal: React.FC<EditProfileModalProps> = props => {
     const wrapperAnimation = createAnimation()
       .addElement(baseEl.querySelector('.modal-wrapper')!)
       .keyframes([
-        { offset: 0, opacity: '0.99', transform: 'translateX(+100%)' },
-        { offset: 1, opacity: '0.99', transform: 'translateX(0)' },
+        { offset: 0, opacity: '1', transform: 'translateX(+100%)' },
+        { offset: 1, opacity: '1', transform: 'translateX(0)' },
       ]);
 
     return createAnimation()
@@ -40,6 +42,9 @@ const EditProfileModal: React.FC<EditProfileModalProps> = props => {
 
   const leaveAnimation = (baseEl: any) => enterAnimation(baseEl).direction('reverse');
 
+  const { takePhoto } = usePhotoGallery();
+  const [present] = useIonAlert();
+
   return (
     <IonModal
       isOpen={showModal}
@@ -47,6 +52,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = props => {
       leaveAnimation={leaveAnimation}
       onDidDismiss={() => onDidDismiss()}
     >
+
       <IonHeader translucent>
         <IonToolbar>
           <IonButtons slot="start">
@@ -60,8 +66,24 @@ const EditProfileModal: React.FC<EditProfileModalProps> = props => {
         <IonText>
           <h1>Show a profile picture here</h1>
         </IonText>
+        {/* show s3 image */}
         {/* <AmplifyS3Image imgKey="profilepic/.png" /> */}
-        <IonButton onClick={() => onDidDismiss()}>Edit Profile</IonButton>
+        <IonButton onClick={() => present({
+          buttons: [
+            {
+              text: 'Take photo', handler: () => {
+                console.log('Take photo');
+                takePhoto();
+              }
+            },
+            {
+              text: 'Choose exisiting photo', handler: () => {
+                console.log('Save clicked');
+                takePhoto();
+              }
+            }
+          ]
+        })}>Edit Profile</IonButton>
       </IonContent>
     </IonModal>
   );
