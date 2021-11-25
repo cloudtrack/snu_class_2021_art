@@ -16,7 +16,7 @@ dependencies {
     implementation project(':capacitor-keyboard')
     implementation project(':capacitor-status-bar')
     implementation project(':capacitor-storage')
-
+    implementation "com.soundcloud.android:android-crop:1.0.0@aar"
 }
 
 
