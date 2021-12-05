@@ -15,8 +15,6 @@ import { Crop } from "@ionic-native/crop";
 
 export function usePhotoGallery() {
 
-
-
   const getPhoto = async (sourceStr: string) => {
     return new Promise<string>(async (resolve, reject) => {
       let source;

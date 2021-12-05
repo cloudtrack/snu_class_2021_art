@@ -1,4 +1,4 @@
-import { AmplifyS3Image } from '@aws-amplify/ui-react';
+import { AmplifyS3Image } from '@aws-amplify/ui-react/legacy';
 import {
   IonAvatar,
   IonGrid,
@@ -58,9 +58,8 @@ export const UserProfile: React.FC<IUserProfileProps> = ({ userData }) => {
             onClick={() => setShowProfileEditModal(true)}>
             {userData.profile ?
               <AmplifyS3Image
-              imgKey={`profilepic/thumbnails/thumbnail-${userData.profile}`}
+                imgKey={`profilepic/thumbnails/thumbnail-${userData.profile}`}
               /> : // show thumbnails
-              // <IonText>{userData.profile}</IonText> :
               <img src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />}
             <div className="avatar-upload" onClick={() => setShowProfileEditModal(true)}>
               <IonIcon icon={pencilOutline} />
