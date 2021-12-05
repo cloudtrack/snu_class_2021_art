@@ -15,23 +15,32 @@ class PictureStore {
   uploadPicture = async (file: string) => {
     // upload to aws s3
     let postfix = file.split(".").pop();
-    let contentType = "image/" + postfix === "jpeg" ? "jpg" : postfix;
-    let username = this.rootStore?.userStore?.user?.getUsername()!;
+    let contentType = "image/" + postfix === "jpg" ? "jpeg" : postfix;
 
-    let profilepic = username + "." + postfix;
+    const regex = /[,/:]/g; // replace unwanted characters
 
+    let profilepic =
+      "photo-" +
+      new Date()
+        .toLocaleString()
+        .replaceAll(regex, "-")
+        .replaceAll(" ", "") +
+      "." + postfix;
+
+    // readFile() returns base64 string by default
     await Filesystem.readFile({
       path: file,
     })
       .then(async (base64) => {
+        // create base64 buffer
+        let buf = Buffer.from(base64.data, "base64");
         await Storage.put(
-          profilepic, // user(unique id) + file extension
-          base64.data, // should not be file, base64string?
+          "profilepic/originals/" + profilepic,
+          buf,
           {
-            level: "public",
+            level: "protected",
             contentType: contentType,
             contentEncoding: "base64",
-            customPrefix: { public: "profilepic/originals/" },
             progressCallback(progress) {
               console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
             },
