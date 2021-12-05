@@ -12,7 +12,7 @@ class PictureStore {
     console.log("PictureStore created");
   }
 
-  uploadPicture = async (file: string) => {
+  uploadProfilePic = async (file: string) => {
     // upload to aws s3
     let postfix = file.split(".").pop();
     let contentType = "image/" + postfix === "jpg" ? "jpeg" : postfix;

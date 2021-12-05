@@ -12,7 +12,7 @@ const PhotoGalleryPopover: React.FC = () => {
           console.log("take photo clicked");
           getPhoto("camera")
             .then((photo) => {
-              pictureStore.uploadPicture(photo);
+              pictureStore.uploadProfilePic(photo);
             })
             .catch((err) => {
               console.log(err);
@@ -24,7 +24,7 @@ const PhotoGalleryPopover: React.FC = () => {
           console.log("choose from gallery clicked");
           getPhoto("gallery")
             .then((photo) => {
-              pictureStore.uploadPicture(photo);
+              pictureStore.uploadProfilePic(photo);
             })
             .catch((err) => {
               console.log(err);
