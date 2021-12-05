@@ -16,6 +16,9 @@ import { UserDataType } from '../../stores/UserStore';
 import PhotoGalleryPopover from './PhotoGalleryPopover';
 import { AmplifyS3Image } from '@aws-amplify/ui-react/legacy';
 import './EditProfileModal.css'
+import Amplify from '@aws-amplify/core';
+import { useStores } from '../../stores/RootStore';
+import { observer } from 'mobx-react';
 
 interface EditProfileModalProps {
   userData: UserDataType;
@@ -23,8 +26,12 @@ interface EditProfileModalProps {
   onDidDismiss: () => void;
 }
 
-const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
+const EditProfileModal: React.FC<EditProfileModalProps> = observer((props) => {
   const { userData, showModal, onDidDismiss } = props;
+
+  const { pictureStore } = useStores();
+
+  pictureStore.getProfilePic(false);
 
   const enterAnimation = (baseEl: any) => {
     const backdropAnimation = createAnimation()
@@ -70,7 +77,8 @@ const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
       <div className="container">
         {
           userData?.profile ?
-              <AmplifyS3Image imgKey={`profilepic/originals/${userData?.profile}`} /> :
+            // still debugging
+            <img alt="profilepic" src={`${pictureStore.profileurl}`} /> :
             <IonImg src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
         }
       </div>
@@ -86,6 +94,6 @@ const EditProfileModal: React.FC<EditProfileModalProps> = (props) => {
       </div>
     </IonModal>
   );
-};
+});
 
 export default EditProfileModal;

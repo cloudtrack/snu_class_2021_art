@@ -1,15 +1,24 @@
 import Storage from "@aws-amplify/storage";
 import { Filesystem } from "@capacitor/filesystem";
+import { action, makeObservable, observable } from "mobx";
 import RootStore from "./RootStore";
 
 // wrap up crud to aws s3 buckets
 class PictureStore {
+  profileurl: string = "";
+  profilethumbnailurl: string = "";
   rootStore: RootStore;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     console.log(this.rootStore.userStore);
     console.log("PictureStore created");
+    makeObservable(this, {
+      profileurl: observable,
+      profilethumbnailurl: observable,
+
+      getProfilePic: action,
+    });
   }
 
   uploadProfilePic = async (file: string) => {
@@ -53,5 +62,30 @@ class PictureStore {
           .catch(err => console.log(err)); // let's hope that this works!
       }).catch(err => console.log(err));
   };
+
+  getProfilePic = async (isThumbnail: Boolean) => {
+    // get profile pic from aws s3
+    let prefix = isThumbnail ? "profilepic/thumbnails/thumbnail-" : "profilepic/originals/";
+    let url = "";
+    await Storage.get(
+      prefix + this!.rootStore!.userStore!.userData!.profile,
+      {
+        level: "protected",
+      }
+    )
+      .then(
+        (result) => {
+          url = result;
+        })
+      .catch(
+        (err) => {
+          console.log(err);
+        });
+    if (isThumbnail) {
+      this.profilethumbnailurl = url;
+    } else {
+      this.profileurl = url;
+    }
+  }
 }
 export default PictureStore;
