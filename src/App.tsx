@@ -29,17 +29,28 @@ import { observer } from "mobx-react";
 
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
+
+import { Storage } from 'aws-amplify';
+
 Amplify.configure(awsconfig);
+Storage.configure({
+  AWSS3: {
+    bucket: 'snuclass2021artuserimage215818-dev', //REQUIRED -  Amazon S3 bucket name
+    region: 'us-west-1', //OPTIONAL -  Amazon service region
+    level: 'protected'
+  }
+});
+
 
 const PrivateRoutes = () => {
   return (
     <IonReactRouter>
-        <Switch>
-          <Route exact path="/login" component={LoginProvider} />
-          <Route exact path="/register" component={RegisterProvider} />
-          <Route exact path="/pub" component={RegisterHomeView} />
-          <Route path="/" render={() => <Redirect to="/pub" />} />
-        </Switch>
+      <Switch>
+        <Route exact path="/login" component={LoginProvider} />
+        <Route exact path="/register" component={RegisterProvider} />
+        <Route exact path="/pub" component={RegisterHomeView} />
+        <Route path="/" render={() => <Redirect to="/pub" />} />
+      </Switch>
     </IonReactRouter>
   );
 }
