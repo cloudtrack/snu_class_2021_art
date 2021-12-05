@@ -10,7 +10,7 @@ const PhotoGalleryPopover: React.FC = () => {
       <IonItem button
         onClick={() => {
           console.log("take photo clicked");
-          getPhoto("camera")
+          getPhoto("camera", true)
             .then((photo) => {
               pictureStore.uploadProfilePic(photo);
             })
@@ -22,7 +22,7 @@ const PhotoGalleryPopover: React.FC = () => {
       <IonItem button
         onClick={() => {
           console.log("choose from gallery clicked");
-          getPhoto("gallery")
+          getPhoto("gallery", true)
             .then((photo) => {
               pictureStore.uploadProfilePic(photo);
             })

@@ -15,7 +15,7 @@ import { Crop } from "@ionic-native/crop";
 
 export function usePhotoGallery() {
 
-  const getPhoto = async (sourceStr: string) => {
+  const getPhoto = async (sourceStr: string, shouldCrop: Boolean) => {
     return new Promise<string>(async (resolve, reject) => {
       let source;
       if (sourceStr === "camera") {
@@ -35,29 +35,33 @@ export function usePhotoGallery() {
         .then((photo) => {
           console.log("to crop");
           console.log(photo);
-          Crop.crop(
-            photo.path!,
-            {
-              quality: 100
-            }
-          )
-            .then(newImagePath => {
-              console.log(newImagePath);
-              console.log("cropped");
-              resolve(newImagePath.split("?")[0]);
-            })
-            .catch(error => {
-              reject(error);
-            });
+          if (shouldCrop) {
+            Crop.crop(
+              photo.path!,
+              {
+                quality: 100
+              }
+            )
+              .then(newImagePath => {
+                console.log(newImagePath);
+                console.log("cropped");
+                resolve(newImagePath.split("?")[0]);
+              })
+              .catch(error => {
+                reject(error);
+              });
+          } else {
+            resolve(photo.path!);
+          }
         })
         .catch((error) => {
           reject(error);
         });
     });
-  }
+};
 
 
-  return {
-    getPhoto,
-  };
+return {
+  getPhoto,
+};
 }
