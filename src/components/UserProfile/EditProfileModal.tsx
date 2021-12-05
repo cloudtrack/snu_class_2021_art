@@ -2,7 +2,6 @@ import {
   createAnimation,
   IonButton,
   IonButtons,
-  IonContent,
   IonHeader,
   IonIcon,
   IonImg,
@@ -14,9 +13,7 @@ import CryptoJS from 'crypto-js';
 import { arrowBack } from 'ionicons/icons';
 import { UserDataType } from '../../stores/UserStore';
 import PhotoGalleryPopover from './PhotoGalleryPopover';
-import { AmplifyS3Image } from '@aws-amplify/ui-react/legacy';
 import './EditProfileModal.css'
-import Amplify from '@aws-amplify/core';
 import { useStores } from '../../stores/RootStore';
 import { observer } from 'mobx-react';
 
@@ -74,7 +71,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = observer((props) => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <div className="container">
+      <div className="modalcontainer">
         {
           userData?.profile ?
             // still debugging
@@ -82,7 +79,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = observer((props) => {
             <IonImg src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
         }
       </div>
-      <div className="footer">
+      <div className="modalfooter">
         <IonButton
           className="ion-padding"
           expand="block"
