@@ -1,5 +1,3 @@
-import Auth from '@aws-amplify/auth';
-import { AmplifyS3Image } from '@aws-amplify/ui-react/legacy';
 import {
   IonAvatar,
   IonGrid,
@@ -9,7 +7,7 @@ import {
   IonText
 } from '@ionic/react';
 import CryptoJS from 'crypto-js';
-import { pencilOutline } from 'ionicons/icons';
+import { pencil } from 'ionicons/icons';
 import { observer } from 'mobx-react';
 import { useState } from 'react';
 import { useStores } from '../../stores/RootStore';
@@ -27,7 +25,6 @@ export const UserProfile: React.FC<IUserProfileProps> = observer(({ userData }) 
   const { pictureStore } = useStores();
 
   pictureStore.getProfilePic(true);
-  // should be in a controller / view model
 
   if (!userData) {
     return (
@@ -66,17 +63,18 @@ export const UserProfile: React.FC<IUserProfileProps> = observer(({ userData }) 
             onClick={() => setShowProfileEditModal(true)}>
             {userData.profile ?
               <img alt="profilepic" src={`${pictureStore.profilethumbnailurl}`} /> :
-              // <AmplifyS3Image
-              //   imgKey={`us-west-1:${accessKeyId}profilepic/thumbnails/thumbnail-${userData.profile}`}
-              // /> : // show thumbnails
               <img src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />}
             <div className="avatar-upload" onClick={() => setShowProfileEditModal(true)}>
-              <IonIcon icon={pencilOutline} />
+              <IonIcon icon={pencil} />
             </div>
           </IonAvatar>
         </IonRow>
         <IonRow class="ion-justify-content-center">
-          <h1>{name}</h1>
+          <IonText>
+            <u>
+              <h1>{name}</h1>
+            </u>
+          </IonText>
         </IonRow>
         <IonRow class="ion-justify-content-center">
           <span>{role}</span>

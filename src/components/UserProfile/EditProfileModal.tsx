@@ -17,13 +17,13 @@ import './EditProfileModal.css'
 import { useStores } from '../../stores/RootStore';
 import { observer } from 'mobx-react';
 
-interface EditProfileModalProps {
+interface IEditProfileModalProps {
   userData: UserDataType;
   showModal: boolean;
   onDidDismiss: () => void;
 }
 
-const EditProfileModal: React.FC<EditProfileModalProps> = observer((props) => {
+const EditProfileModal: React.FC<IEditProfileModalProps> = observer((props) => {
   const { userData, showModal, onDidDismiss } = props;
 
   const { pictureStore } = useStores();
@@ -74,7 +74,6 @@ const EditProfileModal: React.FC<EditProfileModalProps> = observer((props) => {
       <div className="modalcontainer">
         {
           userData?.profile ?
-            // still debugging
             <img alt="profilepic" src={`${pictureStore.profileurl}`} /> :
             <IonImg src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
         }
