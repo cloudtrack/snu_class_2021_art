@@ -19,6 +19,8 @@ class PictureStore {
 
       getProfilePic: action,
     });
+    this.getProfilePic(true);
+    this.getProfilePic(false);
   }
 
   uploadProfilePic = async (file: string) => {
