@@ -64,7 +64,7 @@ export const UserProfile: React.FC<IUserProfileProps> = observer(({ userData }) 
               <img alt="profilepic" src={`${pictureStore.profilethumbnailurl}`} /> :
               <img src={avatarImageFromEmail(email!)} />
             }
-            <div className="avatarUpload" onClick={() => setShowProfileEditModal(true)}>
+            <div className="avatar-upload" onClick={() => setShowProfileEditModal(true)}>
               <IonIcon icon={pencil} />
             </div>
           </IonAvatar>
