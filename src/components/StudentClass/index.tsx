@@ -1,9 +1,11 @@
 import { RefresherEventDetail } from '@ionic/core';
-import { IonContent, IonRefresher, IonRefresherContent, IonSearchbar, IonToolbar } from '@ionic/react';
+import { IonContent, IonFab, IonFabButton, IonIcon, IonRefresher, IonRefresherContent, IonSearchbar, IonToolbar } from '@ionic/react';
 import { useState } from 'react';
 import { UserDataType } from '../../stores/UserStore';
 import { ClassItem, IClassItemProps } from '../ClassItem';
 import Faker from 'faker';
+import { search } from 'ionicons/icons';
+import ClassSearchModal from './ClassSearchModal';
 interface IStudentClassProps {
   userData: UserDataType;
 }
@@ -20,6 +22,7 @@ function doRefresh(event: CustomEvent<RefresherEventDetail>) {
 export const StudentClass: React.FC<IStudentClassProps> = ({ userData }) => {
   // show the classes student is taking in card
   const [searchText, setSearchText] = useState('');
+  const [isFabOpen, setIsFabOpen] = useState(false);
 
   const fakeClassList: IClassItemProps[] = [];
   for (let i = 0; i < 2; i++) {
@@ -34,7 +37,12 @@ export const StudentClass: React.FC<IStudentClassProps> = ({ userData }) => {
   }
   return (
     <>
-      <IonRefresher slot="fixed" onIonRefresh={doRefresh} pullFactor={0.5} pullMin={100} pullMax={200}>
+      <IonRefresher
+        slot="fixed"
+        onIonRefresh={doRefresh}
+        pullFactor={0.5}
+        pullMin={100}
+        pullMax={200}>
         <IonRefresherContent />
       </IonRefresher>
       <IonToolbar className="ion-margin-top">
@@ -47,10 +55,23 @@ export const StudentClass: React.FC<IStudentClassProps> = ({ userData }) => {
         />
       </IonToolbar>
       <IonContent>
+        <ClassSearchModal
+          showModal={isFabOpen}
+          onDidDismiss={() => setIsFabOpen(false)}
+        />
         {fakeClassList.map((clazz: IClassItemProps) => (
           <ClassItem {...clazz} />
         ))}
       </IonContent>
+      <IonFab vertical="bottom" horizontal="end" slot="fixed">
+        <IonFabButton color="primary">
+          <IonIcon
+            icon={search}
+            onClick={() => {
+              setIsFabOpen(true);
+            }} />
+        </IonFabButton>
+      </IonFab>
     </>
   );
 };
