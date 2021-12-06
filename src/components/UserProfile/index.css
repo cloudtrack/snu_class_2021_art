@@ -3,7 +3,7 @@
   height: 20vw;
 }
 
-.avatarUpload {
+.avatar-upload {
   display: flex;
   flex-direction: row;
   justify-content: center;

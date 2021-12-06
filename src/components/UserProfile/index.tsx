@@ -3,11 +3,14 @@ import {
   IonGrid,
   IonIcon,
   IonRow,
-  IonSkeletonText
+  IonSkeletonText,
+  IonText
 } from '@ionic/react';
 import CryptoJS from 'crypto-js';
-import { pencilOutline } from 'ionicons/icons';
+import { pencil } from 'ionicons/icons';
+import { observer } from 'mobx-react';
 import { useState } from 'react';
+import { useStores } from '../../stores/RootStore';
 import { UserDataType } from '../../stores/UserStore';
 import EditProfileModal from './EditProfileModal';
 import './index.css';
@@ -16,8 +19,12 @@ interface IUserProfileProps {
   userData: UserDataType;
 }
 
-export const UserProfile: React.FC<IUserProfileProps> = ({ userData }) => {
+export const UserProfile: React.FC<IUserProfileProps> = observer(({ userData }) => {
   const [showProfileEditModal, setShowProfileEditModal] = useState(false);
+
+  const { pictureStore } = useStores();
+
+  pictureStore.getProfilePic(true);
 
   if (!userData) {
     return (
@@ -44,6 +51,7 @@ export const UserProfile: React.FC<IUserProfileProps> = ({ userData }) => {
     <>
       <IonGrid>
         <EditProfileModal
+          userData={userData}
           showModal={showProfileEditModal}
           onDidDismiss={() => {
             setShowProfileEditModal(false);
@@ -51,16 +59,22 @@ export const UserProfile: React.FC<IUserProfileProps> = ({ userData }) => {
         />
         <IonRow class="ion-justify-content-center">
           <IonAvatar
-          className="user-profile-avatar"
-          onClick={() => setShowProfileEditModal(true)}>
-            <img src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
-            <div className="avatarUpload" onClick={() => setShowProfileEditModal(true)}>
-              <IonIcon icon={pencilOutline} />
+            className="user-profile-avatar"
+            onClick={() => setShowProfileEditModal(true)}>
+            {userData.profile ?
+              <img alt="profilepic" src={`${pictureStore.profilethumbnailurl}`} /> :
+              <img src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />}
+            <div className="avatar-upload" onClick={() => setShowProfileEditModal(true)}>
+              <IonIcon icon={pencil} />
             </div>
           </IonAvatar>
         </IonRow>
         <IonRow class="ion-justify-content-center">
-          <h1>{name}</h1>
+          <IonText>
+            <u>
+              <h1>{name}</h1>
+            </u>
+          </IonText>
         </IonRow>
         <IonRow class="ion-justify-content-center">
           <span>{role}</span>
@@ -68,4 +82,4 @@ export const UserProfile: React.FC<IUserProfileProps> = ({ userData }) => {
       </IonGrid>
     </>
   );
-};
+});

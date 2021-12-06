@@ -2,22 +2,33 @@ import {
   createAnimation,
   IonButton,
   IonButtons,
-  IonContent,
   IonHeader,
   IonIcon,
+  IonImg,
   IonModal,
-  IonText,
-  IonToolbar
+  IonToolbar,
+  useIonPopover
 } from '@ionic/react';
+import CryptoJS from 'crypto-js';
 import { arrowBack } from 'ionicons/icons';
+import { UserDataType } from '../../stores/UserStore';
+import PhotoGalleryPopover from './PhotoGalleryPopover';
+import './EditProfileModal.css'
+import { useStores } from '../../stores/RootStore';
+import { observer } from 'mobx-react';
 
-interface EditProfileModalProps {
+interface IEditProfileModalProps {
+  userData: UserDataType;
   showModal: boolean;
   onDidDismiss: () => void;
 }
 
-const EditProfileModal: React.FC<EditProfileModalProps> = props => {
-  const { showModal, onDidDismiss } = props;
+const EditProfileModal: React.FC<IEditProfileModalProps> = observer((props) => {
+  const { userData, showModal, onDidDismiss } = props;
+
+  const { pictureStore } = useStores();
+
+  pictureStore.getProfilePic(false);
 
   const enterAnimation = (baseEl: any) => {
     const backdropAnimation = createAnimation()
@@ -27,8 +38,8 @@ const EditProfileModal: React.FC<EditProfileModalProps> = props => {
     const wrapperAnimation = createAnimation()
       .addElement(baseEl.querySelector('.modal-wrapper')!)
       .keyframes([
-        { offset: 0, opacity: '0.99', transform: 'translateX(+100%)' },
-        { offset: 1, opacity: '0.99', transform: 'translateX(0)' },
+        { offset: 0, opacity: '1', transform: 'translateX(+100%)' },
+        { offset: 1, opacity: '1', transform: 'translateX(0)' },
       ]);
 
     return createAnimation()
@@ -39,6 +50,10 @@ const EditProfileModal: React.FC<EditProfileModalProps> = props => {
   };
 
   const leaveAnimation = (baseEl: any) => enterAnimation(baseEl).direction('reverse');
+
+  const [present, dismiss] = useIonPopover(PhotoGalleryPopover, { onDidDismiss, onHide: () => dismiss() });
+
+  const emailMD5Hash = CryptoJS.MD5(userData!.email!);
 
   return (
     <IonModal
@@ -56,15 +71,25 @@ const EditProfileModal: React.FC<EditProfileModalProps> = props => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <IonText>
-          <h1>Show a profile picture here</h1>
-        </IonText>
-        {/* <AmplifyS3Image imgKey="profilepic/.png" /> */}
-        <IonButton onClick={() => onDidDismiss()}>Edit Profile</IonButton>
-      </IonContent>
+      <div className="modalcontainer">
+        {
+          userData?.profile ?
+            <img alt="profilepic" src={`${pictureStore.profileurl}`} /> :
+            <IonImg src={`https://www.gravatar.com/avatar/${emailMD5Hash}`} />
+        }
+      </div>
+      <div className="modalfooter">
+        <IonButton
+          className="ion-padding"
+          expand="block"
+          fill="outline"
+          onClick={() => present()}
+        >
+          Edit Profile
+        </IonButton>
+      </div>
     </IonModal>
   );
-};
+});
 
 export default EditProfileModal;

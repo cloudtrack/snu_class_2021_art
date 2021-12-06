@@ -2,24 +2,23 @@ import Auth, { CognitoUser } from '@aws-amplify/auth';
 import { DataStore } from '@aws-amplify/datastore';
 import { action, makeObservable, observable } from 'mobx';
 import { Teacher, Student } from '../models';
+import RootStore from './RootStore';
 
 export type UserDataType = Student | Teacher | null;
 
 class UserStore {
-  rootStore
-  user: any | null = null
-  userData: UserDataType = null
-  isLoggedIn: boolean = false
-  loading: boolean = false
-  authCheckComplete: boolean = false
+  rootStore: RootStore;
+  user: CognitoUser | null = null;
+  userData: UserDataType = null;
+  isLoggedIn: boolean = false;
+  authCheckComplete: boolean = false;
 
-  constructor(rootStore: any) {
+  constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
       // Observable properties
       user: observable,
       isLoggedIn: observable,
-      loading: observable,
       authCheckComplete: observable,
       userData: observable,
 
@@ -39,6 +38,7 @@ class UserStore {
   // initialize the store
   async initialize() {
     this.setUser(await this.getUser());
+    console.log(this.user);
     if (this.user !== null) {
       this.setLoginStatus(true);
       const attributes = await Auth.userAttributes(this.user);
@@ -80,11 +80,11 @@ class UserStore {
 
   async signIn(username: string, password: string) {
     await Auth.signIn(username, password)
-      .then(user => {
+      .then(async (user) => {
         console.log(user);
         this.setUser(user);
         this.setLoginStatus(true);
-        this.updateUserInfo();
+        await this.updateUserInfo();
       })
       .catch(e => {
         console.log(e);
@@ -124,7 +124,7 @@ class UserStore {
     }
   }
 
-  setUserData(userData: Student | null) {
+  setUserData(userData: UserDataType) {
     this.userData = userData;
   }
 
@@ -136,7 +136,25 @@ class UserStore {
     this.user = user;
   }
 
-  async updateUserInfo() {
+  setProfilePic = async (profile: string) => {
+    /* Models in DataStore are immutable. To update a record you must use the copyOf function
+ to apply updates to the item’s fields rather than mutating the instance directly */
+    const userData = this.userData;
+    if (userData?.role === 'student') {
+      await DataStore.save(Student.copyOf(this.userData as Student, item => {
+        // Update the values on {item} variable to update DataStore entry
+        item.profile = profile;
+      }));
+    } else {
+      await DataStore.save(Teacher.copyOf(this.userData as Teacher, item => {
+        // Update the values on {item} variable to update DataStore entry
+        item.profile = profile;
+      }));
+    }
+    this.updateUserInfo();
+  }
+
+  updateUserInfo = async () => {
     const attributes = await Auth.userAttributes(this.user);
 
     let role = attributes.find((attribute: any) => attribute.getName() === 'custom:role')?.getValue() ?? "";

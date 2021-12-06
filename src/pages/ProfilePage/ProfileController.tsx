@@ -1,13 +1,7 @@
-
-
-import Amplify from "@aws-amplify/core"
 import { observer } from "mobx-react"
 import { useHistory } from "react-router-dom"
-import awsconfig from "../../aws-exports.js"
 import UserStore from "../../stores/UserStore"
 import ProfileView from "./ProfileView"
-
-Amplify.configure(awsconfig)
 
 interface profileViewModelProps {
   userStore: UserStore
