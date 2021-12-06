@@ -67,20 +67,22 @@ class PictureStore {
     // get profile pic from aws s3
     let prefix = isThumbnail ? "profilepic/thumbnails/thumbnail-" : "profilepic/originals/";
     let url = "";
-    await Storage.get(
-      prefix + this!.rootStore!.userStore!.userData!.profile,
-      {
-        level: "protected",
-      }
-    )
-      .then(
-        (result) => {
-          url = result;
-        })
-      .catch(
-        (err) => {
-          console.log(err);
-        });
+    if (this.rootStore.userStore.userData?.profile != null) {
+      await Storage.get(
+        prefix + this!.rootStore!.userStore!.userData!.profile,
+        {
+          level: "protected",
+        }
+      )
+        .then(
+          (result) => {
+            url = result;
+          })
+        .catch(
+          (err) => {
+            console.log(err);
+          });
+    };
     if (isThumbnail) {
       this.profilethumbnailurl = url;
     } else {
