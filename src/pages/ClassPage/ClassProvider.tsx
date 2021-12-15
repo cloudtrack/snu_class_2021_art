@@ -3,9 +3,12 @@ import { useStores } from "../../stores/RootStore"
 import ClassController from "./ClassController"
 
 const ClassProvider: React.FC = () => {
-  const { userStore } = useStores();
+  const { userStore, classStore } = useStores();
+
   return (
-    <ClassController userStore={userStore} />
+    <ClassController
+    userStore={userStore}
+    classStore={classStore} />
   );
 }
 

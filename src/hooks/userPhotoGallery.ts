@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { isPlatform } from "@ionic/react";
+// import { useState, useEffect } from "react";
+// import { isPlatform } from "@ionic/react";
 
 import {
   Camera,
@@ -8,9 +8,9 @@ import {
   ImageOptions,
   Photo,
 } from "@capacitor/camera";
-import { Filesystem, Directory } from "@capacitor/filesystem";
-import { Storage } from "@capacitor/storage";
-import { Capacitor } from "@capacitor/core";
+// import { Filesystem, Directory } from "@capacitor/filesystem";
+// import { Storage } from "@capacitor/storage";
+// import { Capacitor } from "@capacitor/core";
 import { Crop } from "@ionic-native/crop";
 
 export function usePhotoGallery() {
@@ -58,10 +58,10 @@ export function usePhotoGallery() {
           reject(error);
         });
     });
-};
+  };
 
 
-return {
-  getPhoto,
-};
+  return {
+    getPhoto,
+  };
 }

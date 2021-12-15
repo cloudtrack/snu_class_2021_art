@@ -1,5 +1,6 @@
-import { IonContent, IonFab, IonFabButton, IonIcon } from "@ionic/react";
+import { IonContent, IonFab, IonFabButton, IonIcon, IonLoading } from "@ionic/react";
 import { add } from "ionicons/icons";
+import { observer } from "mobx-react";
 import { useState } from "react";
 import { useStores } from "../../stores/RootStore";
 import { UserDataType } from "../../stores/UserStore";
@@ -9,7 +10,7 @@ interface ITeacherClassProps {
 }
 
 
-export const TeacherClass: React.FC<ITeacherClassProps> = ({ userData }) => {
+export const TeacherClass: React.FC<ITeacherClassProps> = observer(({ userData }) => {
   const [isFabOpen, setIsFabOpen] = useState(false);
 
   const { classStore } = useStores();
@@ -21,7 +22,8 @@ export const TeacherClass: React.FC<ITeacherClassProps> = ({ userData }) => {
       <IonContent>
         <h1>Teacher Class</h1>
         {
-          (classStore.classes.length > 0) ?
+          (classStore.isLoading) ?
+            <div>Loading</div> :
             classStore.classes.map((classData, index) => {
               if (classData !== null) {
                 return (
@@ -31,10 +33,7 @@ export const TeacherClass: React.FC<ITeacherClassProps> = ({ userData }) => {
                   </div>
                 );
               }
-            }) :
-            <div>
-              <h3>You have no class!</h3>
-            </div>
+            })
         }
       </IonContent>
       <IonFab vertical="bottom" horizontal="end" slot="fixed">
@@ -48,4 +47,4 @@ export const TeacherClass: React.FC<ITeacherClassProps> = ({ userData }) => {
       </IonFab>
     </>
   );
-};
+});
