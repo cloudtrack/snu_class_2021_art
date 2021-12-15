@@ -27,12 +27,17 @@ export const StudentClass: React.FC<IStudentClassProps> = ({ userData }) => {
   const fakeClassList: IClassItemProps[] = [];
   for (let i = 0; i < 2; i++) {
     fakeClassList.push({
-      classname: Faker.name.firstName(),
+      classItem: {
+        id: Faker.random.uuid(),
+        name: Faker.name.findName(),
+        description: Faker.lorem.paragraph(),
+      },
       teacher: {
         id: Faker.random.uuid(),
         name: Faker.name.findName(),
         email: Faker.internet.email(),
       },
+      description: Faker.lorem.paragraph(),
     });
   }
   return (

@@ -10,33 +10,39 @@ import {
   IonText
 } from '@ionic/react';
 import { bookmark } from 'ionicons/icons';
-import { Teacher } from '../../models';
-import { avatarImageFromEmail } from '../../utils';
+import { observer } from 'mobx-react';
+import { Class, Teacher } from '../../models';
+import { useStores } from '../../stores/RootStore';
+// import { avatarImageFromEmail } from '../../utils';
 import './index.css';
 
 export interface IClassItemProps {
-  classname: string;
+  classItem: Class;
   teacher: Teacher;
+  description: string;
 }
 
-export const ClassItem: React.FC<IClassItemProps> = ({ classname, teacher }) => (
-  <IonCard>
-    <IonCardHeader>
-      {/* Show class name and professor name and notif dot */}
-      <IonGrid>
-        <IonRow className="ion-align-items-center">
-          <IonIcon icon={bookmark} />
-          <IonText class="ion-margin-start">{classname}</IonText>
-          <IonAvatar class="ion-margin-start teacher-avatar-image">
-            <img src={avatarImageFromEmail(teacher.email!)} alt={teacher.name} />
-          </IonAvatar>
-          <IonText class="ion-margin-start">{teacher.name}</IonText>
-        </IonRow>
-      </IonGrid>
-    </IonCardHeader>
-    <IonCardContent>
-      {/* Show class description */}
-      <IonSkeletonText animated style={{ width: '100%' }} />
-    </IonCardContent>
-  </IonCard>
-);
+export const ClassItem: React.FC<IClassItemProps> = observer(({ classItem, teacher, description }) => {
+  const { classStore } = useStores();
+  return (
+    <IonCard>
+      <IonCardHeader>
+        {/* Show class name and professor name and notif dot */}
+        <IonGrid>
+          <IonRow className="ion-align-items-center">
+            <IonIcon icon={bookmark} />
+            <IonText class="ion-margin-start">{classItem.name}</IonText>
+            <IonText class="ion-margin-start">{teacher.name}</IonText>
+          </IonRow>
+        </IonGrid>
+      </IonCardHeader>
+      <IonCardContent>
+        {
+          (classStore.isLoading) ?
+            <IonSkeletonText animated style={{ width: '100%' }} /> :
+            <IonText>{description}</IonText>
+        }
+      </IonCardContent>
+    </IonCard>
+  )
+});

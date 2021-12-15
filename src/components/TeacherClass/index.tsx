@@ -4,6 +4,8 @@ import { observer } from "mobx-react";
 import { useState } from "react";
 import { useStores } from "../../stores/RootStore";
 import { UserDataType } from "../../stores/UserStore";
+import { ClassItem, IClassItemProps } from "../ClassItem";
+import AddClassModal from "./AddClassModal";
 
 interface ITeacherClassProps {
   userData: UserDataType;
@@ -18,19 +20,23 @@ export const TeacherClass: React.FC<ITeacherClassProps> = observer(({ userData }
   return (
     <>
       {/* Implement add class component */}
-      <></>
+      <AddClassModal
+        showModal={isFabOpen}
+        onDidDismiss={() => setIsFabOpen(false)}
+      />
       <IonContent>
-        <h1>Teacher Class</h1>
         {
           (classStore.isLoading) ?
             <div>Loading</div> :
-            classStore.classes.map((classData, index) => {
+            classStore.classes.map((classData) => {
               if (classData !== null) {
+                const classItemProps : IClassItemProps = {
+                  classItem: classData,
+                  teacher: userData!,
+                  description: classData.description,
+                }
                 return (
-                  <div key={index}>
-                    <h3>{classData.name}</h3>
-                    <p>{classData.description}</p>
-                  </div>
+                  <ClassItem {...classItemProps} />
                 );
               }
             })
