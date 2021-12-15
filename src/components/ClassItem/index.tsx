@@ -40,9 +40,10 @@ export const ClassItem: React.FC<IClassItemProps> = observer(({ classItem, teach
           <IonGrid>
             <IonRow className="ion-align-items-center">
               <IonIcon icon={bookmark} />
-              <IonText class="ion-margin-start">{classItem.name}</IonText>
-              <IonText class="ion-margin-start">{teacher.name}</IonText>
+              <IonText class="ion-margin-start">
+                <h3>{classItem.name}</h3></IonText>
             </IonRow>
+            <IonRow><IonText class="ion-margin-start">{teacher.name}</IonText></IonRow>
           </IonGrid>
         </IonCardHeader>
         <IonCardContent>

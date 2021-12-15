@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import { useState } from "react";
 import { Class, Teacher } from "../../models";
 import { useStores } from "../../stores/RootStore";
+import AssignmentItem from "../AssignmentItem/AssignmentItem";
 import AddAssignmentModal from "./AddAssignmentModal";
 
 interface IClassDeatilsProps {
@@ -77,19 +78,12 @@ const ClassDetailsModal: React.FC<IClassDeatilsProps> = (props) => {
           {(assignmentStore.assignments.length > 0) ?
             assignmentStore.assignments.filter(
               (assignment) => assignment.classID === classItem.id
-            ).map((assignment) => (
+            ).map((assignment, index) => (
               (assignment !== null) ?
-                <IonCard className="ion-padding"key={assignment.id}>
-                  <IonText>
-                    <p>{assignment.description}</p>
-                  </IonText>
-                  <IonText>
-                    <p>{assignment.openTime}</p>
-                  </IonText>
-                  <IonText>
-                    <p>{assignment.deadline}</p>
-                  </IonText>
-                </IonCard> :
+              <AssignmentItem assignment={assignment} index={index} /> :
+                // <IonCard className="ion-padding"key={assignment.id}>
+
+                // </IonCard> :
                 <></>
             )) :
             <IonItem no-lines>
