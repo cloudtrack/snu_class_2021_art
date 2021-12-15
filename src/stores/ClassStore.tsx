@@ -130,11 +130,16 @@ class ClassStore {
       description: classDescription,
       teacherID: this.rootStore.userStore.userData?.id as string,
       Assignments: [] as Assignment[],
-      startDate: new Date().toLocaleString(),
+      startDate: new Date().toISOString(),
       ArtWorks: [] as ArtWork[],
       students: [] as StudentClass[]
     });
+    console.log(newClass);
+    console.log("current classes: ");
+    console.log(this.classes);
     this.classes.push(newClass);
+    console.log("new classes: ");
+    console.log(this.classes);
     await DataStore.save(newClass);
   }
 
