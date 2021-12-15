@@ -6,7 +6,7 @@ import {
   CameraResultType,
   CameraSource,
   ImageOptions,
-  Photo,
+  // Photo,
 } from "@capacitor/camera";
 // import { Filesystem, Directory } from "@capacitor/filesystem";
 // import { Storage } from "@capacitor/storage";

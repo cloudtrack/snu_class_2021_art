@@ -1,6 +1,9 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonText, IonToolbar } from "@ionic/react";
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonModal, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import { observer } from "mobx-react";
+import { useState } from "react";
+import ClassStore from "../../stores/ClassStore";
+import { useStores } from "../../stores/RootStore";
 
 interface IAddClassModalProps {
   showModal: boolean;
@@ -9,7 +12,11 @@ interface IAddClassModalProps {
 
 const AddClassModal: React.FC<IAddClassModalProps> = (props) => {
 
+  const [className, setClassName] = useState("");
+  const [classDescription, setClassDescription] = useState("");
   const { showModal, onDidDismiss } = props;
+
+  const { classStore } = useStores();
 
   return (
     <IonModal
@@ -23,13 +30,44 @@ const AddClassModal: React.FC<IAddClassModalProps> = (props) => {
               <IonIcon color="white" slot="icon-only" icon={arrowBack} />
             </IonButton>
           </IonButtons>
-          <IonText>
-            <h1>Add Class</h1>
-          </IonText>
+          <IonTitle>Create New Class</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-
+        <IonList>
+          <IonItem>
+            <IonLabel>Class Name</IonLabel>
+            <IonInput
+              value={className}
+              onIonChange={e => setClassName(e.detail.value!)}
+            ></IonInput>
+          </IonItem>
+          <IonItem>
+            <IonLabel>Class Description</IonLabel>
+            <IonTextarea
+              value={classDescription}
+              rows={6} cols={12}
+              placeholder="Enter class description here"
+              onIonChange={e => setClassDescription(e.detail.value!)}
+            >
+            </IonTextarea>
+          </IonItem>
+        </IonList>
+        <IonButton
+          style={{
+            margin: '50px 50px 50px 50px',
+          }}
+          type="submit"
+          expand="block"
+          onClick={ async () => {
+            await classStore.addClass(className, classDescription);
+            setClassName("");
+            setClassDescription("");
+            onDidDismiss();
+          }}
+        >
+          Create Class
+        </IonButton>
       </IonContent>
     </IonModal>
   );
