@@ -1,9 +1,9 @@
-import { dismiss } from "@ionic/core/dist/types/utils/overlays";
-import { IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonModal, IonRow, IonText, IonTextarea, IonTitle, IonToolbar, useIonPopover } from "@ionic/react";
-import { add, arrowBack, close } from "ionicons/icons";
+import { IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonList, IonModal, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react";
+import { add, arrowBack } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { Class, Teacher } from "../../models";
+import { useStores } from "../../stores/RootStore";
 import AddAssignmentModal from "./AddAssignmentModal";
 
 interface IClassDeatilsProps {
@@ -14,8 +14,10 @@ interface IClassDeatilsProps {
 }
 
 const ClassDetailsModal: React.FC<IClassDeatilsProps> = (props) => {
-  const { classItem, teacher, showClassDetails, onDidDismiss } = props;
+  const { classItem, showClassDetails, onDidDismiss } = props;
   const [addAssignment, setAddAssignment] = useState(false);
+
+  const { assignmentStore } = useStores();
 
   return (
     <IonModal
@@ -23,6 +25,7 @@ const ClassDetailsModal: React.FC<IClassDeatilsProps> = (props) => {
       onDidDismiss={() => onDidDismiss()}
     >
       <AddAssignmentModal
+        classItem={classItem}
         showModal={addAssignment}
         onDidDismiss={() => setAddAssignment(false)} />
       <IonHeader translucent>
@@ -71,15 +74,22 @@ const ClassDetailsModal: React.FC<IClassDeatilsProps> = (props) => {
           </IonRow>
         </IonGrid>
         <IonList>
-          {(classItem.Assignments !== undefined &&
-            classItem.Assignments.length > 0) ?
-            classItem.Assignments.map((assignment) => (
+          {(assignmentStore.assignments.length > 0) ?
+            assignmentStore.assignments.filter(
+              (assignment) => assignment.classID === classItem.id
+            ).map((assignment) => (
               (assignment !== null) ?
-                <IonItem key={assignment.id}>
+                <IonCard className="ion-padding"key={assignment.id}>
                   <IonText>
-                    <h3>{assignment.deadline}</h3>
+                    <p>{assignment.description}</p>
                   </IonText>
-                </IonItem> :
+                  <IonText>
+                    <p>{assignment.openTime}</p>
+                  </IonText>
+                  <IonText>
+                    <p>{assignment.deadline}</p>
+                  </IonText>
+                </IonCard> :
                 <></>
             )) :
             <IonItem no-lines>

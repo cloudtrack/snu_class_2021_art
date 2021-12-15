@@ -2,13 +2,20 @@ import { IonButton, IonButtons, IonContent, IonDatetime, IonHeader, IonIcon, Ion
 import { close } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useState } from "react";
+import { Class } from "../../models";
+import { useStores } from "../../stores/RootStore";
 
 const AddAssignmentModal: React.FC<{
+  classItem: Class;
   showModal: boolean;
   onDidDismiss: () => void;
-}> = ({ showModal, onDidDismiss }) => {
+}> = ({ classItem, showModal, onDidDismiss }) => {
 
   const [description, setDescription] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [deadline, setDeadline] = useState("");
+
+  const { assignmentStore } = useStores();
 
   return (
     <IonModal
@@ -30,7 +37,6 @@ const AddAssignmentModal: React.FC<{
           <IonItem>
             <IonLabel position="floating">Description</IonLabel>
             <IonTextarea
-
               value={description}
               rows={6} cols={12}
               placeholder="Enter assignment description here"
@@ -41,12 +47,16 @@ const AddAssignmentModal: React.FC<{
           <IonItem>
             <IonLabel>Start time</IonLabel>
             <IonDatetime
+              value={startTime}
+              onIonChange={e => setStartTime(e.detail.value!)}
               displayFormat="MMM DD, YYYY HH:mm" placeholder="Select due date"
             />
           </IonItem>
           <IonItem>
-            <IonLabel>Due Date</IonLabel>
+            <IonLabel>Deadline</IonLabel>
             <IonDatetime
+              value={deadline}
+              onIonChange={e => setDeadline(e.detail.value!)}
               displayFormat="MMM DD, YYYY HH:mm" placeholder="Select due date"
             />
           </IonItem>
@@ -58,7 +68,13 @@ const AddAssignmentModal: React.FC<{
           type="submit"
           expand="block"
           onClick={() => {
-
+            assignmentStore.addAssignment(
+              classItem.id,
+              description,
+              startTime,
+              deadline
+            );
+            onDidDismiss();
           }}
         >
           Add Assignment
