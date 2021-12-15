@@ -1,5 +1,5 @@
 import { IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonList, IonModal, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react";
-import { add, arrowBack } from "ionicons/icons";
+import { add, arrowBack, leaf } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { Class, Teacher } from "../../models";
@@ -81,10 +81,7 @@ const ClassDetailsModal: React.FC<IClassDeatilsProps> = (props) => {
             ).map((assignment, index) => (
               (assignment !== null) ?
               <AssignmentItem assignment={assignment} index={index} /> :
-                // <IonCard className="ion-padding"key={assignment.id}>
-
-                // </IonCard> :
-                <></>
+              <></>
             )) :
             <IonItem no-lines>
               <IonText>

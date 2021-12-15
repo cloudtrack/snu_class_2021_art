@@ -1,6 +1,8 @@
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import { Assignment } from "../../models";
+import { useStores } from "../../stores/RootStore";
+import TeacherAssignment from "../TeacherAssignment";
 
 interface IAssignmentDetailsProps {
   showAssignmentDeails: boolean;
@@ -10,6 +12,9 @@ interface IAssignmentDetailsProps {
 
 const AssignmentDetailsModal: React.FC<IAssignmentDetailsProps> = (props) => {
   const { showAssignmentDeails, onDidDismiss, assignment } = props;
+
+  const { userStore } = useStores();
+
   return (
     <IonModal
       isOpen={showAssignmentDeails}
@@ -26,6 +31,11 @@ const AssignmentDetailsModal: React.FC<IAssignmentDetailsProps> = (props) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        {
+          (userStore.userData?.role === "teacher") ?
+          <TeacherAssignment assignment={assignment}/> : //<StudentAssignment />
+          <></>
+        }
       </IonContent>
     </IonModal>
   );
