@@ -5,6 +5,7 @@ import {
   IonTitle,
   IonToolbar
 } from '@ionic/react';
+import { observer } from 'mobx-react';
 import { StudentClass } from '../../components/StudentClass';
 import { TeacherClass } from '../../components/TeacherClass';
 import { UserDataType } from '../../stores/UserStore';
@@ -33,4 +34,4 @@ const ClassView: React.FC<IClassViewProps> = ({ userData }) => {
   )
 };
 
-export default ClassView;
+export default observer(ClassView);
