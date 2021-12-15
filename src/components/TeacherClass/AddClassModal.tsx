@@ -59,10 +59,8 @@ const AddClassModal: React.FC<IAddClassModalProps> = (props) => {
           }}
           type="submit"
           expand="block"
-          onClick={ async () => {
-            await classStore.addClass(className, classDescription);
-            setClassName("");
-            setClassDescription("");
+          onClick={() => {
+            classStore.addClass(className, classDescription);
             onDidDismiss();
           }}
         >
