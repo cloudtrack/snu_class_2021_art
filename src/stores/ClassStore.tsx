@@ -1,5 +1,5 @@
 import { DataStore } from '@aws-amplify/datastore';
-import { observable, makeObservable, action } from 'mobx';
+import { observable, makeObservable, action, autorun } from 'mobx';
 import { Class, Teacher, Student, StudentClass, ArtWork, Assignment } from '../models';
 import RootStore from './RootStore';
 
@@ -24,6 +24,14 @@ class ClassStore {
       addClass: action
     });
 
+    autorun(() => {
+      if (this.rootStore.userStore.userData !== null && (
+        this.rootStore.userStore.userData.role === "teacher" ||
+        this.rootStore.userStore.userData.role === "student"
+      )) {
+        this.initialize();
+      }
+    })
   }
 
   initialize = async () => {
@@ -92,11 +100,13 @@ class ClassStore {
         const models = await DataStore.query(Class);
         // iterate through all classes
         for (const classItem of models) {
-          for (const student of classItem.students!) {
-            if (student !== null && student.id === studentInfo.id) {
-              this.classIDs.push(classItem.id);
-              this.classes.push(classItem);
-              tmp.push(classItem);
+          if (classItem.students !== undefined) {
+            for (const student of classItem.students) {
+              if (student !== null && student.id === studentInfo.id) {
+                this.classIDs.push(classItem.id);
+                this.classes.push(classItem);
+                tmp.push(classItem);
+              }
             }
           }
         }
@@ -123,7 +133,7 @@ class ClassStore {
     this.isLoading = false;
   }
 
-  addClass = async (className : string, classDescription: string) => {
+  addClass = async (className: string, classDescription: string) => {
     // only teachers can add classes
     const newClass = new Class({
       name: className,
