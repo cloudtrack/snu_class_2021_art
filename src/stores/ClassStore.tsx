@@ -1,6 +1,6 @@
 import { DataStore } from '@aws-amplify/datastore';
 import { observable, makeObservable, action } from 'mobx';
-import { Class, Teacher, Student, StudentClass } from '../models';
+import { Class, Teacher, Student, StudentClass, ArtWork, Assignment } from '../models';
 import RootStore from './RootStore';
 
 
@@ -14,18 +14,14 @@ class ClassStore {
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
-
-    // this.initialize();
-
-    // this.classes = [];
-
     console.log(this)
     makeObservable(this, {
       isLoading: observable,
       classes: observable,
       rootStore: false,
 
-      initialize: action
+      initialize: action,
+      addClass: action
     });
 
   }
@@ -127,12 +123,19 @@ class ClassStore {
     this.isLoading = false;
   }
 
-  addClass = async () => {
+  addClass = async (className : string, classDescription: string) => {
     // only teachers can add classes
-    // await DataStore.save(
-    //   new Class({
-    //   })
-    // );
+    const newClass = new Class({
+      name: className,
+      description: classDescription,
+      teacherID: this.rootStore.userStore.userData?.id as string,
+      Assignments: [] as Assignment[],
+      startDate: new Date().toLocaleString(),
+      ArtWorks: [] as ArtWork[],
+      students: [] as StudentClass[]
+    });
+    this.classes.push(newClass);
+    await DataStore.save(newClass);
   }
 
   joinClass = async () => {
