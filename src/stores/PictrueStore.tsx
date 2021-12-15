@@ -1,6 +1,6 @@
 import Storage from "@aws-amplify/storage";
 import { Filesystem } from "@capacitor/filesystem";
-import { action, makeObservable, observable } from "mobx";
+import { action, autorun, makeObservable, observable } from "mobx";
 import RootStore from "./RootStore";
 
 // wrap up crud to aws s3 buckets
@@ -19,8 +19,12 @@ class PictureStore {
 
       getProfilePic: action,
     });
-    this.getProfilePic(true);
-    this.getProfilePic(false);
+    autorun(() => {
+      if (this.rootStore.userStore.userData?.profile != null) {
+        this.getProfilePic(true);
+        this.getProfilePic(false);
+      }
+    });
   }
 
   uploadProfilePic = async (file: string) => {

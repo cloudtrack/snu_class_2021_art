@@ -9,10 +9,8 @@ interface IClassControllerProps {
 }
 
 const ClassController: React.FC<IClassControllerProps> = observer((props) => {
-  const { userStore, classStore } = props;
+  const { userStore } = props;
   const { userData } = userStore;
-
-  classStore.initialize();
 
   return (
     <ClassView userData={userData}/>
