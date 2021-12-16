@@ -1,6 +1,7 @@
 import { IonCol, IonFab, IonFabButton, IonFabList, IonGrid, IonIcon, IonItem, IonList, IonRow, IonText } from "@ionic/react";
-import { add, cloudUpload, camera, search, images } from "ionicons/icons";
-import { getArtWork } from "../../graphql/queries";
+import { cloudUpload, camera, images } from "ionicons/icons";
+import { observer } from "mobx-react";
+import { assign } from "mobx/dist/internal";
 import { Student } from "../../models";
 import { Assignment } from "../../models";
 import { useStores } from "../../stores/RootStore";
@@ -13,13 +14,18 @@ const StudentAssignment: React.FC<{
 
   const { userStore, artworkStore } = useStores();
 
+  const overdue = Date.parse(assignment.deadline!!) < new Date().getTime();
+
   const getArtWork = (studentid: UserDataType) => {
     const userData = studentid?.id;
     const artwork = artworkStore.artworks.find(artwork => (
       artwork.assignmentID === assignment.id &&
       artwork.studentID === userData));
     if (artwork === undefined) {
-      return <IonText>Did not submit</IonText>
+      return (
+        <>
+      <IonText>Did not submit</IonText>
+      </>)
     } else {
       return (
         <>
@@ -47,6 +53,10 @@ const StudentAssignment: React.FC<{
             <p>{assignment.description}</p>
           </IonText>
         </IonRow>
+        <IonRow>
+          <IonCol></IonCol>
+          <IonCol className="ion-no-padding ion-align-self-center ion-text-right">{`Deadline: ${assignment.deadline}`}</IonCol>
+        </IonRow>
       </IonGrid>
       <IonGrid
         className="ion-padding-horizontal"
@@ -59,16 +69,20 @@ const StudentAssignment: React.FC<{
               <h2>Student submissions</h2>
             </IonText>
           </IonCol>
+          <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
+            {overdue ? <IonText color="danger">Overdue</IonText> : <></>}
+          </IonCol>
         </IonRow>
       </IonGrid>
       <IonList>
         {getArtWork(userStore.userData)}
       </IonList>
-      <IonFab vertical="bottom" horizontal="center"slot="fixed">
-        <IonFabButton color="danger">
+      <IonFab
+      vertical="bottom" horizontal="center"slot="fixed">
+        <IonFabButton color="primary" disabled={overdue}>
           <IonIcon icon={cloudUpload} />
         </IonFabButton>
-        <IonFabList side="start">
+        <IonFabList side="top">
           <IonFabButton>
             <IonIcon icon={images} />
           </IonFabButton>
@@ -81,4 +95,4 @@ const StudentAssignment: React.FC<{
   );
 }
 
-export default StudentAssignment;
+export default observer(StudentAssignment);

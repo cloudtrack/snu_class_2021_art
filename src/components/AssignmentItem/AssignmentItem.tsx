@@ -1,5 +1,5 @@
 import { IonCard, IonCardHeader, IonIcon, IonText, IonCardContent, IonCol, IonRow, IonGrid, IonFabButton } from "@ionic/react";
-import { pencil } from "ionicons/icons";
+import { checkmarkDone, close, pencil } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { Assignment } from "../../models";
@@ -11,16 +11,6 @@ interface IAssignmentItemProps {
   assignment: Assignment;
 }
 
-const SubmitStatus: React.FC<{ assignment: Assignment }> = observer(({ assignment }) => {
-
-  return (
-    <>
-      <IonFabButton>
-      </IonFabButton>
-    </>
-  )
-});
-
 
 const AssignmentItem: React.FC<IAssignmentItemProps> = observer(({
   index,
@@ -28,7 +18,34 @@ const AssignmentItem: React.FC<IAssignmentItemProps> = observer(({
 }) => {
   const [showDetails, setShowAssignmentDetails] = useState(false);
 
-  const { userStore } = useStores();
+  const { userStore, artworkStore } = useStores();
+
+  const submitted = artworkStore.artworks.find(artwork => (
+    artwork.assignmentID === assignment.id &&
+    artwork.studentID === userStore.userData?.id)
+  );
+
+  const overdue = Date.parse(assignment.deadline!!) < new Date().getTime();
+
+  const getSubmitStatus = () => {
+    let color = "";
+    let icon;
+    if (overdue && !submitted) { // 1 0
+      color = "danger";
+      icon = close;
+    } else if (!overdue && !submitted) { // 0 0
+      color = "warning";
+      icon = pencil;
+    } else { //
+      color = "success";
+      icon = checkmarkDone;
+    }
+    return(
+      <IonFabButton color={color}>
+        <IonIcon icon={icon} />
+      </IonFabButton>
+    )
+  }
 
   return (
     <>
@@ -60,7 +77,7 @@ const AssignmentItem: React.FC<IAssignmentItemProps> = observer(({
               <IonCol size="2">
                 {
                   userStore.userData?.role === "student" ?
-                    <SubmitStatus assignment={assignment} /> : <></>
+                    getSubmitStatus() : <></>
                 }
               </IonCol>
             </IonRow>
