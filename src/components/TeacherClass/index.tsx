@@ -32,7 +32,6 @@ export const TeacherClass: React.FC<ITeacherClassProps> = observer(({ userData }
               if (classData !== null) {
                 const classItemProps : IClassItemProps = {
                   classItem: classData,
-                  teacher: userData!,
                   description: classData.description,
                 }
                 return (

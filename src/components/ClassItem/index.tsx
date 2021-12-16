@@ -11,25 +11,22 @@ import {
 import { bookmark } from 'ionicons/icons';
 import { observer } from 'mobx-react';
 import { useState } from 'react';
-import { Class, Teacher } from '../../models';
+import { Class } from '../../models';
 import { useStores } from '../../stores/RootStore';
 import ClassDetailsModal from './ClassDetailsModal';
-// import { avatarImageFromEmail } from '../../utils';
 
 export interface IClassItemProps {
   classItem: Class;
-  teacher: Teacher;
   description: string;
 }
 
-export const ClassItem: React.FC<IClassItemProps> = observer(({ classItem, teacher, description }) => {
+export const ClassItem: React.FC<IClassItemProps> = observer(({ classItem, description }) => {
   const [showClassDetails, setShowClassDetails] = useState(false);
   const { classStore } = useStores();
   return (
     <>
       <ClassDetailsModal
         classItem={classItem}
-        teacher={teacher}
         showClassDetails={showClassDetails}
         onDidDismiss={() => setShowClassDetails(false)}
       />
@@ -43,7 +40,7 @@ export const ClassItem: React.FC<IClassItemProps> = observer(({ classItem, teach
               <IonText class="ion-margin-start">
                 <h3>{classItem.name}</h3></IonText>
             </IonRow>
-            <IonRow><IonText class="ion-margin-start">{teacher.name}</IonText></IonRow>
+            {/* <IonRow><IonText class="ion-margin-start">{teacher.name}</IonText></IonRow> */}
           </IonGrid>
         </IonCardHeader>
         <IonCardContent>

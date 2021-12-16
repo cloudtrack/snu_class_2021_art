@@ -4,10 +4,9 @@ import { Class, Teacher, Student, StudentClass, ArtWork, Assignment } from '../m
 import RootStore from './RootStore';
 
 
-
-
 class ClassStore {
   rootStore: RootStore;
+  allClasses: Class[] = [];
   classes: Class[] = [];
   classIDs: string[] = [];
   isLoading: boolean = false;
@@ -56,6 +55,7 @@ class ClassStore {
         const models = await DataStore.query(Class);
         // iterate through all classes
         for (const classItem of models) {
+          this.allClasses.push(classItem);
           // if the class is in the teacher's list of classes
           if (classItem.teacherID === teacherInfo.id
             && this.classIDs.includes(classItem.id) === false) {
@@ -96,20 +96,22 @@ class ClassStore {
       // fetch from backend
       else {
         console.log("fetching from backend")
-        let tmp: Class[] = [];
-        const models = await DataStore.query(Class);
-        // iterate through all classes
-        for (const classItem of models) {
-          if (classItem.students !== undefined) {
-            for (const student of classItem.students) {
-              if (student !== null && student.id === studentInfo.id) {
-                this.classIDs.push(classItem.id);
-                this.classes.push(classItem);
-                tmp.push(classItem);
-              }
-            }
-          }
+        const ac = await DataStore.query(Class);
+        for (const classItem of ac) {
+          this.allClasses.push(classItem);
         }
+        let tmp: Class[] = [];
+        const models = await DataStore.query(StudentClass);
+        // iterate through all classes
+        models.filter(
+          (studentClass: StudentClass) => studentClass.student.id === studentInfo.id
+        ).forEach(
+          (studentClass: StudentClass) => {
+            this.classes.push(studentClass.class);
+            this.classIDs.push(studentClass.class.id);
+            tmp.push(studentClass.class);
+          }
+        )
 
         console.log("class joined: ");
         console.log(tmp);
@@ -131,6 +133,8 @@ class ClassStore {
       console.log('role not defined');
     }
     this.isLoading = false;
+    console.log("all classes: ")
+    console.log(this.allClasses)
   }
 
   addClass = async (className: string, classDescription: string) => {
@@ -153,8 +157,32 @@ class ClassStore {
     await DataStore.save(newClass);
   }
 
-  joinClass = async () => {
+  joinClass = async (classItem: Class) => {
+    console.log("try to join class: ");
     // only students can join classes
+    const newSC = new StudentClass({
+      student: this.rootStore.userStore.userData as Student,
+      class: classItem
+    });
+    this.classes.push(classItem);
+    this.classIDs.push(classItem.id);
+
+    await DataStore.save(
+      Class.copyOf(classItem,
+        item => {
+          (item.students === undefined) ? item.students = [] : item.students.push(newSC);
+        })
+    );
+    await DataStore.save(
+      Student.copyOf(this.rootStore.userStore.userData as Student,
+        item => {
+          item.ClassJoined === undefined ? item.ClassJoined = [] : item.ClassJoined.push(newSC);
+        })
+    );
+    await DataStore.save(
+      newSC
+    );
+    console.log(this.classes);
   }
 
   leaveClass = async () => {
