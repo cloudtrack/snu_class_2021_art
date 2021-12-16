@@ -53,7 +53,10 @@ class ArtWorkStore {
 
   addArtWork = async (assnID: string, studentID: string, img: string) => {
     //
-    const artworkIndex = this.artworks.findIndex(artwork => artwork.assignmentID === assnID && artwork.studentID === studentID);
+    const artworkIndex = this.artworks.findIndex(
+      artwork => artwork.assignmentID === assnID &&
+      artwork.studentID === studentID
+      );
     if (artworkIndex < 0) {
       const artwork = new ArtWork({
         assignmentID: assnID,
@@ -65,13 +68,17 @@ class ArtWorkStore {
       await DataStore.save(artwork);
     } else {
       const oldArtWork = this.artworks.splice(artworkIndex, 1);
-      this.artworks.push(ArtWork.copyOf(oldArtWork[0], item => {
-        item.image = img;
-      }));
-      await DataStore.save(ArtWork.copyOf(oldArtWork[0], item => {
-        item.image = img;
-      }
-      ));
+      this.artworkIDs.splice(artworkIndex, 1);
+
+      const artwork = new ArtWork({
+        assignmentID: assnID,
+        studentID: studentID,
+        image: img
+      });
+      this.artworks.push(artwork);
+      this.artworkIDs.push(artwork.id);
+      await DataStore.delete(oldArtWork[0]);
+      await DataStore.save(artwork);
     }
   }
 

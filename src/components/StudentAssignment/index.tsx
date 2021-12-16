@@ -137,7 +137,7 @@ const StudentAssignment: React.FC<{
                       studentID,
                       "assn/" + pic,
                     );
-                    await pictureStore.uploadPicture(photo, "assn/" + pic);
+                    await pictureStore.uploadPicture(photo, pic);
                   }
                 }
               );
@@ -164,7 +164,7 @@ const StudentAssignment: React.FC<{
                       studentID,
                       "assn/" + pic,
                     );
-                    await pictureStore.uploadPicture(photo, "assn/" + pic);
+                    await pictureStore.uploadPicture(photo, pic);
                   }
                 }
               );

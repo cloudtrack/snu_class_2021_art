@@ -42,6 +42,8 @@ class ClassStore {
     // Teacher : load classes opened by current user
     if (this.rootStore.userStore.userData?.role === 'teacher') {
       const teacherInfo: Teacher = this.rootStore.userStore.userData;
+      this.classes = [];
+      this.classIDs = [];
       console.log("current teacher: ")
       console.log(teacherInfo)
       // if already documented in userinfo
@@ -85,6 +87,8 @@ class ClassStore {
       const studentInfo: Student = this.rootStore.userStore.userData;
       console.log("current student: ")
       console.log(studentInfo)
+      this.classes = [];
+      this.classIDs = [];
       if (studentInfo.ClassJoined !== undefined
         && studentInfo.ClassJoined.length > 0) {
         // iterate trough class joined and get class info

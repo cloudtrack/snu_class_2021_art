@@ -1,6 +1,6 @@
 import Auth, { CognitoUser } from '@aws-amplify/auth';
 import { DataStore } from '@aws-amplify/datastore';
-import { action, makeObservable, observable } from 'mobx';
+import { action, autorun, makeObservable, observable } from 'mobx';
 import { Teacher, Student } from '../models';
 import RootStore from './RootStore';
 
@@ -30,7 +30,13 @@ class UserStore {
       // Not Observable
       rootStore: false,
     });
-    this.initialize();
+    autorun(() => {
+      if (this.userData === null){
+        this.initialize();
+      }
+
+    })
+
     this.authCheckComplete = true;
     console.log(this);
   }
