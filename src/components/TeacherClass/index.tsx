@@ -1,4 +1,4 @@
-import { IonContent, IonFab, IonFabButton, IonIcon, IonLoading } from "@ionic/react";
+import { IonContent, IonFab, IonFabButton, IonIcon } from "@ionic/react";
 import { add } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useState } from "react";

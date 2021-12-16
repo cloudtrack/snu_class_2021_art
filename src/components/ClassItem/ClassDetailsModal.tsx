@@ -1,5 +1,5 @@
-import { IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonList, IonModal, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react";
-import { add, arrowBack, leaf } from "ionicons/icons";
+import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonList, IonModal, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react";
+import { add, arrowBack } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { Class } from "../../models";
