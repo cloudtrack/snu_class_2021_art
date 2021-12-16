@@ -2,8 +2,5 @@
 	"appId": "io.ionic.starter",
 	"appName": "snu_class_2021_art",
 	"webDir": "build",
-	"bundledWebRuntime": false,
-	"server": {
-		"url": "http://192.168.50.250:8100"
-	}
+	"bundledWebRuntime": false
 }
