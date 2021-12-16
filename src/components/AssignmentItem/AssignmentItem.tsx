@@ -11,12 +11,12 @@ interface IAssignmentItemProps {
   assignment: Assignment;
 }
 
-const SubmitStatus: React.FC<{assignment: Assignment}> = observer(({assignment}) => {
+const SubmitStatus: React.FC<{ assignment: Assignment }> = observer(({ assignment }) => {
 
-  return(
+  return (
     <>
-    <IonFabButton>
-    </IonFabButton>
+      <IonFabButton>
+      </IonFabButton>
     </>
   )
 });
@@ -33,6 +33,7 @@ const AssignmentItem: React.FC<IAssignmentItemProps> = observer(({
   return (
     <>
       <AssignmentDetailsModal
+        index={index}
         showAssignmentDeails={showDetails}
         assignment={assignment}
         onDidDismiss={() => setShowAssignmentDetails(false)}
@@ -59,7 +60,7 @@ const AssignmentItem: React.FC<IAssignmentItemProps> = observer(({
               <IonCol size="2">
                 {
                   userStore.userData?.role === "student" ?
-                  <SubmitStatus assignment={assignment}/> : <></>
+                    <SubmitStatus assignment={assignment} /> : <></>
                 }
               </IonCol>
             </IonRow>

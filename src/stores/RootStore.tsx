@@ -1,4 +1,5 @@
 import React from "react";
+import ArtworkStore from "./ArtworkStore";
 import AssignmentStore from "./AssignmentStore";
 import ClassStore from "./ClassStore";
 import PictureStore from "./PictrueStore";
@@ -9,11 +10,13 @@ class RootStore {
   pictureStore: PictureStore;
   classStore : ClassStore;
   assignmentStore: AssignmentStore;
+  artworkStore: ArtworkStore;
   constructor() {
     this.userStore = new UserStore(this);
     this.pictureStore = new PictureStore(this);
     this.classStore = new ClassStore(this);
     this.assignmentStore = new AssignmentStore(this);
+    this.artworkStore = new ArtworkStore(this);
   }
 }
 

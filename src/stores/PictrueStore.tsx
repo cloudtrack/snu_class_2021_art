@@ -95,5 +95,6 @@ class PictureStore {
       this.profileurl = url;
     }
   }
+
 }
 export default PictureStore;
