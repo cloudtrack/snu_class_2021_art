@@ -28,3 +28,47 @@
   margin: 0;
   width: 100%;
 }
+
+.preview-slides {
+    margin-top: 20%;
+    background: #e6e6e6;
+}
+.preview-slides img {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.image-slide, .image-card {
+    overflow: visible;
+}
+
+.modal-transparency {
+    --background: transparent !important;
+}
+
+.modal-transparency  .scroll-content {
+    overflow-y: hidden;
+}
+
+.modal-transparency .sliderrr {
+    height: 100% !important;
+}
+
+.modal-transparency .footer {
+    margin-bottom: 10px;
+}
+
+.modal-transparency .btn {
+    --background: rgba(0, 0, 0, 0.14);
+    --box-shadow : none;
+}
+
+.imgwrapper {
+    width: 100vw;
+    height: 43vw;
+    overflow: hidden;
+}
+
+.imgwrapper img {
+    width: 100%;
+    object-fit: cover;
+}

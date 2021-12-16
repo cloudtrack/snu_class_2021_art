@@ -11,21 +11,19 @@ import {
 } from '@ionic/react';
 import Faker from 'faker';
 import { add, camera, cloudUpload, search } from 'ionicons/icons';
+import { observer } from 'mobx-react';
 import { FeedItem } from '../../components/FeedItem';
 import { ICommentItemProps } from '../../components/FeedItem/commentItem';
 import HidingHeader from '../../components/HidingHeader/HidingHeader';
 import { useHidingHeader } from '../../hooks/useHidingHeader';
+import { useStores } from '../../stores/RootStore';
 import './Feed.css';
 
 const FeedView: React.FC = () => {
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(50)
   const fakeCommentList: ICommentItemProps[] = [];
-  for (let i = 0; i < 2; i++) {
-    fakeCommentList.push({
-      comment: Faker.lorem.sentence(),
-      username: Faker.name.findName(),
-    });
-  }
+
+  const { artworkStore } = useStores();
 
   return (
     <IonPage>
@@ -40,28 +38,14 @@ const FeedView: React.FC = () => {
         fullscreen
         scrollEvents
         onIonScroll={(e) => setScrollYCurrent(e.detail.scrollTop)}>
-        {new Array(10).fill(null).map(() => (
-          <FeedItem commentList={fakeCommentList} />
-        ))}
+        {
+          artworkStore.artworks.map((artwork) => (
+            <FeedItem key={artwork.id} artwork={artwork} />
+          ))
+        }
       </IonContent>
-      <IonFab vertical="bottom" horizontal="end" slot="fixed">
-        <IonFabButton color="danger">
-          <IonIcon icon={add} />
-        </IonFabButton>
-        <IonFabList side="top">
-          <IonFabButton>
-            <IonIcon icon={cloudUpload} />
-          </IonFabButton>
-          <IonFabButton>
-            <IonIcon icon={camera} />
-          </IonFabButton>
-          <IonFabButton>
-            <IonIcon icon={search} />
-          </IonFabButton>
-        </IonFabList>
-      </IonFab>
     </IonPage>
   );
 };
 
-export default FeedView;
+export default observer(FeedView);
