@@ -22,7 +22,6 @@ const HidingHeader: React.FC<ContainerProps> = ({ hideDecimal, children }) => {
       <IonHeader
         ref={header}
         style={styles}
-        className="ion-no-border bottom-line-border"
       >
         <IonToolbar>{children}</IonToolbar>
       </IonHeader>

@@ -15,7 +15,7 @@ import {
   useIonModal
 } from '@ionic/react';
 import { DataStore } from 'aws-amplify';
-import { add, chatbubbleEllipses, close, heart, personCircle, remove } from 'ionicons/icons';
+import { add, chatbubbleEllipses, close, heart, heartOutline, personCircle, remove } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { Student } from '../../models';
 import { ArtWork } from '../../models';
@@ -177,8 +177,10 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
       <IonCardContent className="feed-control">
         <IonGrid>
           <IonRow className="ion-align-items-center ion-justify-content-end">
-            <IonIcon icon={heart} className="ion-margin-end" color="danger" />
-            <IonIcon icon={chatbubbleEllipses} color="primary" />
+            {
+            }
+            <IonIcon size='large' icon={heartOutline} className="ion-margin-end" color="danger" />
+            {/* <IonIcon icon={chatbubbleEllipses} color="primary" /> */}
           </IonRow>
         </IonGrid>
       </IonCardContent>

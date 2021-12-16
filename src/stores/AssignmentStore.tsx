@@ -11,27 +11,29 @@ class AssignmentStore {
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
-    autorun(() => {
-      if (this.rootStore.userStore.userData !== null &&
-        this.rootStore.classStore.classes.length > 0) {
-        this.initialize();
-        console.log("AssignmentStore created");
-        console.log(this.assignments);
-      }
-    })
-
     makeObservable(this, {
       assignments: observable,
       initialize: action,
       addAssignment: action,
       deleteAssignment: action,
     });
+
+    autorun(() => {
+      if (this.rootStore.userStore.userData !== null &&
+        this.rootStore.classStore.classes.length > 0) {
+        this.initialize();
+        console.log("AssignmentStore created");
+        // console.log(this.assignments);
+      }
+    })
+
   }
 
   initialize = async () => {
     if (this.rootStore.classStore.classes.length > 0) {
       for (const classItem of this.rootStore.classStore.classes) {
         if (classItem.Assignments === undefined) {
+          console.log(classItem)
           const assignments = await DataStore.query(Assignment);
           for (const assn of assignments) {
             if (assn.classID === classItem.id) {
@@ -55,8 +57,9 @@ class AssignmentStore {
     openTime: string,
     dueDate: string,
   ) => {
-    if (this.assignments.filter(
-      assn => assn.classID === classId).length > 0) {
+    console.log("addAssignment");
+    // if (this.assignments.filter(
+    //   assn => assn.classID === classId).length > 0) {
       const assn = new Assignment({
         "description": description,
         "openTime": openTime,
@@ -66,9 +69,6 @@ class AssignmentStore {
       });
       this._addAssignment(assn);
       await DataStore.save(assn);
-    } else {
-      throw new Error("Class not found");
-    }
   }
 
   _addAssignment = (assn: Assignment) => {
