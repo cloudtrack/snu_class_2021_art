@@ -2,14 +2,13 @@ import { IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader,
 import { add, arrowBack, leaf } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useState } from "react";
-import { Class, Teacher } from "../../models";
+import { Class } from "../../models";
 import { useStores } from "../../stores/RootStore";
 import AssignmentItem from "../AssignmentItem/AssignmentItem";
 import AddAssignmentModal from "./AddAssignmentModal";
 
-interface IClassDeatilsProps {
+export interface IClassDeatilsProps {
   classItem: Class;
-  teacher: Teacher;
   showClassDetails: boolean;
   onDidDismiss: () => void;
 }

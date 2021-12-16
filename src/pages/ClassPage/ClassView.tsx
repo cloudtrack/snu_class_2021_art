@@ -24,10 +24,11 @@ const ClassView: React.FC<IClassViewProps> = ({ userData }) => {
           <IonTitle size="large">Class</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent>
         {
-          userData?.role === 'student' ? <StudentClass userData={userData} /> :
-          <TeacherClass userData={userData}/>// TODO: show class page for teacher
+          userData?.role === 'student' ?
+          <StudentClass userData={userData} /> :
+          <TeacherClass userData={userData}/>
         }
       </IonContent>
     </IonPage>
