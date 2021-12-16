@@ -51,6 +51,12 @@ class ArtWorkStore {
     }
   }
 
+  addArtWork = async (artwork: ArtWork) => {
+    await DataStore.save(artwork);
+    this.artworks.push(artwork);
+    this.artworkIDs.push(artwork.id);
+  }
+
 }
 
 export default ArtWorkStore;

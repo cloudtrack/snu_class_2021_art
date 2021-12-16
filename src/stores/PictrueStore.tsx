@@ -1,6 +1,7 @@
 import Storage from "@aws-amplify/storage";
 import { Filesystem } from "@capacitor/filesystem";
 import { action, autorun, makeObservable, observable } from "mobx";
+import { base64FromPath } from "../hooks/userPhotoGallery";
 import RootStore from "./RootStore";
 
 // wrap up crud to aws s3 buckets
@@ -18,6 +19,7 @@ class PictureStore {
       profilethumbnailurl: observable,
 
       getProfilePic: action,
+      uploadProfilePic: action,
     });
     autorun(() => {
       if (this.rootStore.userStore.userData?.profile != null) {
@@ -94,6 +96,30 @@ class PictureStore {
     } else {
       this.profileurl = url;
     }
+  }
+
+  uploadPicture = async (file: string, assignmentId: string) => {
+    const base64 = await base64FromPath(file);
+    let postfix = file.split(".").pop();
+    let contentType = "image/" + postfix === "jpg" ? "jpeg" : postfix;
+
+    let buf = Buffer.from(base64, "base64");
+    await Storage.put(
+      "assn/originals/" + assignmentId + "-" + this.rootStore.userStore.userData!.id + "." + postfix,
+      buf,
+      {
+        level: "public",
+        contentType: contentType,
+        contentEncoding: "base64",
+        progressCallback(progress) {
+          console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+        },
+      }
+    )
+      .then((result) => {
+        console.log(result);
+      })
+      .catch(err => console.log(err)); // let's hope that this works!
   }
 
 }
