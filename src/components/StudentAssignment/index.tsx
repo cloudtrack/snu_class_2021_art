@@ -2,12 +2,13 @@ import { IonCol, IonFab, IonFabButton, IonFabList, IonGrid, IonIcon, IonImg, Ion
 import { cloudUpload, camera, images } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { assign } from "mobx/dist/internal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { base64FromPath, usePhotoGallery } from "../../hooks/userPhotoGallery";
 import { ArtWork, Student } from "../../models";
 import { Assignment } from "../../models";
 import { useStores } from "../../stores/RootStore";
 import { UserDataType } from "../../stores/UserStore";
+import { getImgLinkCached } from "../../stores/PictrueStore";
 
 const StudentAssignment: React.FC<{
   assignment: Assignment;
@@ -15,7 +16,6 @@ const StudentAssignment: React.FC<{
 }> = ({ assignment, index }) => {
 
   const { userStore, artworkStore, pictureStore } = useStores();
-  const [pic, setPic] = useState<string>("");
   const { getPhoto, savePicture } = usePhotoGallery();
 
   const overdue = Date.parse(assignment.deadline!!) < new Date().getTime();
@@ -23,6 +23,24 @@ const StudentAssignment: React.FC<{
   const artworkIndex = artworkStore.artworks.findIndex(artwork => (
     artwork.assignmentID === assignment.id &&
     artwork.studentID === userStore.userData?.id));
+
+  const [artworkURL, setArtwork] = useState<string>("");
+
+  useEffect(() => {
+    if (artworkIndex > -1) {
+      if (artworkStore.artworks[artworkIndex].image !== undefined) {
+        console.log("image found")
+        console.log(artworkStore.artworks[artworkIndex].image);
+        getImgLinkCached(artworkStore.artworks[artworkIndex].image!!).then(
+          (url: any) => {
+            console.log("url");
+            console.log(url)
+            setArtwork(url as string);
+          }
+        )
+      }
+    }
+  }, [artworkIndex]);
 
   const getArtWork = (studentid: UserDataType) => {
     const userData = studentid?.id;
@@ -43,7 +61,7 @@ const StudentAssignment: React.FC<{
           <IonText>{artwork.grade !== undefined && artwork.grade > 0 ?
             `${artwork.grade}/100` : "Not Graded"}</IonText>
           <IonImg
-            src={pic != "" ? pic : artwork.image}
+            src={artworkURL}
           ></IonImg>
         </>
       )
@@ -101,8 +119,26 @@ const StudentAssignment: React.FC<{
           <IonFabButton>
             <IonIcon icon={images} onClick={() => {
               getPhoto("gallery", false).then(
-                (photo) => {
-
+                async (photo) => {
+                  if (photo !== undefined) {
+                    let postfix = photo.split(".").pop();
+                    const regex = /[,/:]/g;
+                    let pic =
+                      assignment.id + "/" + userStore.userData?.id + "/" +
+                      "originals/" +
+                      new Date()
+                        .toLocaleString()
+                        .replaceAll(regex, "-")
+                        .replaceAll(" ", "") +
+                      "." + postfix;
+                    const studentID = userStore.userData?.id as string;
+                    await artworkStore.addArtWork(
+                      assignment.id,
+                      studentID,
+                      "assn/" + pic,
+                    );
+                    await pictureStore.uploadPicture(photo, "assn/" + pic);
+                  }
                 }
               );
             }} />
@@ -112,7 +148,23 @@ const StudentAssignment: React.FC<{
               getPhoto("camera", false).then(
                 async (photo) => {
                   if (photo !== undefined) {
-                    await pictureStore.uploadPicture(photo, assignment.id);
+                    let postfix = photo.split(".").pop();
+                    const regex = /[,/:]/g;
+                    let pic =
+                      assignment.id + "/" + userStore.userData?.id + "/" +
+                      "originals/" +
+                      new Date()
+                        .toLocaleString()
+                        .replaceAll(regex, "-")
+                        .replaceAll(" ", "") +
+                      "." + postfix;
+                    const studentID = userStore.userData?.id as string;
+                    await artworkStore.addArtWork(
+                      assignment.id,
+                      studentID,
+                      "assn/" + pic,
+                    );
+                    await pictureStore.uploadPicture(photo, "assn/" + pic);
                   }
                 }
               );

@@ -2,6 +2,7 @@ import Storage from "@aws-amplify/storage";
 import { Filesystem } from "@capacitor/filesystem";
 import { action, autorun, makeObservable, observable } from "mobx";
 import { base64FromPath } from "../hooks/userPhotoGallery";
+import { Cache } from "aws-amplify";
 import RootStore from "./RootStore";
 
 // wrap up crud to aws s3 buckets
@@ -98,29 +99,56 @@ class PictureStore {
     }
   }
 
-  uploadPicture = async (file: string, assignmentId: string) => {
-    const base64 = await base64FromPath(file);
+  uploadPicture = async (file: string, pic : string) => {
+    // upload to aws s3
     let postfix = file.split(".").pop();
     let contentType = "image/" + postfix === "jpg" ? "jpeg" : postfix;
 
-    let buf = Buffer.from(base64, "base64");
-    await Storage.put(
-      "assn/originals/" + assignmentId + "-" + this.rootStore.userStore.userData!.id + "." + postfix,
-      buf,
-      {
-        level: "public",
-        contentType: contentType,
-        contentEncoding: "base64",
-        progressCallback(progress) {
-          console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
-        },
-      }
-    )
-      .then((result) => {
-        console.log(result);
-      })
-      .catch(err => console.log(err)); // let's hope that this works!
+    // readFile() returns base64 string by default
+    await Filesystem.readFile({
+      path: file,
+    })
+      .then(async (base64) => {
+        // create base64 buffer
+        let buf = Buffer.from(base64.data, "base64");
+        await Storage.put(
+          "assn/" + pic,
+          buf,
+          {
+            level: "public",
+            contentType: contentType,
+            contentEncoding: "base64",
+            progressCallback(progress) {
+              console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+            },
+          }
+        )
+          .then((result) => {
+            console.log(result);
+            // this.rootStore.userStore.setProfilePic(pic);
+          })
+          .catch(err => console.log(err)); // let's hope that this works!
+      }).catch(err => console.log(err));
   }
 
 }
+
 export default PictureStore;
+
+export const getImgLinkCached = async (key: string) => {
+  // const cachedImage = Cache.getItem(key);
+  // console.log(cachedImage);
+  // if (cachedImage) {
+    // console.log('Cache hit: ', key);
+    // return cachedImage;
+  // }
+  // console.log('Cache miss: ', key);
+  const url = await Storage.get(
+    key, {
+    level: "public",
+  });
+  if (url !== null) {
+    Cache.setItem(key, url);
+  }
+  return url;
+}

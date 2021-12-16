@@ -39,11 +39,11 @@ class AssignmentStore {
               console.log(this.assignments)
             }
           }
-          await DataStore.save(Class.copyOf(
-            classItem, item => {
-              item.Assignments = [...this.assignments.filter(assn => assn.classID === classItem.id)];
-            }
-          ));
+          // await DataStore.save(Class.copyOf(
+          //   classItem, item => {
+          //     item.Assignments = [...this.assignments.filter(assn => assn.classID === classItem.id)];
+          //   }
+          // ));
         }
       }
     }

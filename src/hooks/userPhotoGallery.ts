@@ -12,7 +12,7 @@ import { Capacitor } from "@capacitor/core";
 import { Crop } from "@ionic-native/crop";
 import { isPlatform } from "@ionic/react";
 
-import { Cache } from "aws-amplify";
+
 
 export interface UserPhoto {
   filepath: string;
@@ -124,19 +124,4 @@ export async function base64FromPath(path: string): Promise<string> {
     };
     reader.readAsDataURL(blob);
   });
-}
-
-const getImgLinkCached = async (key: string) => {
-  const cachedImage = Cache.getItem(key);
-  console.log(cachedImage);
-  if (cachedImage) {
-    console.log('Cache hit: ', key);
-    return cachedImage;
-  }
-  console.log('Cache miss: ', key);
-  const url = await Storage.get({ key: `img/${key}` });
-  if (url.value !== null) {
-    Cache.setItem(key, url);
-  }
-  return url;
 }
