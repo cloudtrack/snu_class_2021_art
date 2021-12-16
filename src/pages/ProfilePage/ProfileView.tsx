@@ -12,12 +12,12 @@ interface profileProps {
 
 const ProfileView: React.FC<profileProps> = ({ userData, signOut }) => (
   <IonPage>
-    <IonHeader collapse="condense">
+    <IonHeader>
       <IonToolbar>
         <IonTitle size="large">Profile</IonTitle>
       </IonToolbar>
     </IonHeader>
-    <IonContent fullscreen>
+    <IonContent className="ion-padding" fullscreen>
       <UserProfile userData={userData} />
       <NavList
         logout={() => {

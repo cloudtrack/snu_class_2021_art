@@ -19,12 +19,12 @@ const ClassView: React.FC<IClassViewProps> = ({ userData }) => {
 
   return (
     <IonPage>
-      <IonHeader collapse="condense">
+      <IonHeader>
         <IonToolbar>
           <IonTitle size="large">Class</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="ion-padding">
         {
           userData?.role === 'student' ?
           <StudentClass userData={userData} /> :
