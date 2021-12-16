@@ -37,7 +37,7 @@ Storage.configure({
   AWSS3: {
     bucket: 'snuclass2021artuserimage215818-dev', //REQUIRED -  Amazon S3 bucket name
     region: 'us-west-1', //OPTIONAL -  Amazon service region
-    level: 'protected'
+    level: 'public'
   }
 });
 

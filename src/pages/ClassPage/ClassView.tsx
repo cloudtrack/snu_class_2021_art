@@ -24,7 +24,7 @@ const ClassView: React.FC<IClassViewProps> = ({ userData }) => {
           <IonTitle size="large">Class</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent>
         {
           userData?.role === 'student' ?
           <StudentClass userData={userData} /> :

@@ -60,9 +60,10 @@ export const UserProfile: React.FC<IUserProfileProps> = observer(({ userData }) 
           <IonAvatar
             className="user-profile-avatar"
             onClick={() => setShowProfileEditModal(true)}>
-            {userData.profile ?
-              <img alt="profilepic" src={`${pictureStore.profilethumbnailurl}`} /> :
-              <img src={avatarImageFromEmail(email!)} />
+            {userData?.profile ?
+              <img alt="profilepic" src={`${pictureStore.profilethumbnailurl}`} /> : <IonAvatar className="user-profile-avatar">
+              <IonSkeletonText animated />
+            </IonAvatar>
             }
             <div className="avatar-upload" onClick={() => setShowProfileEditModal(true)}>
               <IonIcon icon={pencil} />

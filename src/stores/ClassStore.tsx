@@ -1,5 +1,6 @@
 import { DataStore } from '@aws-amplify/datastore';
 import { observable, makeObservable, action, autorun } from 'mobx';
+import { async } from 'rxjs';
 import { Class, Teacher, Student, StudentClass, ArtWork, Assignment } from '../models';
 import RootStore from './RootStore';
 
@@ -9,6 +10,7 @@ class ClassStore {
   allClasses: Class[] = [];
   classes: Class[] = [];
   classIDs: string[] = [];
+  relatedStudents: Student[] = [];
   isLoading: boolean = false;
 
   constructor(rootStore: RootStore) {
@@ -17,10 +19,12 @@ class ClassStore {
     makeObservable(this, {
       isLoading: observable,
       classes: observable,
+      relatedStudents: observable,
       rootStore: false,
 
       initialize: action,
-      addClass: action
+      addClass: action,
+      getStudent: action,
     });
 
     autorun(() => {
@@ -187,6 +191,19 @@ class ClassStore {
 
   leaveClass = async () => {
     // only students can leave classes
+  }
+
+  getStudent = async (assn: Assignment) => {
+    const classId = assn.classID as string;
+    const sc = await DataStore.query(StudentClass);
+    const students = sc.filter(
+      (studentClass: StudentClass) => studentClass.class.id === classId
+    ).map(
+      (studentClass: StudentClass) => {
+        return studentClass.student;
+      }
+    );
+    this.relatedStudents = students;
   }
 
 }
