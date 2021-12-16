@@ -95,5 +95,32 @@ class PictureStore {
       this.profileurl = url;
     }
   }
+
+  uploadPicture = async (file: string, assignmentId: string) => {
+    const base64 = await base64FromPath(file);
+    console.log("try to upload")
+    console.log(base64)
+    let postfix = file.split(".").pop();
+    let contentType = "image/" + postfix === "jpg" ? "jpeg" : postfix;
+
+    let buf = Buffer.from(base64.split(',')[1], "base64");
+    await Storage.put(
+      "assn/originals/" + assignmentId + "-" + this.rootStore.userStore.userData!.id + "." + postfix,
+      buf,
+      {
+        level: "public",
+        contentType: contentType,
+        contentEncoding: "base64",
+        progressCallback(progress) {
+          console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+        },
+      }
+    )
+      .then((result) => {
+        console.log(result);
+      })
+      .catch(err => console.log(err)); // let's hope that this works!
+  }
+
 }
 export default PictureStore;

@@ -11,26 +11,6 @@
       "StackId": "arn:aws:cloudformation:us-west-1:758166496253:stack/amplify-snuclass2021art-dev-215818/b9dc2ca0-4613-11ec-ae51-06c7ef261cc5",
       "AmplifyAppId": "d1e84vh5xbcfwc",
       "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-snuclass2021art-dev-215818-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
-    },
-    "categories": {
-      "function": {
-        "snuclass2021artPostConfirmation": {
-          "deploymentBucketName": "amplify-snuclass2021art-dev-215818-deployment",
-          "s3Key": "amplify-builds/snuclass2021artPostConfirmation-3176586f306541496c54-build.zip"
-        },
-        "S3Trigger473980a8": {
-          "deploymentBucketName": "amplify-snuclass2021art-dev-215818-deployment",
-          "s3Key": "amplify-builds/S3Trigger473980a8-7a39736b65586157436f-build.zip"
-        },
-        "snuclass2021artlayerf54fb104": {
-          "deploymentBucketName": "amplify-snuclass2021art-dev-215818-deployment",
-          "s3Key": "amplify-builds/snuclass2021artlayerf54fb104-LambdaLayerVersion9e149cf4-build.zip"
-        }
-      },
-      "auth": {
-        "snuclass2021art": {},
-        "true": {}
-      }
     }
   }
 }
