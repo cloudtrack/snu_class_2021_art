@@ -17,7 +17,7 @@ const ClassDetailsModal: React.FC<IClassDeatilsProps> = (props) => {
   const { classItem, showClassDetails, onDidDismiss } = props;
   const [addAssignment, setAddAssignment] = useState(false);
 
-  const { assignmentStore } = useStores();
+  const { userStore, assignmentStore } = useStores();
 
   return (
     <IonModal
@@ -64,13 +64,18 @@ const ClassDetailsModal: React.FC<IClassDeatilsProps> = (props) => {
                 <h2>Assignments</h2>
               </IonText>
             </IonCol>
-            <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
-              <IonButton className="ion-no-padding" color="dark" fill="clear" onClick={() => {
-                setAddAssignment(true);
-              }}>
-                <IonIcon slot="icon-only" icon={add} />
-              </IonButton>
-            </IonCol>
+            {
+              userStore.userData?.role === "teacher" ?
+                <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
+                  <IonButton className="ion-no-padding" color="dark" fill="clear" onClick={() => {
+                    setAddAssignment(true);
+                  }}>
+                    <IonIcon slot="icon-only" icon={add} />
+                  </IonButton>
+                </IonCol> :
+                <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
+                </IonCol>
+            }
           </IonRow>
         </IonGrid>
         <IonList>
@@ -79,8 +84,8 @@ const ClassDetailsModal: React.FC<IClassDeatilsProps> = (props) => {
               (assignment) => assignment.classID === classItem.id
             ).map((assignment, index) => (
               (assignment !== null) ?
-              <AssignmentItem assignment={assignment} index={index} /> :
-              <></>
+                <AssignmentItem assignment={assignment} index={index} /> :
+                <></>
             )) :
             <IonItem no-lines>
               <IonText>
@@ -91,15 +96,6 @@ const ClassDetailsModal: React.FC<IClassDeatilsProps> = (props) => {
         </IonList>
 
       </IonContent>
-      {/* <IonFab className="ion-padding" vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton color="primary">
-            <IonIcon
-              icon={add}
-              onClick={() => {
-                // setIsFabOpen(true);
-              }} />
-          </IonFabButton>
-        </IonFab> */}
     </IonModal>
   );
 }

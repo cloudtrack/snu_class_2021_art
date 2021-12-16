@@ -14,7 +14,6 @@ interface IClassSearchModalProps {
 const ClassSearchModal: React.FC<IClassSearchModalProps> = (props) => {
   const { showModal, onDidDismiss } = props;
   const [searchText, setSearchText] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
 
   const { classStore } = useStores();
 

@@ -1,8 +1,9 @@
-import { IonCard, IonCardHeader, IonIcon, IonText, IonCardContent } from "@ionic/react";
+import { IonCard, IonCardHeader, IonIcon, IonText, IonCardContent, IonCol, IonRow, IonGrid, IonFabButton } from "@ionic/react";
 import { pencil } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { Assignment } from "../../models";
+import { useStores } from "../../stores/RootStore";
 import AssignmentDetailsModal from "./AssignmentDetailsModal";
 
 interface IAssignmentItemProps {
@@ -10,11 +11,24 @@ interface IAssignmentItemProps {
   assignment: Assignment;
 }
 
+const SubmitStatus: React.FC<{assignment: Assignment}> = observer(({assignment}) => {
+
+  return(
+    <>
+    <IonFabButton>
+    </IonFabButton>
+    </>
+  )
+});
+
+
 const AssignmentItem: React.FC<IAssignmentItemProps> = observer(({
   index,
   assignment,
 }) => {
-  const [ showDetails, setShowAssignmentDetails] = useState(false);
+  const [showDetails, setShowAssignmentDetails] = useState(false);
+
+  const { userStore } = useStores();
 
   return (
     <>
@@ -26,18 +40,30 @@ const AssignmentItem: React.FC<IAssignmentItemProps> = observer(({
       <IonCard onClick={() => setShowAssignmentDetails(true)}>
         <IonCardHeader>
           <IonIcon icon={pencil} />
-          <IonText>{`Assignment ${index + 1}`}</IonText>
+          <IonText color="dark">{`Assignment ${index + 1}`}</IonText>
         </IonCardHeader>
         <IonCardContent>
-          <IonText>
-            <p>{assignment.description}</p>
-          </IonText>
-          <IonText>
-            <p>{assignment.openTime}</p>
-          </IonText>
-          <IonText>
-            <p>{assignment.deadline}</p>
-          </IonText>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <IonText>
+                  <p>{assignment.description}</p>
+                </IonText>
+                <IonText>
+                  <p>{assignment.openTime}</p>
+                </IonText>
+                <IonText>
+                  <p>{assignment.deadline}</p>
+                </IonText>
+              </IonCol>
+              <IonCol size="2">
+                {
+                  userStore.userData?.role === "student" ?
+                  <SubmitStatus assignment={assignment}/> : <></>
+                }
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         </IonCardContent>
       </IonCard>
     </>

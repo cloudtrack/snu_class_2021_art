@@ -14,7 +14,6 @@ import { add, bookmark, checkmark } from 'ionicons/icons';
 import { observer } from 'mobx-react';
 import { useState } from 'react';
 import { useStores } from '../../stores/RootStore';
-import { IClassItemProps } from '../ClassItem';
 import StudentClassDetailsModal from './StudentClassDetailsModal';
 import './index.css'
 import { Class } from '../../models';
