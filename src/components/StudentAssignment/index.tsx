@@ -103,7 +103,8 @@ const StudentAssignment: React.FC<{
             </IonText>
           </IonCol>
           <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
-            {overdue ? <IonText color="danger">Overdue</IonText> : <></>}
+            {overdue && (artworkIndex < 0) ? <IonText color="danger">Overdue</IonText> :
+            ((artworkIndex < 0)? <IonText color="dark">Not Submitted</IonText>: <IonText color="success">Submitted</IonText>)}
           </IonCol>
         </IonRow>
       </IonGrid>
