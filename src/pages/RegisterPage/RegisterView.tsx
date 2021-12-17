@@ -4,6 +4,7 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonImg,
   IonInput,
   IonItem,
@@ -45,7 +46,8 @@ const RegisterView: React.FC<registerProps> = observer(props => {
         </IonToolbar>
       </IonHeader>
       <form className="ion-padding">
-        <IonImg style={{ margin: '20px auto 20px', width: '20%' }} src={'assets/icon/icon.png'} />
+        <IonImg style={{ margin: '20px auto 20px', width: '20%' }} src={'assets/md-applicon.svg'} />
+        {/* <IonIcon src='/assets/shapes.svg'></IonIcon> */}
         <IonItem>
           <IonLabel position="floating">Email</IonLabel>
           <IonInput

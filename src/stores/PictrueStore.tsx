@@ -139,16 +139,16 @@ export const getImgLinkCached = async (key: string) => {
   // const cachedImage = Cache.getItem(key);
   // console.log(cachedImage);
   // if (cachedImage) {
-    // console.log('Cache hit: ', key);
-    // return cachedImage;
+  //   console.log('Cache hit: ', key);
+  //   return cachedImage;
   // }
-  // console.log('Cache miss: ', key);
+  console.log('Cache miss: ', key);
   const url = await Storage.get(
     key, {
     level: "public",
   });
-  if (url !== null) {
-    Cache.setItem(key, url);
-  }
+  // if (url !== null) {
+  //   Cache.setItem(key, url);
+  // }
   return url;
 }

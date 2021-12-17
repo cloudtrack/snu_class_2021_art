@@ -111,6 +111,7 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
 
   const [useranme, setUserName] = useState('');
   const [imgURL, setImgURL] = useState('');
+  const [liked, setLiked] = useState(false);
 
   const handleDismiss = () => {
     dismiss();
@@ -176,10 +177,15 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
       </IonCardContent>
       <IonCardContent className="feed-control">
         <IonGrid>
-          <IonRow className="ion-align-items-center ion-justify-content-end">
+          <IonRow className="ion-align-items-center ion-justify-content-end" onClick={
+            () => { setLiked(!liked); }
+          }>
             {
+              liked ?
+                <IonIcon size='large' icon={heart} className="ion-margin-end" color="danger" /> :
+                <IonIcon size='large' icon={heartOutline} className="ion-margin-end" color="danger" />
             }
-            <IonIcon size='large' icon={heartOutline} className="ion-margin-end" color="danger" />
+
             {/* <IonIcon icon={chatbubbleEllipses} color="primary" /> */}
           </IonRow>
         </IonGrid>

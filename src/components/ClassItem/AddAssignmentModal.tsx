@@ -49,7 +49,7 @@ const AddAssignmentModal: React.FC<{
             <IonDatetime
               value={startTime}
               onIonChange={e => setStartTime(e.detail.value!)}
-              displayFormat="MMM DD, YYYY HH:mm" placeholder="Select due date"
+              displayFormat="MMM DD, YYYY HH:mm" placeholder="Select start date"
             />
           </IonItem>
           <IonItem>

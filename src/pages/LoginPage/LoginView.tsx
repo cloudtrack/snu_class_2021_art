@@ -36,14 +36,14 @@ const LoginView: React.FC<loginProps> = observer(props => {
           <IonTitle>Log In</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="ion-padding">
         <IonList>
           <IonImg
             style={{
               margin: '20px auto 20px',
               width: '20%',
             }}
-            src={'assets/icon/icon.png'}
+            src={'assets/md-applicon.svg'}
           />
           <IonItem>
             <IonLabel position="floating">Email</IonLabel>
