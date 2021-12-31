@@ -34,7 +34,6 @@ export const NavList: React.FC<INavListProps> = ({ logout }) => {
       <IonAlert
         isOpen={showLogoutAlert}
         onDidDismiss={() => setShowLogoutAlert(false)}
-        // cssClass='my-custom-class'
         header={'Log out'}
         message={'Are you sure you want to log out?'}
         buttons={[
@@ -55,13 +54,18 @@ export const NavList: React.FC<INavListProps> = ({ logout }) => {
           },
         ]}
       />
-      <IonList>
-        {navItem.map(({ onClick, icon, label }, index) => (
+      <IonList lines="full">
+        {
+        navItem.map(({ onClick, icon, label }, index) => (
           <IonItem key={index} onClick={onClick} button>
-            <IonIcon slot={'start'} icon={icon} color="primary" />
+            <IonIcon
+            slot={'start'}
+            icon={icon}
+            color="primary" />
             <IonLabel>{label}</IonLabel>
           </IonItem>
-        ))}
+        ))
+        }
       </IonList>
     </IonCard>
   );
