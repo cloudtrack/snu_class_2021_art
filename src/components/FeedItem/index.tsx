@@ -29,6 +29,10 @@ import { ImagePreviewModal } from '../ImagePreviewModal';
 
 import './index.css';
 import React from 'react';
+// import { avatarImageFromEmail } from '../../utils';
+// import { isCompositeComponent } from 'react-dom/test-utils';
+// import { Comment } from '../../models';
+// import { listComments } from '../../graphql/queries';
 
 // import { Comment } from '../../models';
 

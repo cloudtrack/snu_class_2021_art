@@ -85,6 +85,11 @@
   --background-focused-opacity: 0;
   --background-hover-opacity: 0;
   --transition: none;
-  
 
+}
+
+#button:focus, #button:active, #button:hover, #button  {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }
