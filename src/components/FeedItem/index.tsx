@@ -12,7 +12,9 @@ import {
   IonSlide,
   IonSlides,
   IonText,
-  useIonModal
+  IonTextarea,
+  useIonModal,
+  
 } from '@ionic/react';
 import { DataStore } from 'aws-amplify';
 import { add, chatbubbleEllipses, close, heart, heartOutline, personCircle, remove } from 'ionicons/icons';
@@ -21,12 +23,17 @@ import { Student } from '../../models';
 import { ArtWork } from '../../models';
 import { getImgLinkCached } from '../../stores/PictrueStore';
 import './index.css';
+import { CommentItem } from './commentItem';
 
 import 'swiper/swiper-bundle.min.css';
 import React from 'react';
+// import { avatarImageFromEmail } from '../../utils';
+// import { isCompositeComponent } from 'react-dom/test-utils';
+// import { Comment } from '../../models';
+// import { listComments } from '../../graphql/queries';
 
 interface IFeedItemProps {
-  // commentList: ICommentItemProps[];
+  //commentList: ICommentItemProps[];
   artwork: ArtWork;
 }
 
@@ -112,6 +119,8 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
   const [useranme, setUserName] = useState('');
   const [imgURL, setImgURL] = useState('');
   const [liked, setLiked] = useState(false);
+  const [commented, setCommented] = useState<string>('');
+  const [clicked, setClicked] =useState(false);
 
   const handleDismiss = () => {
     dismiss();
@@ -150,6 +159,15 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
     fetchImgURL();
   }, [artwork]);
 
+  const handleComment = (comment: string) => {
+    // To save the comment into the DB
+    console.log(commented);
+    
+    setCommented("");
+
+  }
+
+
   return (
     <IonCard>
       <IonCardHeader className="feed-header">
@@ -177,19 +195,50 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
       </IonCardContent>
       <IonCardContent className="feed-control">
         <IonGrid>
-          <IonRow className="ion-align-items-center ion-justify-content-end" onClick={
-            () => { setLiked(!liked); }
-          }>
-            {
-              liked ?
-                <IonIcon size='large' icon={heart} className="ion-margin-end" color="danger" /> :
-                <IonIcon size='large' icon={heartOutline} className="ion-margin-end" color="danger" />
-            }
+          <IonRow>
+            <IonCol className="ion-align-items-center ion-justify-content-end" onClick={
+              () => { setLiked(!liked); }
+            }>
+              {
+                liked ?
+                  <IonIcon size='large' icon={heart} className="ion-margin-end" color="danger" /> :
+                  <IonIcon size='large' icon={heartOutline} className="ion-margin-end" color="danger" />
+              }
 
-            {/* <IonIcon icon={chatbubbleEllipses} color="primary" /> */}
+            </IonCol>
+
+        {/* add comment section */}
+
+            <IonCol className="ion-align-items-center ion-justify-content-end">
+                <IonButton id='button' fill="clear" onClick={
+                  () => { setClicked(!clicked); }
+                }>
+                  <IonIcon icon={chatbubbleEllipses} color="primary" size="large" />
+                </IonButton>
+            </IonCol>
           </IonRow>
+          
+          {
+            clicked ?
+              <>
+                <IonTextarea className="float-left" 
+                placeholder="Comment .... "
+                value={commented}
+                onIonChange={e => setCommented(e.detail.value!)}
+                />
+                <IonButton 
+                className="ion-button small float-right round" size="small" 
+                onClick={() => { handleComment(commented); }}>Comment</IonButton>
+              </>:
+              <>
+              </>
+          }
+
+          {/* Should be handled to show all the comments for a specific art work */}
+          <CommentItem key={artwork.id} username={useranme} avatar={imgURL} comment={"It is a comment"}  />
         </IonGrid>
       </IonCardContent>
+      
     </IonCard>
   );
 };

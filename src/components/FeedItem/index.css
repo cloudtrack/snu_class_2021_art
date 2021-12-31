@@ -72,3 +72,9 @@
     width: 100%;
     object-fit: cover;
 }
+
+#button:focus, #button:active, #button:hover, #button  {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
