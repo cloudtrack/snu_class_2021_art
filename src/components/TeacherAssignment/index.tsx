@@ -1,6 +1,7 @@
-import { IonList, IonItem, IonText, IonCol, IonGrid, IonRow, IonImg, IonCard, IonAlert, IonCardTitle, IonCardHeader, useIonModal, IonCardContent } from "@ionic/react";
+import { IonList, IonItem, IonText, IonCol, IonGrid, IonRow, IonImg, IonCard, IonAlert, IonCardTitle, IonCardHeader, useIonModal, IonCardContent, IonButton, IonIcon } from "@ionic/react";
 import assert from "assert";
 import { DataStore } from "aws-amplify";
+import { create } from "ionicons/icons";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { ArtWork, Assignment, Student } from "../../models";
@@ -64,8 +65,7 @@ const SubmissionStatus: React.FC<{
 
   return (
     <>
-      <IonAlert
-        isOpen={showAlert}
+      <IonAlert isOpen={showAlert}
         onDidDismiss={() => setShowAlert(false)}
         header={'Give Grade Feedback'}
         inputs={[
@@ -89,61 +89,69 @@ const SubmissionStatus: React.FC<{
             handler: async (alertData) => {
               console.log('Confirm Ok');
               console.log(alertData.grade)
+              const grade = parseInt(alertData.grade)
+              setGrade(grade);
               await artworkStore.updateArtWorkGrade(
                 artwork!,
-                parseInt(alertData.grade));
-              // await DataStore.save(
-              //   ArtWork.copyOf(
-              //     artwork!,
-              //     item => {
-              //       item.grade = parseInt(alertData.grade);
-              //     }
-              //   )
-              // )
+                grade
+              );
             }
-          }
-        ]}
+          }]}
       />
       <IonCard>
-        <IonCardHeader>
-          <IonCardTitle key={student.id}>
-            <IonText>
-              <h3>{student.name}</h3>
-            </IonText>
-          </IonCardTitle>
-        </IonCardHeader>
-          {
-            artwork === undefined ?
-              <IonItem>
-                <IonText>Did not submit</IonText>
-              </IonItem> :
-              <IonGrid>
-                <IonRow>
-                  <IonCol>
-                    <IonText>
-                      {`Uploaded At: ${artwork.updatedAt}`}
-                    </IonText>
-                  </IonCol>
-                  <IonCol className="ion-align-items-center ion-justify-content-end">
-                    {`Grade: ${artwork.grade === undefined ||
-                      artwork.grade === null ||
-                      artwork.grade < 0 ? "Not Graded" : artwork.grade
-                      }`}
-                  </IonCol>
-                  <IonRow className="feed-image" onClick={() => {
-                    present({
-                      cssClass: 'modal-transparency',
-                      onDidDismiss: handleDismiss
-                    });
+        <IonCardHeader className="ion-no-padding">
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <IonCardTitle key={student.id}>
+                  <IonText>
+                    <h3>{student.name}</h3>
+                  </IonText>
+                </IonCardTitle>
+              </IonCol>
+              <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
+                {artwork === undefined ?
+                  <></> :
+                  <IonButton
+                  color="secondary"
+                  onClick={() => {
+                    setShowAlert(true);
                   }}>
-                    <div className='imgwrapper'>
-                      <img src={imgURL} className='coverimg' />
-                    </div>
-                    {/* <IonImg src={imgURL} /> */}
-                  </IonRow>
+                    <IonIcon icon={create} />
+                  </IonButton>
+                }
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonCardHeader>
+        {
+          artwork === undefined ?
+            <IonItem>
+              <IonText>Did not submit</IonText>
+            </IonItem> :
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <IonText>
+                    {`Uploaded At: ${new Date(Date.parse(artwork.updatedAt!)).toDateString()}`}
+                  </IonText>
+                </IonCol>
+                <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
+                  {`Grade: ${grade < 0 ? "Not Graded" : grade}`}
+                </IonCol>
+                <IonRow className="feed-image" onClick={() => {
+                  present({
+                    cssClass: 'modal-transparency',
+                    onDidDismiss: handleDismiss
+                  });
+                }}>
+                  <div className='imgwrapper'>
+                    <img src={imgURL} className='coverimg' />
+                  </div>
                 </IonRow>
-              </IonGrid>
-          }
+              </IonRow>
+            </IonGrid>
+        }
       </IonCard>
     </>
   );
