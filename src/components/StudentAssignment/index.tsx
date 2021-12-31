@@ -18,7 +18,7 @@ const StudentAssignment: React.FC<{
 }> = ({ assignment, index }) => {
 
   const { userStore, artworkStore, pictureStore } = useStores();
-  const { getPhoto, savePicture } = usePhotoGallery();
+  const { getPhoto } = usePhotoGallery();
 
   const overdue = Date.parse(assignment.deadline!!) < new Date().getTime();
 
@@ -63,15 +63,32 @@ const StudentAssignment: React.FC<{
     }
   }, [artworkIndex]);
 
-  // const getArtWork = (studentid: UserDataType) => {
-  //   const userData = studentid?.id;
-  //   const artwork = artworkStore.artworks.find(artwork => (
-  //     artwork.assignmentID === assignment.id &&
-  //     artwork.studentID === userData));
-
-
-  //   }
-  // }
+  const uploadPicture = async (photo : string) => {
+    const base64 = await Filesystem.readFile({
+      path: photo,
+    })
+    console.log("photo from gallery: " + photo);
+    console.log("base64 from file: " + base64.data);
+    setArtworkURL(`data:image/jpeg;base64,${base64.data}`);
+    let postfix = photo.split(".").pop();
+    const regex = /[,/:]/g;
+    let pic =
+      assignment.id + "/" + userStore.userData?.id + "/" +
+      "originals/" +
+      new Date()
+        .toLocaleString()
+        .replaceAll(regex, "-")
+        .replaceAll(" ", "") +
+      "." + postfix;
+    Cache.setItem(pic, `data:image/jpeg;base64,${base64.data}`);
+    const studentID = userStore.userData?.id as string;
+    await artworkStore.addArtWork(
+      assignment.id,
+      studentID,
+      "assn/" + pic,
+    );
+    await pictureStore.uploadPicture(photo, pic);
+  }
 
   return (
     <>
@@ -115,16 +132,12 @@ const StudentAssignment: React.FC<{
       </IonGrid>
       <IonList>
         {
-
           (artwork === undefined) ?
             <>
               <IonText>Did not submit</IonText>
             </>
             :
-            // setArtWorkIndex(artworkStore.artworks.indexOf(artwork));
             <>
-              {/* <IonText>{artwork.title}</IonText> */}
-              {/* <IonText>{artwork.description}</IonText> */}
               <IonGrid>
                 <IonRow>
                   <IonCol>
@@ -152,30 +165,7 @@ const StudentAssignment: React.FC<{
               getPhoto("gallery", false).then(
                 async (photo) => {
                   if (photo !== undefined) {
-                    const base64 = await Filesystem.readFile({
-                      path: photo,
-                    })
-                    console.log("photo from gallery: " + photo);
-                    console.log("base64 from file: " + base64.data);
-                    setArtworkURL(`data:image/jpeg;base64,${base64.data}`);
-                    let postfix = photo.split(".").pop();
-                    const regex = /[,/:]/g;
-                    let pic =
-                      assignment.id + "/" + userStore.userData?.id + "/" +
-                      "originals/" +
-                      new Date()
-                        .toLocaleString()
-                        .replaceAll(regex, "-")
-                        .replaceAll(" ", "") +
-                      "." + postfix;
-                    Cache.setItem(pic, `data:image/jpeg;base64,${base64.data}`);
-                    const studentID = userStore.userData?.id as string;
-                    await artworkStore.addArtWork(
-                      assignment.id,
-                      studentID,
-                      "assn/" + pic,
-                    );
-                    await pictureStore.uploadPicture(photo, pic);
+                    await uploadPicture(photo);
                   }
                 }
               );
@@ -186,28 +176,7 @@ const StudentAssignment: React.FC<{
               getPhoto("camera", false).then(
                 async (photo) => {
                   if (photo !== undefined) {
-                    const base64 = await Filesystem.readFile({
-                      path: photo,
-                    })
-                    setArtworkURL(`data:image/jpeg;base64,${base64.data}`);
-                    let postfix = photo.split(".").pop();
-                    const regex = /[,/:]/g;
-                    let pic =
-                      assignment.id + "/" + userStore.userData?.id + "/" +
-                      "originals/" +
-                      new Date()
-                        .toLocaleString()
-                        .replaceAll(regex, "-")
-                        .replaceAll(" ", "") +
-                      "." + postfix;
-                    Cache.setItem(pic, `data:image/jpeg;base64,${base64.data}`);
-                    const studentID = userStore.userData?.id as string;
-                    await artworkStore.addArtWork(
-                      assignment.id,
-                      studentID,
-                      "assn/" + pic,
-                    );
-                    await pictureStore.uploadPicture(photo, pic);
+                    await uploadPicture(photo);
                   }
                 }
               );
