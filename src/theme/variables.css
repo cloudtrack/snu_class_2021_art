@@ -10,12 +10,12 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-primary-shade: #048f88;
     --ion-color-primary-tint: #1daca5;
 
-    --ion-color-secondary: #13f172;
-    --ion-color-secondary-rgb: 19,241,114;
-    --ion-color-secondary-contrast: #000000;
-    --ion-color-secondary-contrast-rgb: 0,0,0;
-    --ion-color-secondary-shade: #11d464;
-    --ion-color-secondary-tint: #2bf280;
+    --ion-color-secondary: #0fdc7d;
+	--ion-color-secondary-rgb: 15,220,125;
+	--ion-color-secondary-contrast: #ffffff;
+	--ion-color-secondary-contrast-rgb: 255,255,255;
+	--ion-color-secondary-shade: #0dc26e;
+	--ion-color-secondary-tint: #27e08a;
 
     --ion-color-tertiary: #3880ff;
     --ion-color-tertiary-rgb: 56,128,255;
@@ -71,6 +71,11 @@ ion-content {
 ion-card {
     border-radius: 10px
 }
+
+ion-item:last-child {
+    --border-width: 0 0 0 0 !important;
+}
+
 
 @media (prefers-color-scheme: dark) {
   /*
