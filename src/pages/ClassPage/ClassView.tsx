@@ -1,5 +1,6 @@
 import {
   IonContent,
+  IonGrid,
   IonHeader,
   IonPage,
   IonTitle,
@@ -27,8 +28,8 @@ const ClassView: React.FC<IClassViewProps> = ({ userData }) => {
       <IonContent>
         {
           userData?.role === 'student' ?
-          <StudentClass userData={userData} /> :
-          <TeacherClass userData={userData}/>
+            <StudentClass userData={userData} /> :
+            <TeacherClass userData={userData} />
         }
       </IonContent>
     </IonPage>
