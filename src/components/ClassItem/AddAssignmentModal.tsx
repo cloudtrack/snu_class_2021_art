@@ -48,6 +48,8 @@ const AddAssignmentModal: React.FC<{
             <IonLabel>Start time</IonLabel>
             <IonDatetime
               value={startTime}
+              min={new Date().toISOString()}
+              max={new Date(new Date().getFullYear() + 1, 12, 31).toISOString()}
               onIonChange={e => setStartTime(e.detail.value!)}
               displayFormat="MMM DD, YYYY HH:mm" placeholder="Select start date"
             />
@@ -56,6 +58,8 @@ const AddAssignmentModal: React.FC<{
             <IonLabel>Deadline</IonLabel>
             <IonDatetime
               value={deadline}
+              min={new Date().toISOString()}
+              max={new Date(new Date().getFullYear() + 1, 12, 31).toISOString()}
               onIonChange={e => setDeadline(e.detail.value!)}
               displayFormat="MMM DD, YYYY HH:mm" placeholder="Select due date"
             />
