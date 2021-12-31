@@ -84,13 +84,9 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
         });
       }}>
         {/* <IonImg src="https://picsum.photos/640/300" /> */}
-        {/* <IonSlides options={slideOpts}>
-          <IonSlide > */}
         <div className='imgwrapper'>
           <img src={imgURL} className='coverimg' />
         </div>
-        {/* </IonSlide>
-        </IonSlides> */}
       </IonCardContent>
       <IonCardContent className="feed-control">
         <IonGrid>
@@ -102,8 +98,6 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
                 <IonIcon size='large' icon={heart} className="ion-margin-end" color="danger" /> :
                 <IonIcon size='large' icon={heartOutline} className="ion-margin-end" color="danger" />
             }
-
-            {/* <IonIcon icon={chatbubbleEllipses} color="primary" /> */}
           </IonRow>
         </IonGrid>
       </IonCardContent>
