@@ -22,7 +22,7 @@ export const StudentClass: React.FC<IStudentClassProps> = observer(({ userData }
         showModal={isFabOpen}
         onDidDismiss={() => setIsFabOpen(false)}
       />
-      <IonContent>
+      <div className="ion-padding-start ion-padding-end ion-padding-bottom ion-margin-bottom">
         {
           (classStore.isLoading) ?
             <div>Loading...</div> :
@@ -33,10 +33,9 @@ export const StudentClass: React.FC<IStudentClassProps> = observer(({ userData }
                   description={classData.description}
                 />
               );
-              }
-            )
+            })
         }
-      </IonContent>
+      </div>
       <IonFab vertical="bottom" horizontal="end" slot="fixed">
         <IonFabButton color="primary">
           <IonIcon
