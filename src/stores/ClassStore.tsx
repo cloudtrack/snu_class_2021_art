@@ -1,6 +1,5 @@
 import { DataStore } from '@aws-amplify/datastore';
 import { observable, makeObservable, action, autorun } from 'mobx';
-import { async } from 'rxjs';
 import { Class, Teacher, Student, StudentClass, ArtWork, Assignment } from '../models';
 import RootStore from './RootStore';
 

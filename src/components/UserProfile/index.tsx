@@ -11,7 +11,6 @@ import { observer } from 'mobx-react';
 import { useState } from 'react';
 import { useStores } from '../../stores/RootStore';
 import { UserDataType } from '../../stores/UserStore';
-import { avatarImageFromEmail } from '../../utils';
 import EditProfileModal from './EditProfileModal';
 import './index.css';
 

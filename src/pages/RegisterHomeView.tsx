@@ -26,14 +26,14 @@ const RegisterHomeView: React.FC = () => {
             <IonIcon slot="start" icon={logoGoogle} />
             Continue with Google
           </IonButton>
-          <IonButton expand="block">
+          <IonButton expand="block" color="tertiary">
             <IonIcon slot="start" icon={logoFacebook} />
             Continue with Facebook
           </IonButton>
           <IonText color="medium" class="ion-text-center">
             Or
           </IonText>
-          <IonButton fill="outline" expand="block" routerLink="/register">
+          <IonButton fill="outline" expand="block" routerLink="/register" color="primary">
             Create account
           </IonButton>
           <IonText color="medium">

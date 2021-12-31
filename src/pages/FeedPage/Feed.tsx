@@ -1,5 +1,6 @@
 import {
   IonContent,
+  IonGrid,
   IonHeader,
   IonPage,
   IonTitle,
@@ -30,11 +31,13 @@ const FeedView: React.FC = () => {
         fullscreen
         scrollEvents
         onIonScroll={(e) => setScrollYCurrent(e.detail.scrollTop)}>
-        {
-          artworkStore.artworks.map((artwork) => (
-            <FeedItem key={artwork.id} artwork={artwork} />
-          ))
-        }
+        <div className="ion-padding-start ion-padding-end ion-padding-bottom ion-margin-bottom">
+          {
+            artworkStore.artworks.map((artwork) => (
+              <FeedItem key={artwork.id} artwork={artwork} />
+            ))
+          }
+        </div>
       </IonContent>
     </IonPage>
   );

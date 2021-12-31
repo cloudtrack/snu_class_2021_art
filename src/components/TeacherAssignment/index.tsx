@@ -1,12 +1,13 @@
-import { IonList, IonItem, IonText, IonCol, IonGrid, IonRow, IonImg, IonCard, IonAlert } from "@ionic/react";
+import { IonList, IonItem, IonText, IonCol, IonGrid, IonRow, IonImg, IonCard, IonAlert, IonCardTitle, IonCardHeader, useIonModal, IonCardContent, IonButton, IonIcon } from "@ionic/react";
 import assert from "assert";
 import { DataStore } from "aws-amplify";
+import { create } from "ionicons/icons";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { ArtWork, Assignment, Student } from "../../models";
 import { getImgLinkCached } from "../../stores/PictrueStore";
 import { useStores } from "../../stores/RootStore";
-import AssignmentItem from "../AssignmentItem/AssignmentItem";
+import { ImagePreviewModal } from "../ImagePreviewModal";
 
 const SubmissionStatus: React.FC<{
   assignment: Assignment;
@@ -15,6 +16,16 @@ const SubmissionStatus: React.FC<{
   const [artwork, setArtwork] = useState<ArtWork>();
   const [imgURL, setImgUrl] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [grade, setGrade] = useState(-1);
+
+  const handleDismiss = () => {
+    dismiss();
+  }
+
+  const [present, dismiss] = useIonModal(ImagePreviewModal, {
+    imgURL: imgURL,
+    onDismiss: handleDismiss
+  });
 
   const { artworkStore } = useStores();
 
@@ -44,54 +55,75 @@ const SubmissionStatus: React.FC<{
 
   }, [student]);
 
+  useEffect(() => {
+    if (artwork !== undefined) {
+      if (artwork.grade !== undefined) {
+        setGrade(artwork.grade);
+      }
+    }
+  }, [artwork]);
+
   return (
     <>
-    <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          cssClass='my-custom-class'
-          header={'Give Grade Feedback'}
-          inputs={[
-            // input date with min & max
-            {
-              name: 'grade',
-              type: 'number',
-              min: 0,
-              max: 100
-            }]}
-            buttons={[
-              {
-                text: 'Cancel',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: () => {
-                  console.log('Confirm Cancel');
+      <IonAlert isOpen={showAlert}
+        onDidDismiss={() => setShowAlert(false)}
+        header={'Give Grade Feedback'}
+        inputs={[
+          {
+            name: 'grade',
+            type: 'number',
+            min: 0,
+            max: 100
+          }]}
+        buttons={[
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel');
+            }
+          },
+          {
+            text: 'Ok',
+            handler: async (alertData) => {
+              console.log('Confirm Ok');
+              console.log(alertData.grade)
+              const grade = parseInt(alertData.grade)
+              setGrade(grade);
+              await artworkStore.updateArtWorkGrade(
+                artwork!,
+                grade
+              );
+            }
+          }]}
+      />
+      <IonCard>
+        <IonCardHeader className="ion-no-padding">
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <IonCardTitle key={student.id}>
+                  <IonText>
+                    <h3>{student.name}</h3>
+                  </IonText>
+                </IonCardTitle>
+              </IonCol>
+              <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
+                {artwork === undefined ?
+                  <></> :
+                  <IonButton
+                  color="secondary"
+                  onClick={() => {
+                    setShowAlert(true);
+                  }}>
+                    <IonIcon icon={create} />
+                  </IonButton>
                 }
-              },
-              {
-                text: 'Ok',
-                handler: async (alertData) => {
-                  console.log('Confirm Ok');
-                  console.log(alertData.grade)
-                  await DataStore.save(
-                    ArtWork.copyOf(
-                      artwork!,
-                      item => {
-                        item.grade = parseInt(alertData.grade);
-                      }
-                    )
-                  )
-                }
-              }
-            ]}
-            ></IonAlert>
-      <IonCard onClick={() => setShowAlert(true) }>
-        <IonItem key={student.id}>
-          <IonText>
-            <h3>{student.name}</h3>
-          </IonText>
-        </IonItem>
-
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonCardHeader>
         {
           artwork === undefined ?
             <IonItem>
@@ -101,17 +133,21 @@ const SubmissionStatus: React.FC<{
               <IonRow>
                 <IonCol>
                   <IonText>
-                    {`Uploaded At: ${artwork.updatedAt}`}
+                    {`Uploaded At: ${new Date(Date.parse(artwork.updatedAt!)).toDateString()}`}
                   </IonText>
                 </IonCol>
-                <IonCol className="ion-align-items-center ion-justify-content-end">
-                  {`Grade: ${artwork.grade === undefined ||
-                      artwork.grade === null ||
-                      artwork.grade < 0 ? "Not Graded" : artwork.grade
-                    }`}
+                <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
+                  {`Grade: ${grade < 0 ? "Not Graded" : grade}`}
                 </IonCol>
-                <IonRow>
-                  <IonImg src={imgURL} />
+                <IonRow className="feed-image" onClick={() => {
+                  present({
+                    cssClass: 'modal-transparency',
+                    onDidDismiss: handleDismiss
+                  });
+                }}>
+                  <div className='imgwrapper'>
+                    <img src={imgURL} className='coverimg' />
+                  </div>
                 </IonRow>
               </IonRow>
             </IonGrid>
