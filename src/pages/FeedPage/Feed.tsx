@@ -19,6 +19,7 @@ const FeedView: React.FC = () => {
   const { artworkStore } = useStores();
 
 
+
   return (
     <IonPage>
       <HidingHeader hideDecimal={hideDecimal}>

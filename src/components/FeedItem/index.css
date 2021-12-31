@@ -74,7 +74,6 @@
 }
 
 .like {
-
   --ripple-color: transparent;
   --background:transparent;
   --background-activated: transparent;
@@ -85,6 +84,4 @@
   --background-focused-opacity: 0;
   --background-hover-opacity: 0;
   --transition: none;
-
-
 }
