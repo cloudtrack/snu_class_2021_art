@@ -510,24 +510,10 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "title": {
-                    "name": "title",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "image": {
                     "name": "image",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -544,6 +530,14 @@ export const schema = {
                     "type": "ID",
                     "isRequired": false,
                     "attributes": []
+                },
+                "likedUsers": {
+                    "name": "likedUsers",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": false
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -846,5 +840,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "ca3eb2fe96dd613b2c24ac07002683c6"
+    "version": "c1bbab6e03ce84f822e2d25221e30e5c"
 };

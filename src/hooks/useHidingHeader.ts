@@ -26,7 +26,7 @@ export const useHidingHeader: NumberDispatchType = (threshold: number) => {
       }
     }
     setScrollYPrevious(scrollYCurrent)
-  }, [scrollYCurrent])
+  }, [scrollYCurrent, scrollYPrevious, initialChange, threshold, hideDecimal])
 
   return [hideDecimal, setScrollYCurrent]
 }

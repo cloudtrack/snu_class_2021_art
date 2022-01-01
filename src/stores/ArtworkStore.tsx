@@ -12,10 +12,10 @@ class ArtWorkStore {
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
-    autorun(() => {
+    autorun(async () => {
       if (this.rootStore.userStore.userData != null &&
         this.rootStore.assignmentStore.assignments.length > 0) {
-        this.initialize();
+        await this.initialize();
         console.log("ArtWorkStore created");
       }
     });
@@ -46,6 +46,16 @@ class ArtWorkStore {
               item.ArtWorks = [...this.artworks.filter(artwork => artwork.assignmentID === assignment.id)];
             }
           ));
+        } else {
+          for (const artwork of assignment.ArtWorks) {
+            if (artwork !== null && this.artworkIDs.includes(artwork.id) === false) {
+              this.artworkIDs.push(artwork.id);
+              this.artworks.push(artwork);
+              if (DataStore.query(ArtWork, artwork.id) === null) {
+                await DataStore.save(artwork);
+              }
+            }
+          }
         }
       }
     }
@@ -54,13 +64,14 @@ class ArtWorkStore {
   addArtWork = async (assnID: string, studentID: string, img: string) => {
     const artworkIndex = this.artworks.findIndex(
       artwork => artwork.assignmentID === assnID &&
-      artwork.studentID === studentID
-      );
+        artwork.studentID === studentID
+    );
     if (artworkIndex < 0) {
       const artwork = new ArtWork({
         assignmentID: assnID,
         studentID: studentID,
-        image: img
+        image: img,
+        likedUsers: [] as string[],
       });
       this.artworks.push(artwork);
       this.artworkIDs.push(artwork.id);
@@ -72,7 +83,8 @@ class ArtWorkStore {
       const artwork = new ArtWork({
         assignmentID: assnID,
         studentID: studentID,
-        image: img
+        image: img,
+        likedUsers: [] as string[],
       });
       this.artworks.push(artwork);
       this.artworkIDs.push(artwork.id);
@@ -87,7 +99,7 @@ class ArtWorkStore {
     });
     const artworkIndex = this.artworks.findIndex(
       artwork => artwork.id === newArtWork.id
-      );
+    );
     this.artworks.splice(artworkIndex, 1, newArtWork);
     this.artworkIDs.splice(artworkIndex, 1, newArtWork.id);
     await DataStore.save(newArtWork);

@@ -1,3 +1,5 @@
+
+
 .container {
     padding: 16px 16px 16px;
     text-align: center;
@@ -16,4 +18,15 @@
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+.homescreen::before {
+    content: "";
+    opacity: 0.1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: #fff;
 }

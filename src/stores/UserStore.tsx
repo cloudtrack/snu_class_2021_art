@@ -1,7 +1,9 @@
 import Auth, { CognitoUser } from '@aws-amplify/auth';
+import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
 import { DataStore } from '@aws-amplify/datastore';
 import { action, autorun, makeObservable, observable } from 'mobx';
 import { Teacher, Student } from '../models';
+import { sleep } from '../utils';
 import RootStore from './RootStore';
 
 export type UserDataType = Student | Teacher | null;
@@ -10,7 +12,9 @@ class UserStore {
   rootStore: RootStore;
   user: CognitoUser | null = null;
   userData: UserDataType = null;
+  isInProcessOfFederatedSignIn: boolean = false;
   isLoggedIn: boolean = false;
+  shouldRenderConfirm: boolean = false;
   authCheckComplete: boolean = false;
 
   constructor(rootStore: RootStore) {
@@ -19,6 +23,7 @@ class UserStore {
       // Observable properties
       user: observable,
       isLoggedIn: observable,
+      isInProcessOfFederatedSignIn: observable,
       authCheckComplete: observable,
       userData: observable,
 
@@ -30,14 +35,14 @@ class UserStore {
       // Not Observable
       rootStore: false,
     });
-    autorun(() => {
-      if (this.userData === null){
-        this.initialize();
+    autorun(async () => {
+      if (this.userData === null) {
+        this.authCheckComplete = false;
+        await this.initialize();
+        this.authCheckComplete = true;
       }
-
     })
 
-    this.authCheckComplete = true;
     console.log(this);
   }
 
@@ -46,11 +51,12 @@ class UserStore {
     this.setUser(await this.getUser());
     console.log(this.user);
     if (this.user !== null) {
-      this.setLoginStatus(true);
       const attributes = await Auth.userAttributes(this.user);
       if (attributes !== undefined) {
-        this.updateUserInfo();
+        await this.updateUserInfo();
       }
+      const loggedIn = await this.getLoginStatus();
+      this.setLoginStatus(loggedIn);
     }
   }
 
@@ -66,6 +72,9 @@ class UserStore {
       .then(user => {
         console.log(user);
         this.setUser(user.user);
+        if (!user.userConfirmed) {
+          this.setShouldRenderConfirm(true);
+        }
       })
       .catch(e => {
         console.log(e);
@@ -77,6 +86,7 @@ class UserStore {
     await Auth.confirmSignUp(username, code)
       .then(response => {
         console.log(response);
+        this.setShouldRenderConfirm(false);
       })
       .catch(e => {
         console.log(e);
@@ -119,14 +129,41 @@ class UserStore {
 
   async getLoginStatus(): Promise<boolean> {
     console.log('get login status');
-    const attributes = await Auth.currentAuthenticatedUser().catch(e => {
-      console.log(e);
-    });
+    const { attributes, signeInUserSession } = await Auth.currentAuthenticatedUser()
+      .catch(e => {
+        console.log(e);
+      });
     if (attributes !== undefined) {
+      console.log("probably logged in");
       console.log(attributes);
-      return true;
+      if (attributes !== null &&
+        attributes.hasOwnProperty('email_verified') &&
+        (attributes['email_verified'] === 'true' ||
+          attributes['email_verified'] === true) &&
+        this.userData !== null) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
+    }
+  }
+
+  federatedLogIn(provider: string) {
+    this.isInProcessOfFederatedSignIn = true;
+    if (provider === 'Google') {
+      Auth.federatedSignIn({
+        provider: CognitoHostedUIIdentityProvider.Google,
+      }).then(credentials => {
+        console.log(credentials);
+      }).catch(e => {
+        console.log(e);
+      });
+    } else if (provider === 'Facebook') {
+      Auth.federatedSignIn({
+        provider: CognitoHostedUIIdentityProvider.Facebook,
+      });
     }
   }
 
@@ -158,6 +195,14 @@ class UserStore {
       }));
     }
     this.updateUserInfo();
+  }
+
+  setFederatedLoginStatus = (isInProcessOfFederatedSignIn: boolean) => {
+    this.isInProcessOfFederatedSignIn = isInProcessOfFederatedSignIn;
+  }
+
+  setShouldRenderConfirm = (shouldRenderConfirm: boolean) => {
+    this.shouldRenderConfirm = shouldRenderConfirm;
   }
 
   updateUserInfo = async () => {

@@ -1,6 +1,5 @@
 import {
   IonContent,
-  IonGrid,
   IonHeader,
   IonPage,
   IonTitle,
