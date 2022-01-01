@@ -10,35 +10,25 @@ export const getStudent = /* GraphQL */ `
       name
       profile
       role
-      ClassJoined {
-        items {
-          id
-          studentID
-          classID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        nextToken
-      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       ArtWorks {
         items {
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
-          likedUser
-          createdAt
-          updatedAt
+          likedUsers
           _version
           _deleted
           _lastChangedAt
+          createdAt
+          updatedAt
         }
         nextToken
         startedAt
@@ -51,20 +41,29 @@ export const getStudent = /* GraphQL */ `
           submitTime
           studentID
           teacherID
-          createdAt
-          updatedAt
           _version
           _deleted
           _lastChangedAt
+          createdAt
+          updatedAt
         }
         nextToken
         startedAt
       }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
+      ClassJoined {
+        items {
+          id
+          studentID
+          classID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -82,9 +81,11 @@ export const listStudents = /* GraphQL */ `
         name
         profile
         role
-        ClassJoined {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         ArtWorks {
           nextToken
           startedAt
@@ -93,11 +94,10 @@ export const listStudents = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
+        ClassJoined {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
@@ -124,9 +124,11 @@ export const syncStudents = /* GraphQL */ `
         name
         profile
         role
-        ClassJoined {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         ArtWorks {
           nextToken
           startedAt
@@ -135,11 +137,10 @@ export const syncStudents = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
+        ClassJoined {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
@@ -155,22 +156,11 @@ export const getTeacher = /* GraphQL */ `
       name
       profile
       role
-      ClassesOpened {
-        items {
-          id
-          name
-          description
-          startDate
-          teacherID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        nextToken
-        startedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       Comments {
         items {
           id
@@ -179,20 +169,31 @@ export const getTeacher = /* GraphQL */ `
           submitTime
           studentID
           teacherID
-          createdAt
-          updatedAt
           _version
           _deleted
           _lastChangedAt
+          createdAt
+          updatedAt
         }
         nextToken
         startedAt
       }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
+      ClassesOpened {
+        items {
+          id
+          name
+          description
+          startDate
+          teacherID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -210,19 +211,19 @@ export const listTeachers = /* GraphQL */ `
         name
         profile
         role
-        ClassesOpened {
-          nextToken
-          startedAt
-        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         Comments {
           nextToken
           startedAt
         }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
+        ClassesOpened {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
@@ -249,19 +250,19 @@ export const syncTeachers = /* GraphQL */ `
         name
         profile
         role
-        ClassesOpened {
-          nextToken
-          startedAt
-        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         Comments {
           nextToken
           startedAt
         }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
+        ClassesOpened {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
@@ -273,6 +274,16 @@ export const getArtWork = /* GraphQL */ `
     getArtWork(id: $id) {
       id
       classID
+      assignmentID
+      image
+      grade
+      studentID
+      likedUsers
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       Comments {
         items {
           id
@@ -281,27 +292,15 @@ export const getArtWork = /* GraphQL */ `
           submitTime
           studentID
           teacherID
-          createdAt
-          updatedAt
           _version
           _deleted
           _lastChangedAt
+          createdAt
+          updatedAt
         }
         nextToken
         startedAt
       }
-      assignmentID
-      title
-      image
-      description
-      grade
-      studentID
-      likedUser
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -315,22 +314,20 @@ export const listArtWorks = /* GraphQL */ `
       items {
         id
         classID
+        assignmentID
+        image
+        grade
+        studentID
+        likedUsers
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         Comments {
           nextToken
           startedAt
         }
-        assignmentID
-        title
-        image
-        description
-        grade
-        studentID
-        likedUser
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
       startedAt
@@ -353,22 +350,20 @@ export const syncArtWorks = /* GraphQL */ `
       items {
         id
         classID
+        assignmentID
+        image
+        grade
+        studentID
+        likedUsers
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         Comments {
           nextToken
           startedAt
         }
-        assignmentID
-        title
-        image
-        description
-        grade
-        studentID
-        likedUser
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
       startedAt
@@ -384,11 +379,11 @@ export const getComment = /* GraphQL */ `
       submitTime
       studentID
       teacherID
-      createdAt
-      updatedAt
       _version
       _deleted
       _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -406,11 +401,11 @@ export const listComments = /* GraphQL */ `
         submitTime
         studentID
         teacherID
-        createdAt
-        updatedAt
         _version
         _deleted
         _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
@@ -437,11 +432,11 @@ export const syncComments = /* GraphQL */ `
         submitTime
         studentID
         teacherID
-        createdAt
-        updatedAt
         _version
         _deleted
         _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
@@ -454,6 +449,31 @@ export const getClass = /* GraphQL */ `
       id
       name
       description
+      startDate
+      teacherID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      ArtWorks {
+        items {
+          id
+          classID
+          assignmentID
+          image
+          grade
+          studentID
+          likedUsers
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       Assignments {
         items {
           id
@@ -461,87 +481,62 @@ export const getClass = /* GraphQL */ `
           openTime
           deadline
           classID
-          createdAt
-          updatedAt
           _version
           _deleted
           _lastChangedAt
+          createdAt
+          updatedAt
         }
         nextToken
         startedAt
       }
-      ArtWorks {
-        items {
-          id
-          classID
-          assignmentID
-          title
-          image
-          description
-          grade
-          studentID
-          likedUser
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        nextToken
-        startedAt
-      }
-      startDate
       students {
         items {
           id
           studentID
           classID
-          createdAt
-          updatedAt
           _version
           _deleted
           _lastChangedAt
+          createdAt
+          updatedAt
         }
         nextToken
+        startedAt
       }
-      teacherID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
-export const listClasses = /* GraphQL */ `
-  query ListClasses(
+export const listClasss = /* GraphQL */ `
+  query ListClasss(
     $filter: ModelClassFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listClasses(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listClasss(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
         description
-        Assignments {
-          nextToken
-          startedAt
-        }
+        startDate
+        teacherID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         ArtWorks {
           nextToken
           startedAt
         }
-        startDate
+        Assignments {
+          nextToken
+          startedAt
+        }
         students {
           nextToken
+          startedAt
         }
-        teacherID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
       startedAt
@@ -565,24 +560,25 @@ export const syncClasses = /* GraphQL */ `
         id
         name
         description
-        Assignments {
-          nextToken
-          startedAt
-        }
+        startDate
+        teacherID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         ArtWorks {
           nextToken
           startedAt
         }
-        startDate
+        Assignments {
+          nextToken
+          startedAt
+        }
         students {
           nextToken
+          startedAt
         }
-        teacherID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
       startedAt
@@ -595,33 +591,31 @@ export const getAssignment = /* GraphQL */ `
       id
       description
       openTime
+      deadline
+      classID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       ArtWorks {
         items {
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
-          likedUser
-          createdAt
-          updatedAt
+          likedUsers
           _version
           _deleted
           _lastChangedAt
+          createdAt
+          updatedAt
         }
         nextToken
         startedAt
       }
-      deadline
-      classID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -636,17 +630,17 @@ export const listAssignments = /* GraphQL */ `
         id
         description
         openTime
+        deadline
+        classID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         ArtWorks {
           nextToken
           startedAt
         }
-        deadline
-        classID
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
       startedAt
@@ -670,17 +664,70 @@ export const syncAssignments = /* GraphQL */ `
         id
         description
         openTime
+        deadline
+        classID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         ArtWorks {
           nextToken
           startedAt
         }
-        deadline
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncStudentClasses = /* GraphQL */ `
+  query SyncStudentClasses(
+    $filter: ModelStudentClassFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncStudentClasses(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        studentID
         classID
-        createdAt
-        updatedAt
         _version
         _deleted
         _lastChangedAt
+        createdAt
+        updatedAt
+        student {
+          id
+          email
+          email_verified
+          name
+          profile
+          role
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        class {
+          id
+          name
+          description
+          startDate
+          teacherID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
       }
       nextToken
       startedAt

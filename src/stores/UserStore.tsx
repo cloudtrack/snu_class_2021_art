@@ -1,4 +1,5 @@
 import Auth, { CognitoUser } from '@aws-amplify/auth';
+import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
 import { DataStore } from '@aws-amplify/datastore';
 import { action, autorun, makeObservable, observable } from 'mobx';
 import { Teacher, Student } from '../models';
@@ -10,7 +11,9 @@ class UserStore {
   rootStore: RootStore;
   user: CognitoUser | null = null;
   userData: UserDataType = null;
+  isInProcessOfFederatedSignIn :boolean = false;
   isLoggedIn: boolean = false;
+  shouldRenderConfirm: boolean = false;
   authCheckComplete: boolean = false;
 
   constructor(rootStore: RootStore) {
@@ -19,6 +22,7 @@ class UserStore {
       // Observable properties
       user: observable,
       isLoggedIn: observable,
+      isInProcessOfFederatedSignIn: observable,
       authCheckComplete: observable,
       userData: observable,
 
@@ -34,7 +38,6 @@ class UserStore {
       if (this.userData === null){
         this.initialize();
       }
-
     })
 
     this.authCheckComplete = true;
@@ -47,11 +50,11 @@ class UserStore {
     console.log(this.user);
     if (this.user !== null) {
       const attributes = await Auth.userAttributes(this.user);
-      const loggedIn = await this.getLoginStatus();
-      this.setLoginStatus(loggedIn);
       if (attributes !== undefined) {
         this.updateUserInfo();
       }
+      const loggedIn = await this.getLoginStatus();
+      this.setLoginStatus(loggedIn);
     }
   }
 
@@ -67,6 +70,7 @@ class UserStore {
       .then(user => {
         console.log(user);
         this.setUser(user.user);
+        this.setShouldRenderConfirm(true);
       })
       .catch(e => {
         console.log(e);
@@ -78,6 +82,7 @@ class UserStore {
     await Auth.confirmSignUp(username, code)
       .then(response => {
         console.log(response);
+        this.setShouldRenderConfirm(false);
       })
       .catch(e => {
         console.log(e);
@@ -120,7 +125,8 @@ class UserStore {
 
   async getLoginStatus(): Promise<boolean> {
     console.log('get login status');
-    const { attributes }= await Auth.currentAuthenticatedUser().catch(e => {
+    const { attributes, signeInUserSession }= await Auth.currentAuthenticatedUser()
+    .catch(e => {
       console.log(e);
     });
     if (attributes !== undefined) {
@@ -129,13 +135,31 @@ class UserStore {
       if (attributes !== null &&
         attributes.hasOwnProperty('email_verified') &&
         (attributes['email_verified'] === 'true' ||
-        attributes['email_verified'] === true)) {
+        attributes['email_verified'] === true) &&
+        this.userData !== null) {
         return true;
       } else {
         return false;
       }
     } else {
       return false;
+    }
+  }
+
+  federatedLogIn(provider: string) {
+    this.isInProcessOfFederatedSignIn = true;
+    if (provider === 'Google') {
+      Auth.federatedSignIn({
+        provider: CognitoHostedUIIdentityProvider.Google,
+      }).then(credentials => {
+          console.log(credentials);
+        }).catch(e => {
+          console.log(e);
+        });
+    } else if (provider === 'Facebook') {
+      Auth.federatedSignIn({
+        provider: CognitoHostedUIIdentityProvider.Facebook,
+      });
     }
   }
 
@@ -167,6 +191,14 @@ class UserStore {
       }));
     }
     this.updateUserInfo();
+  }
+
+  setFederatedLoginStatus = (isInProcessOfFederatedSignIn: boolean) => {
+    this.isInProcessOfFederatedSignIn = isInProcessOfFederatedSignIn;
+  }
+
+  setShouldRenderConfirm = (shouldRenderConfirm: boolean) => {
+    this.shouldRenderConfirm = shouldRenderConfirm;
   }
 
   updateUserInfo = async () => {

@@ -1,13 +1,11 @@
-import { IonCol, IonFab, IonFabButton, IonFabList, IonGrid, IonIcon, IonImg, IonItem, IonList, IonRow, IonText } from "@ionic/react";
+import { IonCol, IonFab, IonFabButton, IonFabList, IonGrid, IonIcon, IonImg,  IonList, IonRow, IonText } from "@ionic/react";
 import { cloudUpload, camera, images } from "ionicons/icons";
 import { observer } from "mobx-react";
-import { assign } from "mobx/dist/internal";
 import { useEffect, useState } from "react";
-import { base64FromPath, usePhotoGallery } from "../../hooks/userPhotoGallery";
-import { ArtWork, Student } from "../../models";
+import { usePhotoGallery } from "../../hooks/userPhotoGallery";
+import { ArtWork } from "../../models";
 import { Assignment } from "../../models";
 import { useStores } from "../../stores/RootStore";
-import { UserDataType } from "../../stores/UserStore";
 import { getImgLinkCached } from "../../stores/PictrueStore";
 import { Filesystem } from "@capacitor/filesystem";
 import { Cache } from "aws-amplify";
@@ -35,7 +33,7 @@ const StudentAssignment: React.FC<{
     if (artwork !== undefined) {
       setArtwork(artwork);
     }
-  });
+  }, [assignment, artworkStore.artworks, userStore.userData]);
 
   useEffect(() => {
     const artworkIndex = artworkStore.artworks.findIndex(artwork => (
@@ -45,7 +43,7 @@ const StudentAssignment: React.FC<{
     if (artworkIndex !== -1) {
       setArtWorkIndex(artworkIndex);
     }
-  });
+  }, [artworkStore.artworks, assignment, userStore.userData]);
 
   useEffect(() => {
     if (artworkIndex > -1) {
@@ -58,10 +56,10 @@ const StudentAssignment: React.FC<{
             console.log(url)
             setArtworkURL(url as string);
           }
-        )
+        );
       }
     }
-  }, [artworkIndex]);
+  }, [artworkIndex, artworkStore.artworks]);
 
   const uploadPicture = async (photo : string) => {
     const base64 = await Filesystem.readFile({

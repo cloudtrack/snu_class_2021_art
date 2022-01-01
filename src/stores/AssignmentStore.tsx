@@ -1,6 +1,6 @@
 import { DataStore } from "aws-amplify";
 import { action, autorun, makeObservable, observable } from "mobx";
-import { Assignment, Class } from "../models";
+import { Assignment } from "../models";
 import RootStore from "./RootStore";
 
 class AssignmentStore {

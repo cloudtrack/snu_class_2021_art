@@ -26,7 +26,7 @@ interface IFeedItemProps {
 
 export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
 
-  const [useranme, setUserName] = useState('');
+  const [username, setUserName] = useState('');
   const [imgURL, setImgURL] = useState('');
   const [liked, setLiked] = useState(false);
 
@@ -73,7 +73,7 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
         <IonGrid>
           <IonRow className="ion-align-items-center">
             <IonIcon icon={personCircle} size="large" />
-            <IonText className="feed-username">{useranme}</IonText>
+            <IonText className="feed-username">{username}</IonText>
           </IonRow>
         </IonGrid>
       </IonCardHeader>
