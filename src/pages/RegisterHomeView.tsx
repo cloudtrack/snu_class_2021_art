@@ -1,12 +1,34 @@
-import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonRouterLink, IonText, IonTitle, IonToolbar } from "@ionic/react"
-import { logoFacebook, logoGoogle, logoIonic } from "ionicons/icons";
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonPage, IonRouterLink, IonText, IonTitle, IonToolbar } from "@ionic/react"
+import { close, logoFacebook, logoGoogle, logoIonic } from "ionicons/icons";
 import "./RegisterPage/RegisterController"
 import "./RegisterHome.css"
 import { observer } from "mobx-react";
-import { Auth } from "aws-amplify";
-import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
+import { useStores } from "../stores/RootStore";
+import React, { useEffect } from "react";
+
 
 const RegisterHomeView: React.FC = () => {
+
+  const { userStore } = useStores();
+  const [showModal, setShowModal] = React.useState(
+    false
+  );
+
+  useEffect(() => {
+    const initialize = async () => {
+      if (!userStore.authCheckComplete) {
+        setShowModal(false);
+      } else {
+        setShowModal(
+          userStore.user !== null &&
+          userStore.userData === null
+        );
+      }
+    }
+    initialize();
+
+  }, [userStore.user, userStore.userData, userStore.authCheckComplete]);
+
   return (
     <IonPage >
       <IonHeader >
@@ -16,6 +38,31 @@ const RegisterHomeView: React.FC = () => {
           </IonTitle>
         </IonToolbar>
       </IonHeader>
+      <IonModal
+        isOpen={showModal}
+        onDidDismiss={() => {
+          // userStore.signOut();
+          setShowModal(false);
+        }}
+      >
+        <IonHeader translucent>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton onClick={() => {
+                userStore.signOut();
+                setShowModal(false);
+              }}>
+                <IonIcon color="white" slot="icon-only" icon={close} />
+              </IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <IonText class="ion-text-center">
+            <h1>One more step...</h1>
+          </IonText>
+        </IonContent>
+      </IonModal>
       <IonContent className="homescreen" style={{
         "--background": "none",
         "background-image": "url(/assets/background2.jpg)",
@@ -27,34 +74,28 @@ const RegisterHomeView: React.FC = () => {
           <IonText color="light" style={{
             "font-family": "millenia, serif",
             "font-size": "3rem",
-            // "text-shadow": "2px 2px #000000",
             "text-shadow": "-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black"
           }}>
-            Build your art skills in the cloud<br />
-            Demonstrate and share learning easily
+            Build your art skills in the cloud
           </IonText>
         </div>
         <div className="footer">
           <IonButton color="danger" expand="block" onClick={
             () => {
               // amplify google federated signin
-              Auth.federatedSignIn({
-                provider: CognitoHostedUIIdentityProvider.Google,
-              }).then(credentials => {
-                console.log(credentials);
-              }).catch(err => console.log(err));
+              userStore.federatedLogIn("Google");
             }}>
             <IonIcon slot="start" icon={logoGoogle} />
             Continue with Google
           </IonButton>
-          <IonButton expand="block" color="tertiary">
+          {/* <IonButton expand="block" color="tertiary">
             <IonIcon slot="start" icon={logoFacebook} onClick={
               () => {
 
               }
             } />
             Continue with Facebook
-          </IonButton>
+          </IonButton> */}
           <IonText color="light" class="ion-text-center" style={{
             "text-shadow": "1px 1px #0b0b0b"
           }}>

@@ -3,6 +3,7 @@ import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
 import { DataStore } from '@aws-amplify/datastore';
 import { action, autorun, makeObservable, observable } from 'mobx';
 import { Teacher, Student } from '../models';
+import { sleep } from '../utils';
 import RootStore from './RootStore';
 
 export type UserDataType = Student | Teacher | null;
@@ -34,13 +35,14 @@ class UserStore {
       // Not Observable
       rootStore: false,
     });
-    autorun(() => {
+    autorun(async () => {
       if (this.userData === null){
-        this.initialize();
+        this.authCheckComplete = false;
+        await this.initialize();
+        this.authCheckComplete = true;
       }
     })
 
-    this.authCheckComplete = true;
     console.log(this);
   }
 
@@ -51,7 +53,7 @@ class UserStore {
     if (this.user !== null) {
       const attributes = await Auth.userAttributes(this.user);
       if (attributes !== undefined) {
-        this.updateUserInfo();
+        await this.updateUserInfo();
       }
       const loggedIn = await this.getLoginStatus();
       this.setLoginStatus(loggedIn);

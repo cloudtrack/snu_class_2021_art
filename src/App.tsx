@@ -103,12 +103,9 @@ const PublicRoutes = () => {
 const App: React.FC = () => {
   const { userStore } = useStores()
 
-  return !userStore.authCheckComplete ? (
+  return (
     <IonApp>
-      <IonLoading message={'Loading...'} isOpen />
-    </IonApp>
-  ) : (
-    <IonApp>
+      <IonLoading message={'Loading...'} isOpen={!userStore.authCheckComplete} backdropDismiss />
       {!userStore.isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}
     </IonApp>
   );
