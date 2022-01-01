@@ -32,7 +32,6 @@ import React from 'react';
 // import { avatarImageFromEmail } from '../../utils';
 // import { isCompositeComponent } from 'react-dom/test-utils';
 // import { Comment } from '../../models';
-// import { listComments } from '../../graphql/queries';
 
 // import { Comment } from '../../models';
 
@@ -87,14 +86,6 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
 
     fetchImgURL();
   }, [artwork]);
-
-  // const handleComment = (comment: string) => {
-  //   // To save the comment into the DB
-  //   console.log(comment);
-
-  //   setCommentString("");
-
-  // }
 
 
   return (
