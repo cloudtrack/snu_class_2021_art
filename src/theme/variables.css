@@ -76,6 +76,10 @@ ion-item:last-child {
     --border-width: 0 0 0 0 !important;
 }
 
+@font-face {
+    font-family: 'millenia';
+    src: local('millenia'), url("../fonts/millenia-font/MilleniaPersonalUse-w1OB8.ttf") format('truetype');
+}
 
 @media (prefers-color-scheme: dark) {
   /*
