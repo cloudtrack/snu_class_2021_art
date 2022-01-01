@@ -16,6 +16,7 @@ const FeedView: React.FC = () => {
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(200)
 
   const { artworkStore } = useStores();
+  
 
   return (
     <IonPage>
