@@ -66,7 +66,6 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
         }).catch(err => {
           console.log(err);
         });
-      // setUserName(result[0].name!);
     };
 
     fetchUserName();
@@ -93,7 +92,7 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
         <IonGrid>
           <IonRow className="ion-align-items-center">
             <IonIcon icon={personCircle} size="large" />
-            {/* <IonText className="feed-username">{useranme}</IonText> */}
+            <IonText className="feed-username">{useranme}</IonText>
           </IonRow>
         </IonGrid>
       </IonCardHeader>
@@ -189,7 +188,6 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
           }
         </IonGrid>
       </IonCardContent>
-
     </IonCard>
   );
 };

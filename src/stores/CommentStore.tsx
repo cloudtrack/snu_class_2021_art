@@ -31,10 +31,9 @@ class CommentStore {
     for (const artwork of this.rootStore.artworkStore.artworks) {
       if (artwork.Comments === undefined) { // probably relationship not set up
         try {
-          const comments = await DataStore.query(Comment);
+          const comments = await DataStore.query(Comment, c => c.artworkID('eq', artwork.id));
           for (const comment of comments) {
-            if (artwork.id === comment.artworkID &&
-              this.commentIDs.includes(comment.id) === false) {
+            if (this.commentIDs.includes(comment.id) === false) {
               this.commentIDs.push(comment.id);
               this.comments.push(comment);
             }
