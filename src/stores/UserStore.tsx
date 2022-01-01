@@ -46,8 +46,9 @@ class UserStore {
     this.setUser(await this.getUser());
     console.log(this.user);
     if (this.user !== null) {
-      this.setLoginStatus(true);
       const attributes = await Auth.userAttributes(this.user);
+      const loggedIn = await this.getLoginStatus();
+      this.setLoginStatus(loggedIn);
       if (attributes !== undefined) {
         this.updateUserInfo();
       }
@@ -119,12 +120,20 @@ class UserStore {
 
   async getLoginStatus(): Promise<boolean> {
     console.log('get login status');
-    const attributes = await Auth.currentAuthenticatedUser().catch(e => {
+    const { attributes }= await Auth.currentAuthenticatedUser().catch(e => {
       console.log(e);
     });
     if (attributes !== undefined) {
+      console.log("probably logged in");
       console.log(attributes);
-      return true;
+      if (attributes !== null &&
+        attributes.hasOwnProperty('email_verified') &&
+        (attributes['email_verified'] === 'true' ||
+        attributes['email_verified'] === true)) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
