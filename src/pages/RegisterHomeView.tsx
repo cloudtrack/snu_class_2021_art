@@ -1,18 +1,40 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonPage, IonRouterLink, IonText, IonTitle, IonToolbar } from "@ionic/react"
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonModal, IonPage, IonRouterLink, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar } from "@ionic/react"
 import { close, logoFacebook, logoGoogle, logoIonic } from "ionicons/icons";
 import "./RegisterPage/RegisterController"
 import "./RegisterHome.css"
 import { observer } from "mobx-react";
 import { useStores } from "../stores/RootStore";
 import React, { useEffect } from "react";
+import { Auth } from "aws-amplify";
 
 
 const RegisterHomeView: React.FC = () => {
 
   const { userStore } = useStores();
-  const [showModal, setShowModal] = React.useState(
-    false
+  const [showModal, setShowModal] = React.useState(false);
+
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [role, setRole] = React.useState("");
+
+  const isUsernameValid = (username: string): boolean => (
+    username !== null && username !== '' && username.includes('@') && username.substr(username.indexOf('@')) !== ''
   );
+
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+  const isPasswordValid = (password: string): boolean => password !== null && password !== '' && password.match(passwordRegex) !== null;
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { attributes } = await Auth.currentAuthenticatedUser();
+      setUsername(attributes.email);
+    };
+    console.log(userStore.user);
+    if (userStore.user !== null) {
+      getUser();
+    }
+  });
 
   useEffect(() => {
     const initialize = async () => {
@@ -61,6 +83,69 @@ const RegisterHomeView: React.FC = () => {
           <IonText class="ion-text-center">
             <h1>One more step...</h1>
           </IonText>
+          <form className="ion-padding">
+            <IonImg style={{ margin: '20px auto 20px', width: '20%' }} src={'assets/md-applicon.svg'} />
+            {/* <IonIcon src='/assets/shapes.svg'></IonIcon> */}
+            <IonItem>
+              <IonLabel position="floating">Email</IonLabel>
+              <IonInput
+                value={username}
+                placeholder="Enter Input"
+                onIonChange={e => setUsername(e.detail.value!)}
+                clearInput
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel position="floating">Password</IonLabel>
+              <IonInput
+                type="password"
+                value={password}
+                placeholder="Enter Password"
+                onIonChange={e => setPassword(e.detail.value!)}
+                clearInput
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel position="floating">Confirm Password</IonLabel>
+              <IonInput
+                type="password"
+                value={confirmPassword}
+                placeholder="Enter Password again to confirm"
+                onIonChange={e => setConfirmPassword(e.detail.value!)}
+                clearInput
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel>Role</IonLabel>
+              <IonSelect
+                interface="popover"
+                value={role}
+                placeholder="Select Your Role"
+                onIonChange={e => setRole(e.detail.value)}
+              >
+                <IonSelectOption value="student">Student</IonSelectOption>
+                <IonSelectOption value="teacher">Teacher</IonSelectOption>
+              </IonSelect>
+            </IonItem>
+
+            <IonButton
+              style={{ margin: '50px 50px 50px 50px' }}
+              expand="block"
+              onClick={() => {
+                userStore.signUp(username, password, role);
+              }}
+              disabled={
+                !(
+                  isUsernameValid(username) &&
+                  isPasswordValid(password) &&
+                  password === confirmPassword &&
+                  role !== ''
+                )
+              }
+            >
+              Sign Up
+            </IonButton>
+          </form>
         </IonContent>
       </IonModal>
       <IonContent className="homescreen" style={{

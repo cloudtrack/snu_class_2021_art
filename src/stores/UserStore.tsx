@@ -12,7 +12,7 @@ class UserStore {
   rootStore: RootStore;
   user: CognitoUser | null = null;
   userData: UserDataType = null;
-  isInProcessOfFederatedSignIn :boolean = false;
+  isInProcessOfFederatedSignIn: boolean = false;
   isLoggedIn: boolean = false;
   shouldRenderConfirm: boolean = false;
   authCheckComplete: boolean = false;
@@ -36,7 +36,7 @@ class UserStore {
       rootStore: false,
     });
     autorun(async () => {
-      if (this.userData === null){
+      if (this.userData === null) {
         this.authCheckComplete = false;
         await this.initialize();
         this.authCheckComplete = true;
@@ -72,7 +72,9 @@ class UserStore {
       .then(user => {
         console.log(user);
         this.setUser(user.user);
-        this.setShouldRenderConfirm(true);
+        if (!user.userConfirmed) {
+          this.setShouldRenderConfirm(true);
+        }
       })
       .catch(e => {
         console.log(e);
@@ -127,17 +129,17 @@ class UserStore {
 
   async getLoginStatus(): Promise<boolean> {
     console.log('get login status');
-    const { attributes, signeInUserSession }= await Auth.currentAuthenticatedUser()
-    .catch(e => {
-      console.log(e);
-    });
+    const { attributes, signeInUserSession } = await Auth.currentAuthenticatedUser()
+      .catch(e => {
+        console.log(e);
+      });
     if (attributes !== undefined) {
       console.log("probably logged in");
       console.log(attributes);
       if (attributes !== null &&
         attributes.hasOwnProperty('email_verified') &&
         (attributes['email_verified'] === 'true' ||
-        attributes['email_verified'] === true) &&
+          attributes['email_verified'] === true) &&
         this.userData !== null) {
         return true;
       } else {
@@ -154,10 +156,10 @@ class UserStore {
       Auth.federatedSignIn({
         provider: CognitoHostedUIIdentityProvider.Google,
       }).then(credentials => {
-          console.log(credentials);
-        }).catch(e => {
-          console.log(e);
-        });
+        console.log(credentials);
+      }).catch(e => {
+        console.log(e);
+      });
     } else if (provider === 'Facebook') {
       Auth.federatedSignIn({
         provider: CognitoHostedUIIdentityProvider.Facebook,
