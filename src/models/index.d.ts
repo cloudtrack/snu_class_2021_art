@@ -91,11 +91,10 @@ export declare class ArtWork {
   readonly classID?: string;
   readonly Comments?: (Comment | null)[];
   readonly assignmentID?: string;
-  readonly title?: string;
   readonly image?: string;
-  readonly description?: string;
   readonly grade?: number;
   readonly studentID?: string;
+  readonly likedUsers: (string | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<ArtWork, ArtWorkMetaData>);
