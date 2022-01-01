@@ -29,26 +29,23 @@ import { ImagePreviewModal } from '../ImagePreviewModal';
 
 import './index.css';
 import React from 'react';
-// import { avatarImageFromEmail } from '../../utils';
-// import { isCompositeComponent } from 'react-dom/test-utils';
-// import { Comment } from '../../models';
 
-// import { Comment } from '../../models';
+import { Comment } from '../../models';
+import { observer } from 'mobx-react';
 
 interface IFeedItemProps {
-  //commentList: ICommentItemProps[];
   artwork: ArtWork;
 }
 
-export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
+const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
 
   const [useranme, setUserName] = useState('');
   const [imgURL, setImgURL] = useState('');
   const [liked, setLiked] = useState(false);
   const [commentString, setCommentString] = useState<string>('');
-  const [clicked, setClicked] =useState(false);
+  const [clicked, setClicked] = useState(false);
 
-  const { commentStore } = useStores();
+  const { userStore, commentStore } = useStores();
 
   const handleDismiss = () => {
     dismiss();
@@ -63,12 +60,13 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
 
   useEffect(() => {
     const fetchUserName = async () => {
-      const result = (await DataStore.query(Student)).filter(
-        (student: Student) => student.id === artwork.studentID
-      ).map((student: Student) => student.name)[0];
-      if (result !== undefined) {
-        setUserName(result);
-      }
+      DataStore.query(Student, s => s.id('eq', artwork.studentID!))
+        .then(res => {
+          setUserName(res[0].name!);
+        }).catch(err => {
+          console.log(err);
+        });
+      // setUserName(result[0].name!);
     };
 
     fetchUserName();
@@ -78,6 +76,7 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
     const fetchImgURL = async () => {
       if (artwork.image !== undefined) {
         const result = await getImgLinkCached(artwork.image);
+        console.log(result);
         if (result !== undefined) {
           setImgURL(result);
         }
@@ -94,7 +93,7 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
         <IonGrid>
           <IonRow className="ion-align-items-center">
             <IonIcon icon={personCircle} size="large" />
-            <IonText className="feed-username">{useranme}</IonText>
+            {/* <IonText className="feed-username">{useranme}</IonText> */}
           </IonRow>
         </IonGrid>
       </IonCardHeader>
@@ -127,48 +126,72 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
 
             </IonCol>
 
-        {/* add comment section */}
-
+            {/* add comment section */}
             <IonCol className="ion-align-items-center ion-justify-content-end">
-                <IonButton fill='clear' className="like" onClick={
-                  () => { setClicked(!clicked); }
-                }>
-                  <IonIcon icon={chatbubbleEllipses} color="primary" size="large" />
-                </IonButton>
-                {
-                  clicked ?
-                    <>
-                      <IonTextarea className="float-left"
-                      placeholder="Comment .... "
-                      value={commentString}
-                      onIonChange={e => setCommentString(e.detail.value!)}
-                      />
-                      <IonButton
-                      className="ion-button small float-right round" size="small"
-                      onClick={() => {
-                        commentStore.addComment(
-                          artwork.id,
-                          commentString,
-                          '2019-05-03T18:18:13.683Z',
-                          'student',
-                          'teacher'
-                        );
-                       }}
-                       >
-                         Comment
-                      </IonButton>
-                    </>:
-                    <>
-                    </>
-                }
+              <IonButton fill='clear' className="like" onClick={
+                () => { setClicked(!clicked); }
+              }>
+                <IonIcon icon={chatbubbleEllipses} color="primary" size="large" />
+              </IonButton>
+              {
+                clicked && <>
+                  <IonTextarea className="float-left"
+                    placeholder="Comment .... "
+                    value={commentString}
+                    onIonChange={e => setCommentString(e.detail.value!)}
+                  />
+                  <IonButton
+                    className="ion-button small float-right round" size="small"
+                    onClick={() => {
+                      commentStore.addComment(
+                        artwork.id,
+                        commentString,
+                        new Date().toISOString(),
+                        userStore.userData?.role === 'student' ? userStore.userData?.id : undefined,
+                        userStore.userData?.role === 'teacher' ? userStore.userData?.id : undefined,
+                      );
+                      setCommentString('');
+                    }}
+                  >
+                    Comment
+                  </IonButton>
+                </>
+              }
             </IonCol>
           </IonRow>
 
           {/* Should be handled to show all the comments for a specific art work */}
-          <CommentItem key={artwork.id} username={useranme} avatar={imgURL} comment={"It is a comment"}  />
+          {
+            commentStore.comments.map((comment: Comment) => {
+              if (comment.artworkID === artwork.id) {
+                console.log(comment);
+                return (
+                  <CommentItem
+                    key={artwork.id}
+                    isTeacher={
+                      comment.studentID === undefined ||
+                      comment.studentID === null ||
+                      comment.studentID === ""
+                    }
+                    userID={
+                      comment.studentID === undefined ||
+                        comment.studentID === null ||
+                        comment.studentID === "" ?
+                        comment.teacherID :
+                        comment.studentID
+                    }
+                    comment={comment.message} />
+                );
+              } else {
+                return <></>;
+              }
+            })
+          }
         </IonGrid>
       </IonCardContent>
 
     </IonCard>
   );
 };
+
+export default observer(FeedItem);
