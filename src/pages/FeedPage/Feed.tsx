@@ -7,7 +7,7 @@ import {
   IonToolbar
 } from '@ionic/react';
 import { observer } from 'mobx-react';
-import { FeedItem } from '../../components/FeedItem';
+import FeedItem from '../../components/FeedItem';
 import HidingHeader from '../../components/HidingHeader/HidingHeader';
 import { useHidingHeader } from '../../hooks/useHidingHeader';
 import { useStores } from '../../stores/RootStore';
@@ -17,7 +17,7 @@ const FeedView: React.FC = () => {
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(200)
 
   const { artworkStore } = useStores();
-  
+
 
   return (
     <IonPage>

@@ -4,69 +4,77 @@ import { Comment } from "../models";
 import { DataStore } from "aws-amplify";
 import { ArtWork } from "../models";
 
-class CommentStore{
-    rootStore: RootStore;
+class CommentStore {
+  rootStore: RootStore;
 
-    comments: Comment[] = [];
-    commentIDs: string[] = [];
+  comments: Comment[] = [];
+  commentIDs: string[] = [];
 
-    constructor(rootStore: RootStore) {
-        this.rootStore = rootStore;
-        makeObservable(this, {
-          comments: observable,
-          initialize: action,
-          addComment: action,
-        });
-        autorun(() => {
-            if (this.rootStore.userStore.userData !== null &&
-              this.rootStore.classStore.classes.length > 0) {
-              this.initialize();
-              console.log("CommentStore created");
-              // console.log(this.assignments);
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
+    makeObservable(this, {
+      comments: observable,
+
+      initialize: action,
+      addComment: action,
+    });
+    autorun(async () => {
+      if (this.rootStore.userStore.userData != null &&
+        this.rootStore.artworkStore.artworks.length > 0) {
+        this.initialize();
+        console.log("CommentStore created");
+      }
+    })
+  }
+
+  initialize = async () => {
+    for (const artwork of this.rootStore.artworkStore.artworks) {
+      if (artwork.Comments === undefined) { // probably relationship not set up
+        try {
+          const comments = await DataStore.query(Comment);
+          for (const comment of comments) {
+            if (artwork.id === comment.artworkID &&
+              this.commentIDs.includes(comment.id) === false) {
+              this.commentIDs.push(comment.id);
+              this.comments.push(comment);
             }
-          })
-        }
-        initialize = async () => {
-            if (this.rootStore.commentStore.comments.length > 0) {
-                for (const artwork of this.rootStore.artworkStore.artworks) {
-                  if (artwork.Comments === undefined) {
-                    const comments = await DataStore.query(Comment);
-                    for (const comment of comments) {
-                      if (comment.artworkID === artwork.id) {
-                        if (this.commentIDs.includes(comment.id) === false) {
-                          this.commentIDs.push(comment.id);
-                          this.comments.push(comment);
-                        }
-                      }
-                    }
-                    await DataStore.save(ArtWork.copyOf(
-                      artwork, item => {
-                        item.Comments = [...this.comments.filter(comment => comment.artworkID === artwork.id)];
-                      }
-                    ));
-                  }
-                }
-              }
-        }
-        addComment = async (
-            artworkID: string,
-            comment: string,
-            submitTime: string,
-            studentId: string,
-            teacherId: string,
-          ) => {
-            console.log("addAssignment");
-            // if (this.assignments.filter(
-            //   assn => assn.classID === classId).length > 0) {
-              const assn = new Comment({
-                "message": comment,
-                "artworkID": artworkID,
-                "submitTime": submitTime,
-                "studentID": studentId,
-                "teacherID": teacherId,
-              });
-              await DataStore.save(assn);
           }
+        } catch (err) {
+          console.log(err);
+        }
+
+        // await DataStore.save(ArtWork.copyOf(artwork, item => { item.Comments = comments }));
+      } else {
+        for (const comment of artwork.Comments) {
+          if (comment !== null && !this.commentIDs.includes(comment.id)) {
+            this.commentIDs.push(comment.id);
+            this.comments.push(comment);
+          }
+        }
+      }
+    }
+  }
+
+
+  addComment = async (
+    artworkID: string,
+    message: string,
+    submitTime: string,
+    studentId: string | undefined,
+    teacherId: string | undefined,
+  ) => {
+
+    const comment = new Comment({
+      "message": message,
+      "artworkID": artworkID,
+      "submitTime": submitTime,
+      "studentID": studentId,
+      "teacherID": teacherId,
+    });
+    this.comments.push(comment);
+    this.commentIDs.push(comment.id);
+    await DataStore.save(comment);
+  }
 
 }
 
