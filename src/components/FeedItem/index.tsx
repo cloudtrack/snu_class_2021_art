@@ -1,17 +1,23 @@
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
+  IonCol,
+  IonContent,
+  IonFooter,
   IonGrid,
   IonIcon,
   IonRow,
+  IonSlide,
+  IonSlides,
   IonText,
   IonTextarea,
   useIonModal,
 
 } from '@ionic/react';
 import { DataStore } from 'aws-amplify';
-import { heart, heartOutline, personCircle } from 'ionicons/icons';
+import { add, chatbubbleEllipses, close, heart, heartOutline, personCircle, remove } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { Student } from '../../models';
 import { ArtWork } from '../../models';
@@ -23,6 +29,7 @@ import { ImagePreviewModal } from '../ImagePreviewModal';
 
 import './index.css';
 import React from 'react';
+
 // import { Comment } from '../../models';
 
 interface IFeedItemProps {
@@ -103,9 +110,13 @@ export const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
         });
       }}>
         {/* <IonImg src="https://picsum.photos/640/300" /> */}
+        {/* <IonSlides options={slideOpts}>
+          <IonSlide > */}
         <div className='imgwrapper'>
           <img src={imgURL} className='coverimg' />
         </div>
+        {/* </IonSlide>
+        </IonSlides> */}
       </IonCardContent>
       <IonCardContent className="feed-control">
         <IonGrid>
