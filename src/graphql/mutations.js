@@ -13,11 +13,19 @@ export const createStudent = /* GraphQL */ `
       name
       profile
       role
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      ClassJoined {
+        items {
+          id
+          studentID
+          classID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+      }
       ArtWorks {
         items {
           id
@@ -28,11 +36,12 @@ export const createStudent = /* GraphQL */ `
           description
           grade
           studentID
+          likedUser
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -45,29 +54,20 @@ export const createStudent = /* GraphQL */ `
           submitTime
           studentID
           teacherID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      ClassJoined {
-        items {
-          id
-          studentID
-          classID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -83,11 +83,19 @@ export const updateStudent = /* GraphQL */ `
       name
       profile
       role
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      ClassJoined {
+        items {
+          id
+          studentID
+          classID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+      }
       ArtWorks {
         items {
           id
@@ -98,11 +106,12 @@ export const updateStudent = /* GraphQL */ `
           description
           grade
           studentID
+          likedUser
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -115,29 +124,20 @@ export const updateStudent = /* GraphQL */ `
           submitTime
           studentID
           teacherID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      ClassJoined {
-        items {
-          id
-          studentID
-          classID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -153,11 +153,19 @@ export const deleteStudent = /* GraphQL */ `
       name
       profile
       role
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      ClassJoined {
+        items {
+          id
+          studentID
+          classID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+      }
       ArtWorks {
         items {
           id
@@ -168,11 +176,12 @@ export const deleteStudent = /* GraphQL */ `
           description
           grade
           studentID
+          likedUser
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -185,29 +194,20 @@ export const deleteStudent = /* GraphQL */ `
           submitTime
           studentID
           teacherID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      ClassJoined {
-        items {
-          id
-          studentID
-          classID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -223,11 +223,22 @@ export const createTeacher = /* GraphQL */ `
       name
       profile
       role
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      ClassesOpened {
+        items {
+          id
+          name
+          description
+          startDate
+          teacherID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       Comments {
         items {
           id
@@ -236,31 +247,20 @@ export const createTeacher = /* GraphQL */ `
           submitTime
           studentID
           teacherID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      ClassesOpened {
-        items {
-          id
-          name
-          description
-          startDate
-          teacherID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -276,11 +276,22 @@ export const updateTeacher = /* GraphQL */ `
       name
       profile
       role
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      ClassesOpened {
+        items {
+          id
+          name
+          description
+          startDate
+          teacherID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       Comments {
         items {
           id
@@ -289,31 +300,20 @@ export const updateTeacher = /* GraphQL */ `
           submitTime
           studentID
           teacherID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      ClassesOpened {
-        items {
-          id
-          name
-          description
-          startDate
-          teacherID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -329,11 +329,22 @@ export const deleteTeacher = /* GraphQL */ `
       name
       profile
       role
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      ClassesOpened {
+        items {
+          id
+          name
+          description
+          startDate
+          teacherID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       Comments {
         items {
           id
@@ -342,31 +353,20 @@ export const deleteTeacher = /* GraphQL */ `
           submitTime
           studentID
           teacherID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      ClassesOpened {
-        items {
-          id
-          name
-          description
-          startDate
-          teacherID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -378,17 +378,6 @@ export const createArtWork = /* GraphQL */ `
     createArtWork(input: $input, condition: $condition) {
       id
       classID
-      assignmentID
-      title
-      image
-      description
-      grade
-      studentID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       Comments {
         items {
           id
@@ -397,15 +386,27 @@ export const createArtWork = /* GraphQL */ `
           submitTime
           studentID
           teacherID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
+      assignmentID
+      title
+      image
+      description
+      grade
+      studentID
+      likedUser
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -417,17 +418,6 @@ export const updateArtWork = /* GraphQL */ `
     updateArtWork(input: $input, condition: $condition) {
       id
       classID
-      assignmentID
-      title
-      image
-      description
-      grade
-      studentID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       Comments {
         items {
           id
@@ -436,15 +426,27 @@ export const updateArtWork = /* GraphQL */ `
           submitTime
           studentID
           teacherID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
+      assignmentID
+      title
+      image
+      description
+      grade
+      studentID
+      likedUser
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -456,17 +458,6 @@ export const deleteArtWork = /* GraphQL */ `
     deleteArtWork(input: $input, condition: $condition) {
       id
       classID
-      assignmentID
-      title
-      image
-      description
-      grade
-      studentID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       Comments {
         items {
           id
@@ -475,15 +466,27 @@ export const deleteArtWork = /* GraphQL */ `
           submitTime
           studentID
           teacherID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
+      assignmentID
+      title
+      image
+      description
+      grade
+      studentID
+      likedUser
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -499,11 +502,11 @@ export const createComment = /* GraphQL */ `
       submitTime
       studentID
       teacherID
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -519,11 +522,11 @@ export const updateComment = /* GraphQL */ `
       submitTime
       studentID
       teacherID
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -539,11 +542,11 @@ export const deleteComment = /* GraphQL */ `
       submitTime
       studentID
       teacherID
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -556,13 +559,22 @@ export const createClass = /* GraphQL */ `
       id
       name
       description
-      startDate
-      teacherID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      Assignments {
+        items {
+          id
+          description
+          openTime
+          deadline
+          classID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       ArtWorks {
         items {
           id
@@ -573,45 +585,36 @@ export const createClass = /* GraphQL */ `
           description
           grade
           studentID
+          likedUser
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      Assignments {
-        items {
-          id
-          description
-          openTime
-          deadline
-          classID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
+      startDate
       students {
         items {
           id
           studentID
           classID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
-        startedAt
       }
+      teacherID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -624,13 +627,22 @@ export const updateClass = /* GraphQL */ `
       id
       name
       description
-      startDate
-      teacherID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      Assignments {
+        items {
+          id
+          description
+          openTime
+          deadline
+          classID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       ArtWorks {
         items {
           id
@@ -641,45 +653,36 @@ export const updateClass = /* GraphQL */ `
           description
           grade
           studentID
+          likedUser
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      Assignments {
-        items {
-          id
-          description
-          openTime
-          deadline
-          classID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
+      startDate
       students {
         items {
           id
           studentID
           classID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
-        startedAt
       }
+      teacherID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -692,13 +695,22 @@ export const deleteClass = /* GraphQL */ `
       id
       name
       description
-      startDate
-      teacherID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      Assignments {
+        items {
+          id
+          description
+          openTime
+          deadline
+          classID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
       ArtWorks {
         items {
           id
@@ -709,45 +721,36 @@ export const deleteClass = /* GraphQL */ `
           description
           grade
           studentID
+          likedUser
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
-      Assignments {
-        items {
-          id
-          description
-          openTime
-          deadline
-          classID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
+      startDate
       students {
         items {
           id
           studentID
           classID
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
-        startedAt
       }
+      teacherID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -760,13 +763,6 @@ export const createAssignment = /* GraphQL */ `
       id
       description
       openTime
-      deadline
-      classID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       ArtWorks {
         items {
           id
@@ -777,15 +773,23 @@ export const createAssignment = /* GraphQL */ `
           description
           grade
           studentID
+          likedUser
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
+      deadline
+      classID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -798,13 +802,6 @@ export const updateAssignment = /* GraphQL */ `
       id
       description
       openTime
-      deadline
-      classID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       ArtWorks {
         items {
           id
@@ -815,15 +812,23 @@ export const updateAssignment = /* GraphQL */ `
           description
           grade
           studentID
+          likedUser
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
+      deadline
+      classID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -836,13 +841,6 @@ export const deleteAssignment = /* GraphQL */ `
       id
       description
       openTime
-      deadline
-      classID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       ArtWorks {
         items {
           id
@@ -853,15 +851,23 @@ export const deleteAssignment = /* GraphQL */ `
           description
           grade
           studentID
+          likedUser
+          createdAt
+          updatedAt
           _version
           _deleted
           _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
       }
+      deadline
+      classID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -874,11 +880,6 @@ export const createStudentClass = /* GraphQL */ `
       id
       studentID
       classID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       student {
         id
         email
@@ -886,11 +887,9 @@ export const createStudentClass = /* GraphQL */ `
         name
         profile
         role
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+        ClassJoined {
+          nextToken
+        }
         ArtWorks {
           nextToken
           startedAt
@@ -899,35 +898,40 @@ export const createStudentClass = /* GraphQL */ `
           nextToken
           startedAt
         }
-        ClassJoined {
-          nextToken
-          startedAt
-        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       class {
         id
         name
         description
-        startDate
-        teacherID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        ArtWorks {
-          nextToken
-          startedAt
-        }
         Assignments {
           nextToken
           startedAt
         }
-        students {
+        ArtWorks {
           nextToken
           startedAt
         }
+        startDate
+        students {
+          nextToken
+        }
+        teacherID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -940,11 +944,6 @@ export const updateStudentClass = /* GraphQL */ `
       id
       studentID
       classID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       student {
         id
         email
@@ -952,11 +951,9 @@ export const updateStudentClass = /* GraphQL */ `
         name
         profile
         role
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+        ClassJoined {
+          nextToken
+        }
         ArtWorks {
           nextToken
           startedAt
@@ -965,35 +962,40 @@ export const updateStudentClass = /* GraphQL */ `
           nextToken
           startedAt
         }
-        ClassJoined {
-          nextToken
-          startedAt
-        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       class {
         id
         name
         description
-        startDate
-        teacherID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        ArtWorks {
-          nextToken
-          startedAt
-        }
         Assignments {
           nextToken
           startedAt
         }
-        students {
+        ArtWorks {
           nextToken
           startedAt
         }
+        startDate
+        students {
+          nextToken
+        }
+        teacherID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -1006,11 +1008,6 @@ export const deleteStudentClass = /* GraphQL */ `
       id
       studentID
       classID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       student {
         id
         email
@@ -1018,11 +1015,9 @@ export const deleteStudentClass = /* GraphQL */ `
         name
         profile
         role
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+        ClassJoined {
+          nextToken
+        }
         ArtWorks {
           nextToken
           startedAt
@@ -1031,35 +1026,40 @@ export const deleteStudentClass = /* GraphQL */ `
           nextToken
           startedAt
         }
-        ClassJoined {
-          nextToken
-          startedAt
-        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       class {
         id
         name
         description
-        startDate
-        teacherID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        ArtWorks {
-          nextToken
-          startedAt
-        }
         Assignments {
           nextToken
           startedAt
         }
-        students {
+        ArtWorks {
           nextToken
           startedAt
         }
+        startDate
+        students {
+          nextToken
+        }
+        teacherID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;

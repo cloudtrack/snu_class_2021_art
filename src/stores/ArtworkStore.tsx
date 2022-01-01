@@ -60,7 +60,8 @@ class ArtWorkStore {
       const artwork = new ArtWork({
         assignmentID: assnID,
         studentID: studentID,
-        image: img
+        image: img,
+        likedUsers: [] as string[],
       });
       this.artworks.push(artwork);
       this.artworkIDs.push(artwork.id);
@@ -72,7 +73,8 @@ class ArtWorkStore {
       const artwork = new ArtWork({
         assignmentID: assnID,
         studentID: studentID,
-        image: img
+        image: img,
+        likedUsers: [] as string[],
       });
       this.artworks.push(artwork);
       this.artworkIDs.push(artwork.id);
