@@ -31,7 +31,7 @@ export const CommentItem: FC<ICommentItemProps> = ({ userID, isTeacher, comment 
     <IonCard color="light" className="feed-comment">
       <IonGrid>
         <IonRow className="ion-align-items-center">
-          {/* <IonIcon icon={personCircle} size="large" /> */}
+          <IonIcon icon={personCircle} size="large" />
           <IonText className="feed-userID" color="dark">
             {username}
           </IonText>

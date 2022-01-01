@@ -8,6 +8,7 @@ import {
   IonFooter,
   IonGrid,
   IonIcon,
+  IonLabel,
   IonRow,
   IonSlide,
   IonSlides,
@@ -27,10 +28,6 @@ import { useStores } from '../../stores/RootStore';
 import { ImagePreviewModal } from '../ImagePreviewModal';
 
 import React from 'react';
-import { ImagePreviewModal } from '../ImagePreviewModal';
-import { Comment } from '../../models';
-import { observer } from 'mobx-react';
-
 import { Comment } from '../../models';
 import { observer } from 'mobx-react';
 
@@ -42,11 +39,17 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
 
   const [username, setUserName] = useState('');
   const [imgURL, setImgURL] = useState('');
-  const [liked, setLiked] = useState(false);
+  const [likeClicked, setLikeClicked] = useState(false);
+  const [userLiked, setUserLiked] = useState(false);
   const [commentString, setCommentString] = useState<string>('');
   const [clicked, setClicked] = useState(false);
+  const [countComment, setCountComment] = useState(0);
+  const [loggedInUser, setLoggedInUser] = useState<string>();
 
   const { userStore, commentStore } = useStores();
+
+  var likes = new Array();
+
 
   const handleDismiss = () => {
     dismiss();
@@ -115,24 +118,44 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
       <IonCardContent className="feed-control">
         <IonGrid>
           <IonRow>
-            <IonCol className="ion-align-items-center ion-justify-content-end" onClick={
-              () => { setLiked(!liked); }
+            <IonCol className="ion-align-items-center ion-justify-content-end" size="3" onClick={
+              () => { //artwork.likedUsers.push(userStore.getUser());
+                      setLikeClicked(!likeClicked);
+                      // console.log(userStore.userData?.name);
+                      setLoggedInUser(userStore.userData?.name);
+                      //  likes.push(loggedInUser);
+                      console.log(likes);
+                      //  artwork.likedUsers.push(loggedInUser || '');
+                      //  console.log(artwork.likedUsers);
+                      //I think it needs to make a copy of array to be able to extend it with variables
+                      // let newData = artwork.likedUsers.map((item) =>
+                      //   {Object.assign({}, item, loggedInUser);}
+                      // artwork.likedUsers.push()
+                      // artwork.likedUsers.includes(userStore.userData?.id) ?
+                      // userStore.getLoginStatus === "true" ?
+                      likeClicked ? likes.push(loggedInUser) : likes.splice(likes.indexOf(loggedInUser))
+                      console.log(likes);
+                      setUserLiked(likes.includes(loggedInUser));
+
+                    }
             }>
               {
-                liked ?
-                  <IonButton className='like' fill='clear'><IonIcon size='large' icon={heart} className="ion-margin-end" color="danger" /></IonButton> :
-                  <IonButton className='like' fill='clear'><IonIcon size='large' icon={heartOutline} className="ion-margin-end" color="danger" /></IonButton>
-              }
 
+                userLiked ?
+                  <IonButton className='btn' fill='clear'><IonIcon size='large' icon={heart} className="ion-margin-end" color="danger"/></IonButton> :
+                  <IonButton className='btn' fill='clear'><IonIcon size='large' icon={heartOutline} className="ion-margin-end" color="danger" /></IonButton>
+              }
             </IonCol>
 
             {/* add comment section */}
             <IonCol className="ion-align-items-center ion-justify-content-end">
-              <IonButton fill='clear' className="like" onClick={
+              <IonButton fill='clear' className="btn" onClick={
                 () => { setClicked(!clicked); }
               }>
                 <IonIcon icon={chatbubbleEllipses} color="primary" size="large" />
+
               </IonButton>
+              <IonText className='right'>{countComment}{countComment>1 ? "Comments" : "Comment"}</IonText>
               {
                 clicked && <>
                   <IonTextarea className="float-left"
@@ -143,6 +166,7 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
                   <IonButton
                     className="ion-button small float-right round" size="small"
                     onClick={() => {
+                      setCountComment(countComment + 1);
                       commentStore.addComment(
                         artwork.id,
                         commentString,

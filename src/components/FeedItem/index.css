@@ -73,7 +73,8 @@
     object-fit: cover;
 }
 
-.like {
+.btn {
+
   --ripple-color: transparent;
   --background:transparent;
   --background-activated: transparent;
@@ -84,4 +85,16 @@
   --background-focused-opacity: 0;
   --background-hover-opacity: 0;
   --transition: none;
+
+  padding: none;
+  margin: none;
+
+  float : left;
+
+}
+
+.right{
+  float:right;
+  text-align: right;
+  margin-top: 12px;
 }
