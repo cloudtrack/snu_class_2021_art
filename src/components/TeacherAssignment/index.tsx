@@ -59,7 +59,7 @@ const SubmissionStatus: React.FC<{
         setGrade(artwork.grade);
       }
     }
-  }, [artwork, grade]);
+  }, [artwork]);
 
   return (
     <>
@@ -135,7 +135,7 @@ const SubmissionStatus: React.FC<{
                   </IonText>
                 </IonCol>
                 <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
-                  {`Grade: ${grade < 0 ? "Not Graded" : grade}`}
+                  {`Grade: ${grade < 0 ? "Not Graded" : `${grade}/100`}`}
                 </IonCol>
                 <IonRow className="feed-image" onClick={() => {
                   present({
