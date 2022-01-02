@@ -61,6 +61,14 @@ const SubmissionStatus: React.FC<{
     }
   }, [artwork]);
 
+  useEffect(() => {
+    if (artwork !== undefined) {
+      if (artwork.grade !== undefined) {
+        setGrade(artwork.grade);
+      }
+    }
+  }, [artwork]);
+
   return (
     <>
       <IonAlert isOpen={showAlert}
