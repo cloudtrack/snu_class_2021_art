@@ -4,20 +4,15 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCol,
-  IonContent,
-  IonFooter,
   IonGrid,
   IonIcon,
   IonRow,
-  IonSlide,
-  IonSlides,
   IonText,
   IonTextarea,
   useIonModal,
-
 } from '@ionic/react';
 import { DataStore } from 'aws-amplify';
-import { add, chatbubbleEllipses, close, heart, heartOutline, personCircle, remove } from 'ionicons/icons';
+import { chatbubbleEllipses, heart, heartOutline, personCircle } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { Student } from '../../models';
 import { ArtWork } from '../../models';
@@ -39,7 +34,7 @@ interface IFeedItemProps {
 
 const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
 
-  const [useranme, setUserName] = useState('');
+  const [username, setUserName] = useState('');
   const [imgURL, setImgURL] = useState('');
   const [liked, setLiked] = useState(false);
   const [commentString, setCommentString] = useState<string>('');
@@ -92,7 +87,7 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
         <IonGrid>
           <IonRow className="ion-align-items-center">
             <IonIcon icon={personCircle} size="large" />
-            <IonText className="feed-username">{useranme}</IonText>
+            <IonText className="feed-username">{username}</IonText>
           </IonRow>
         </IonGrid>
       </IonCardHeader>
@@ -103,13 +98,9 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
         });
       }}>
         {/* <IonImg src="https://picsum.photos/640/300" /> */}
-        {/* <IonSlides options={slideOpts}>
-          <IonSlide > */}
         <div className='imgwrapper'>
           <img src={imgURL} className='coverimg' />
         </div>
-        {/* </IonSlide>
-        </IonSlides> */}
       </IonCardContent>
       <IonCardContent className="feed-control">
         <IonGrid>

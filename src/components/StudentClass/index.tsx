@@ -1,4 +1,4 @@
-import { IonContent, IonFab, IonFabButton, IonIcon } from '@ionic/react';
+import { IonFab, IonFabButton, IonIcon } from '@ionic/react';
 import { useState } from 'react';
 import { UserDataType } from '../../stores/UserStore';
 import { ClassItem } from '../ClassItem';

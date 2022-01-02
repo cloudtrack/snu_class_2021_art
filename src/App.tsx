@@ -34,7 +34,41 @@ import awsconfig from './aws-exports';
 
 import { Storage } from 'aws-amplify';
 
-Amplify.configure(awsconfig);
+const isLocalhost = Boolean(
+  window.location.hostname === "localhost" ||
+  // [::1] is the IPv6 localhost address.
+  window.location.hostname === "[::1]" ||
+  // 127.0.0.1/8 is considered localhost for IPv4.
+  window.location.hostname.match(
+    /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+  )
+);
+
+// Assuming you have two redirect URIs, and the first is for localhost and second is for production
+const [
+  localRedirectSignIn,
+  productionRedirectSignIn,
+] = awsconfig.oauth.redirectSignIn.split(",");
+
+const [
+  localRedirectSignOut,
+  productionRedirectSignOut,
+] = awsconfig.oauth.redirectSignOut.split(",");
+
+console.log(localRedirectSignIn);
+console.log(productionRedirectSignIn);
+console.log(isLocalhost);
+
+const updatedAwsConfig = {
+  ...awsconfig,
+  oauth: {
+    ...awsconfig.oauth,
+    redirectSignIn: isLocalhost ? localRedirectSignIn : productionRedirectSignIn,
+    redirectSignOut: isLocalhost ? localRedirectSignOut : productionRedirectSignOut,
+  }
+}
+
+Amplify.configure(updatedAwsConfig);
 Storage.configure({
   AWSS3: {
     bucket: 'snuclass2021artuserimage215818-dev', //REQUIRED -  Amazon S3 bucket name
@@ -69,12 +103,9 @@ const PublicRoutes = () => {
 const App: React.FC = () => {
   const { userStore } = useStores()
 
-  return !userStore.authCheckComplete ? (
+  return (
     <IonApp>
-      <IonLoading message={'Loading...'} isOpen />
-    </IonApp>
-  ) : (
-    <IonApp>
+      <IonLoading message={'Loading...'} isOpen={!userStore.authCheckComplete} backdropDismiss />
       {!userStore.isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />}
     </IonApp>
   );

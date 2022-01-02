@@ -138,7 +138,7 @@ const RegisterView: React.FC<registerProps> = observer(props => {
   return (
     <IonPage>
       {(() => {
-        if (!props.userStore.isLoggedIn && props.userStore.user !== null) {
+        if (!props.userStore.isLoggedIn && props.userStore.shouldRenderConfirm) {
 return renderConfirm(props);
 } else {
 return renderSignUp(props);

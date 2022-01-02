@@ -1,8 +1,6 @@
 import Storage from "@aws-amplify/storage";
 import { Filesystem } from "@capacitor/filesystem";
 import { action, autorun, makeObservable, observable } from "mobx";
-import { base64FromPath } from "../hooks/userPhotoGallery";
-import { Cache } from "aws-amplify";
 import RootStore from "./RootStore";
 
 // wrap up crud to aws s3 buckets

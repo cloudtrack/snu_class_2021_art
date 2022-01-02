@@ -1,6 +1,4 @@
-import { IonList, IonItem, IonText, IonCol, IonGrid, IonRow, IonImg, IonCard, IonAlert, IonCardTitle, IonCardHeader, useIonModal, IonCardContent, IonButton, IonIcon } from "@ionic/react";
-import assert from "assert";
-import { DataStore } from "aws-amplify";
+import { IonList, IonItem, IonText, IonCol, IonGrid, IonRow, IonCard, IonAlert, IonCardTitle, IonCardHeader, useIonModal, IonButton, IonIcon } from "@ionic/react";
 import { create } from "ionicons/icons";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
@@ -37,7 +35,7 @@ const SubmissionStatus: React.FC<{
     if (artwork !== undefined) {
       setArtwork(artwork);
     }
-  });
+  }, [artworkStore.artworks, assignment, student]);
 
   useEffect(() => {
     const fetchArtWork = async (aw: ArtWork) => {
@@ -53,7 +51,15 @@ const SubmissionStatus: React.FC<{
       fetchArtWork(artwork);
     }
 
-  }, [student]);
+  }, [student, artwork]);
+
+  useEffect(() => {
+    if (artwork !== undefined) {
+      if (artwork.grade !== undefined) {
+        setGrade(artwork.grade);
+      }
+    }
+  }, [artwork]);
 
   useEffect(() => {
     if (artwork !== undefined) {
@@ -137,7 +143,7 @@ const SubmissionStatus: React.FC<{
                   </IonText>
                 </IonCol>
                 <IonCol className="ion-no-padding ion-align-self-center ion-text-right">
-                  {`Grade: ${grade < 0 ? "Not Graded" : grade}`}
+                  {`Grade: ${grade < 0 ? "Not Graded" : `${grade}/100`}`}
                 </IonCol>
                 <IonRow className="feed-image" onClick={() => {
                   present({
@@ -167,7 +173,7 @@ const TeacherAssignment: React.FC<{
   useEffect(() => {
     classStore.getStudent(assignment);
     artworkStore.initialize();
-  }, [assignment]);
+  }, [assignment, classStore, artworkStore]);
 
   return (
     <>

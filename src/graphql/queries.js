@@ -20,11 +20,10 @@ export const getStudent = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt
@@ -276,11 +275,10 @@ export const getArtWork = /* GraphQL */ `
       id
       classID
       assignmentID
-      title
       image
-      description
       grade
       studentID
+      likedUsers
       _version
       _deleted
       _lastChangedAt
@@ -317,11 +315,10 @@ export const listArtWorks = /* GraphQL */ `
         id
         classID
         assignmentID
-        title
         image
-        description
         grade
         studentID
+        likedUsers
         _version
         _deleted
         _lastChangedAt
@@ -354,11 +351,10 @@ export const syncArtWorks = /* GraphQL */ `
         id
         classID
         assignmentID
-        title
         image
-        description
         grade
         studentID
+        likedUsers
         _version
         _deleted
         _lastChangedAt
@@ -465,11 +461,10 @@ export const getClass = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt
@@ -608,11 +603,10 @@ export const getAssignment = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt

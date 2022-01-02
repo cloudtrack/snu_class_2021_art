@@ -23,11 +23,10 @@ export const createStudent = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt
@@ -93,11 +92,10 @@ export const updateStudent = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt
@@ -163,11 +161,10 @@ export const deleteStudent = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt
@@ -379,11 +376,10 @@ export const createArtWork = /* GraphQL */ `
       id
       classID
       assignmentID
-      title
       image
-      description
       grade
       studentID
+      likedUsers
       _version
       _deleted
       _lastChangedAt
@@ -418,11 +414,10 @@ export const updateArtWork = /* GraphQL */ `
       id
       classID
       assignmentID
-      title
       image
-      description
       grade
       studentID
+      likedUsers
       _version
       _deleted
       _lastChangedAt
@@ -457,11 +452,10 @@ export const deleteArtWork = /* GraphQL */ `
       id
       classID
       assignmentID
-      title
       image
-      description
       grade
       studentID
+      likedUsers
       _version
       _deleted
       _lastChangedAt
@@ -568,11 +562,10 @@ export const createClass = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt
@@ -636,11 +629,10 @@ export const updateClass = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt
@@ -704,11 +696,10 @@ export const deleteClass = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt
@@ -772,11 +763,10 @@ export const createAssignment = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt
@@ -810,11 +800,10 @@ export const updateAssignment = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt
@@ -848,11 +837,10 @@ export const deleteAssignment = /* GraphQL */ `
           id
           classID
           assignmentID
-          title
           image
-          description
           grade
           studentID
+          likedUsers
           _version
           _deleted
           _lastChangedAt

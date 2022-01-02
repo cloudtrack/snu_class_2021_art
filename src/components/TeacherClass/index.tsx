@@ -1,4 +1,4 @@
-import { IonContent, IonFab, IonFabButton, IonIcon } from "@ionic/react";
+import { IonFab, IonFabButton, IonIcon } from "@ionic/react";
 import { add } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useState } from "react";
@@ -37,6 +37,8 @@ export const TeacherClass: React.FC<ITeacherClassProps> = observer(({ userData }
                 return (
                   <ClassItem {...classItemProps} />
                 );
+              } else {
+                return <></>;
               }
             })
         }

@@ -1,8 +1,7 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonModal, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonModal, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useState } from "react";
-import ClassStore from "../../stores/ClassStore";
 import { useStores } from "../../stores/RootStore";
 
 interface IAddClassModalProps {

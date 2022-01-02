@@ -7,7 +7,7 @@ import {
   Photo,
 } from "@capacitor/camera";
 import { Filesystem, Directory } from "@capacitor/filesystem";
-import { Storage } from "@capacitor/storage";
+// import { Storage } from "@capacitor/storage";
 import { Capacitor } from "@capacitor/core";
 import { Crop } from "@ionic-native/crop";
 import { isPlatform } from "@ionic/react";

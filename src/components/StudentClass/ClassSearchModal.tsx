@@ -27,7 +27,6 @@ const ClassSearchModal: React.FC<IClassSearchModalProps> = (props) => {
           <IonButtons slot="start">
             <IonButton onClick={() => onDidDismiss()}>
               <IonIcon color="white" slot="icon-only" icon={arrowBack} />
-
             </IonButton>
           </IonButtons>
           <IonTitle>Search and Join Class</IonTitle>
@@ -63,6 +62,8 @@ const ClassSearchModal: React.FC<IClassSearchModalProps> = (props) => {
                         return (
                           <StudentClassItem {...classItemProps} />
                         );
+                      } else {
+                        return <></>;
                       }
                     })
                 }

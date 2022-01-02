@@ -44,7 +44,7 @@ export const UserProfile: React.FC<IUserProfileProps> = observer(({ userData }) 
       </>
     );
   }
-  const { email, name, role } = userData;
+  const { name, role } = userData;
   return (
     <>
       <IonGrid>

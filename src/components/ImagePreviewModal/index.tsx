@@ -3,13 +3,6 @@ import { add, close, remove } from "ionicons/icons";
 import React from "react";
 import 'swiper/swiper-bundle.min.css';
 
-const slideOpts = {
-  direction: 'vertical',
-  zoom: false,
-  spaceBetween: 10,
-  centeredSlides: true
-}
-
 const slideZoomOpts = {
   zoom: true
 }
@@ -38,7 +31,6 @@ export class ImagePreviewModal extends React.Component<{
 
   render(): React.ReactNode {
     return (
-      // <>
       <IonContent
         className='modal-transparency'
       >
@@ -75,7 +67,6 @@ export class ImagePreviewModal extends React.Component<{
           </IonRow>
         </IonFooter>
       </IonContent>
-      // </>
     );
   }
 }
