@@ -12,6 +12,25 @@ import { useHidingHeader } from '../../hooks/useHidingHeader';
 import { useStores } from '../../stores/RootStore';
 import './Feed.css';
 
+// adding local notification for daily reminder to check newly published assignments and deadlines for existing ones
+import { Capacitor } from '@capacitor/core';
+ 
+declare var cordova: any; // stop TypeScript complaining.
+
+var smallIcon: "res://notification-logo";
+var d = new Date();
+var hours = d.getHours();
+var mins = d.getMinutes();
+ 
+cordova.plugins.notification.local.schedule({
+  id: 1,
+  smallIcon: smallIcon,
+  title: "Your daily art class reminder",
+  text: "Check your classes for new assignments and deadlines for existing assignments!",
+  trigger: { every: { hour: 10, minute: 30 }, count: 365 },
+  foreground: true
+}); 
+
 const FeedView: React.FC = () => {
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(200)
 
