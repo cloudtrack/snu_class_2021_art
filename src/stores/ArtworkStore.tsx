@@ -2,7 +2,8 @@ import { DataStore } from "aws-amplify";
 import { action, autorun, makeObservable, observable } from "mobx";
 import { Assignment } from "../models";
 import { ArtWork } from "../models";
-import RootStore from "./RootStore";
+import RootStore, { useStores } from "./RootStore";
+import UserStore from "./UserStore";
 
 class ArtWorkStore {
   rootStore: RootStore;
@@ -104,6 +105,32 @@ class ArtWorkStore {
     this.artworkIDs.splice(artworkIndex, 1, newArtWork.id);
     await DataStore.save(newArtWork);
   }
+
+  updateLikes = async (artwork : ArtWork, likedUsers: string[]) => {
+    const likeArtwork = ArtWork.copyOf(artwork, item => {
+      item.likedUsers = likedUsers;
+    });
+
+    const user = this.rootStore.userStore.userData?.name;
+    console.log(user);
+    
+    
+    if(likeArtwork.likedUsers.includes(user || '')){
+
+      if(user != ''){
+        likeArtwork.likedUsers.splice(likedUsers.indexOf(user || ''));
+      }
+      //await DataStore.save(likeArtwork);
+      return true;
+      
+    } else {
+
+      likeArtwork.likedUsers.push(user || '');
+      //await DataStore.save(likeArtwork);
+      return false;
+    }
+
+}
 
 }
 

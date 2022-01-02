@@ -30,6 +30,7 @@ import { ImagePreviewModal } from '../ImagePreviewModal';
 import React from 'react';
 import { Comment } from '../../models';
 import { observer } from 'mobx-react';
+import ArtWorkStore from '../../stores/ArtworkStore';
 
 interface IFeedItemProps {
   artwork: ArtWork;
@@ -47,6 +48,7 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
   const [loggedInUser, setLoggedInUser] = useState<string>();
 
   const { userStore, commentStore } = useStores();
+  const { artworkStore } = useStores();
 
   var likes = new Array();
 
@@ -119,30 +121,22 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
         <IonGrid>
           <IonRow>
             <IonCol className="ion-align-items-center ion-justify-content-end" size="3" onClick={
-              () => { //artwork.likedUsers.push(userStore.getUser());
-                      setLikeClicked(!likeClicked);
-                      // console.log(userStore.userData?.name);
-                      setLoggedInUser(userStore.userData?.name);
-                      //  likes.push(loggedInUser);
-                      console.log(likes);
-                      //  artwork.likedUsers.push(loggedInUser || '');
-                      //  console.log(artwork.likedUsers);
-                      //I think it needs to make a copy of array to be able to extend it with variables
-                      // let newData = artwork.likedUsers.map((item) =>
-                      //   {Object.assign({}, item, loggedInUser);}
-                      // artwork.likedUsers.push()
-                      // artwork.likedUsers.includes(userStore.userData?.id) ?
-                      // userStore.getLoginStatus === "true" ?
-                      likeClicked ? likes.push(loggedInUser) : likes.splice(likes.indexOf(loggedInUser))
-                      console.log(likes);
-                      setUserLiked(likes.includes(loggedInUser));
+              async () => {
 
-                    }
+                setLikeClicked(!likeClicked);
+
+                console.log(likes);
+
+                setUserLiked(await artworkStore.updateLikes(artwork, likes));
+
+                console.log(userLiked);
+
+              }
             }>
               {
-
-                userLiked ?
-                  <IonButton className='btn' fill='clear'><IonIcon size='large' icon={heart} className="ion-margin-end" color="danger"/></IonButton> :
+                // It should be instead done with userLiked but it will return the error which is caused by push
+                likeClicked ?
+                  <IonButton className='btn' fill='clear'><IonIcon size='large' icon={heart} className="ion-margin-end" color="danger" /></IonButton> :
                   <IonButton className='btn' fill='clear'><IonIcon size='large' icon={heartOutline} className="ion-margin-end" color="danger" /></IonButton>
               }
             </IonCol>
@@ -155,7 +149,7 @@ const FeedItem: React.FC<IFeedItemProps> = ({ artwork }) => {
                 <IonIcon icon={chatbubbleEllipses} color="primary" size="large" />
 
               </IonButton>
-              <IonText className='right'>{countComment}{countComment>1 ? "Comments" : "Comment"}</IonText>
+              <IonText className='right'>{countComment}{countComment > 1 ? " Comments" : " Comment"}</IonText>
               {
                 clicked && <>
                   <IonTextarea className="float-left"
